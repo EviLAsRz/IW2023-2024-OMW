@@ -1,27 +1,35 @@
 package com.bankIW.Empleado.domain;
 
-import com.helger.commons.annotation.Nonempty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
 import java.util.UUID;
 
 @Entity
-public class Empleado {
+public class Cliente {
 
     @GeneratedValue
     @Id
     private UUID id;
 
+    @NotEmpty
     private String _nombre;
+
+    @NotEmpty
     private String _apellidos;
 
     @NotEmpty
-    @Email
-    private String _email;
+    private String _dni;
+
+    @NotEmpty
+    private String _direccion;
+
+    @NotEmpty
+    private String _telefonoMovil;
+
+    private String _telefonoFijo = null;
 
     public UUID getId() {
         return id;
@@ -47,14 +55,6 @@ public class Empleado {
         this._apellidos = _apellidos;
     }
 
-    public String get_email() {
-        return _email;
-    }
-
-    public void set_email(String _email) {
-        this._email = _email;
-    }
-
     public String get_dni() {
         return _dni;
     }
@@ -63,20 +63,28 @@ public class Empleado {
         this._dni = _dni;
     }
 
-    public Integer get_tDepartamento() {
-        return _tDepartamento;
+    public String get_direccion() {
+        return _direccion;
     }
 
-    public void set_tDepartamento(Integer _tDepartamento) {
-        this._tDepartamento = _tDepartamento;
+    public void set_direccion(String _direccion) {
+        this._direccion = _direccion;
     }
 
-    @NotEmpty
-    private String _dni;
+    public String get_telefonoMovil() {
+        return _telefonoMovil;
+    }
 
-    @NotEmpty
-    private Integer _tDepartamento;
+    public void set_telefonoMovil(String _telefonoMovil) {
+        this._telefonoMovil = _telefonoMovil;
+    }
 
-    //! Falta añadir la password pq no sabemos si podemos usar el usario de Vaadin.
+    public String get_telefonoFijo() {
+        return _telefonoFijo;
+    }
 
+    public void set_telefonoFijo(String _telefonoFijo) {
+        this._telefonoFijo = _telefonoFijo;
+    }
 }
+
