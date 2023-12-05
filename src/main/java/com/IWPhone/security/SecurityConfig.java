@@ -40,6 +40,14 @@ public class SecurityConfig extends VaadinWebSecurity {
                 .password("{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW")
                 .roles("USER", "ADMIN")
                 .build();
-        return new InMemoryUserDetailsManager(user, admin);
+        UserDetails elpepeUser = User.builder()
+                .username("elpepe")
+                .password("{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW")
+                .roles("USER")
+                .build();
+        return new InMemoryUserDetailsManager(user, admin, elpepeUser);
     }
+
+
+
 }
