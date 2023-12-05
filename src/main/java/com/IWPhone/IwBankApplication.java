@@ -1,5 +1,7 @@
-package com.bankIW;
+package com.IWPhone;
 
+import com.IWPhone.playground.Customer;
+import com.IWPhone.playground.CustomerRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
