@@ -8,20 +8,16 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.UUID;
 
 @Entity
-public class Cliente{
-
-    //_Id: Métodos.
+public class Client {
+    // _Id: Methods.
     @GeneratedValue
     @Id
     private UUID _Id;
     public UUID getId() {
         return _Id;
     }
-    /* TODO: ¿Realmente nos hace falta un setId? Quiero decir, es un método que al estar modificándose
-        algo tan crucial como es el identificador puede dar problemas, ¿no?
-        public void setId(UUID id) { this.Id = id; } */
 
-    //_sName: Métodos.
+    // _sName: Methods.
     @NotEmpty
     private String _sName;
     public String getName() { return _sName; }
@@ -31,7 +27,7 @@ public class Cliente{
         _sName = name;
     }
 
-    //_sLastName: Métodos.
+    // _sLastName: Methods.
     @NotEmpty
     private String _sLastName;
     public String getLastName() { return _sLastName; }
@@ -41,6 +37,7 @@ public class Cliente{
         _sLastName = lastname;
     }
 
+    // _sDNI: Methods.
     @NotEmpty
     private String _sDNI;
     public String getDNI() { return _sDNI; }
@@ -50,6 +47,7 @@ public class Cliente{
         _sDNI = dni;
     }
 
+    // _sAddress: Methods.
     @NotEmpty
     private String _sAddress;
     public String getAddress() { return _sAddress; }
@@ -59,6 +57,7 @@ public class Cliente{
         _sAddress = address;
     }
 
+    // _sMobilePhone: Methods.
     @NotEmpty
     private String _sMobilePhone;
     public String getMobilePhone() { return _sMobilePhone; }
@@ -68,6 +67,7 @@ public class Cliente{
         _sMobilePhone = mobilePhone;
     }
 
+    // _sLandline: Methods.
     private String _sLandline = null;
     public String getLandline() { return _sLandline; }
     public void setLandline(String landLine) { _sLandline = landLine; }
