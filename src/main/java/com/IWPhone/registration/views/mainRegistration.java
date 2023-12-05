@@ -28,7 +28,7 @@ public class mainRegistration extends VerticalLayout {
                     .build();
             //Guardar en la base de datos H2 el usuario, agregando persistencia usando UserDetailsService,
             //inserta un control de errores en caso de que el usuario ya exista
-            ((InMemoryUserDetailsManager) userDetailsService).createUser(userDetails);
+            ((InMemoryUserDetailsManager) userDetailsService).createUser(userDetails);// TODO: Comprobar si tiene persistencia en memoria.
 
 
         });
