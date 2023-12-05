@@ -1,4 +1,4 @@
-package com.bankIW.Empleado.domain;
+package com.IWPhone.Models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,13 +8,14 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.UUID;
 
 @Entity
-public class Departamento {
+public class Consulta {
+
     @GeneratedValue
     @Id
     private UUID id;
 
     @NotEmpty
-    private String nombre;
+    private String _detalles;
 
     public UUID getId() {
         return id;
@@ -24,11 +25,11 @@ public class Departamento {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String get_detalles() {
+        return _detalles;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void set_detalles(String _detalles) {
+        this._detalles = _detalles;
     }
 }

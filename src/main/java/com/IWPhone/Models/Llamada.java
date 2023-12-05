@@ -1,20 +1,26 @@
-package com.bankIW.Empleado.domain;
+package com.IWPhone.Models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import java.util.UUID;
 import jakarta.validation.constraints.NotEmpty;
 
-@Entity
-public class SMS {
+import java.util.UUID;
 
-    @GeneratedValue
+@Entity
+public class Llamada {
     @Id
+    @GeneratedValue
     private UUID id;
 
     @NotEmpty
     private UUID _cliente;
+
+    @NotEmpty
+    private double _duracion;
+
+    @NotEmpty
+    private String _telefonoDestino;
 
     public UUID getId() {
         return id;
@@ -32,12 +38,12 @@ public class SMS {
         this._cliente = _cliente;
     }
 
-    public String get_contenido() {
-        return _contenido;
+    public double get_duracion() {
+        return _duracion;
     }
 
-    public void set_contenido(String _contenido) {
-        this._contenido = _contenido;
+    public void set_duracion(double _duracion) {
+        this._duracion = _duracion;
     }
 
     public String get_telefonoDestino() {
@@ -47,13 +53,4 @@ public class SMS {
     public void set_telefonoDestino(String _telefonoDestino) {
         this._telefonoDestino = _telefonoDestino;
     }
-
-    @NotEmpty
-    private String _contenido;
-
-    @NotEmpty
-    private String _telefonoDestino;
-
-
-
 }

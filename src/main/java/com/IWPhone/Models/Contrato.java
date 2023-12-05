@@ -1,4 +1,4 @@
-package com.bankIW.Empleado.domain;
+package com.IWPhone.Models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

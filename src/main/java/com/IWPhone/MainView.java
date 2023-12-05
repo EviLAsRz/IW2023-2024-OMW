@@ -1,12 +1,17 @@
-package com.bankIW;
+package com.IWPhone;
 
+import com.IWPhone.playground.Customer;
+import com.IWPhone.playground.CustomerRepository;
+import com.IWPhone.playground.CustomerService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.textfield.TextField;
+import jakarta.annotation.security.PermitAll;
 
+@PermitAll
 @Route("/")
 public class MainView extends VerticalLayout {
 

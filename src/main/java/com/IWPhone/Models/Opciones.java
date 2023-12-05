@@ -1,10 +1,9 @@
-package com.bankIW.Empleado.domain;
+package com.IWPhone.Models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotEmpty;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.UUID;
 

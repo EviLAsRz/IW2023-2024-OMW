@@ -1,4 +1,4 @@
-package com.bankIW.Empleado.domain;
+package com.IWPhone.Models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.UUID;
 
 @Entity
-public class Cliente {
+public class Cliente{
 
     @GeneratedValue
     @Id

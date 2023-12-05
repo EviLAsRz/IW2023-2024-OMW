@@ -1,6 +1,5 @@
-package com.bankIW.Empleado.domain;
+package com.IWPhone.Models;
 
-import com.helger.commons.annotation.Nonempty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;

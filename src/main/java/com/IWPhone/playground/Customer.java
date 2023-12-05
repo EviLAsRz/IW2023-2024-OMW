@@ -1,4 +1,4 @@
-package com.bankIW;
+package com.IWPhone.playground;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
