@@ -1,18 +1,20 @@
 package com.IWPhone.playground;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.Random;
 
 @Entity
 public class Customer {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     private String firstName;
 
     private String lastName;
+
+
 
     protected Customer() {
     }
@@ -20,6 +22,8 @@ public class Customer {
     public Customer(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+        Random random = new Random();
+        this.id = random.nextLong();
     }
 
     public Long getId() {

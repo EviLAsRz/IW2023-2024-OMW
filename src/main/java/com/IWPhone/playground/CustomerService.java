@@ -1,12 +1,13 @@
 package com.IWPhone.playground;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class CustomerService {
-
+        @Autowired
         private final CustomerRepository repo;
 
         public CustomerService(CustomerRepository repo) {
