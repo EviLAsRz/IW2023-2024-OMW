@@ -14,22 +14,20 @@ public class ApplicationUser {
     @GeneratedValue
     private UUID id;
 
-    public String getDni() {
-        return dni;
+
+    public String getUsername() {
+        return username;
     }
 
-    public void setDni(String dni) {
-        this.dni = dni;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @NotEmpty
-    private String dni;
+    private String username;//DNI
 
-    @NotEmpty
     private String name;
-    @NotEmpty
     private String surname;
-    @NotEmpty
     private String email;
     @NotEmpty
     private String password;

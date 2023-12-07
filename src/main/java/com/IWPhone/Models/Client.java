@@ -1,11 +1,18 @@
 package com.IWPhone.Models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotEmpty;
 
-@Entity
-public class Client extends ApplicationUser {
+import java.util.UUID;
 
+@Entity
+public class Client  {
+
+    @Id
+    @GeneratedValue
+    private UUID id;
 
     // _sName: Methods.
     @NotEmpty

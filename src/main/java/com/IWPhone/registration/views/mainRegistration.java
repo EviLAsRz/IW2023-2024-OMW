@@ -1,5 +1,9 @@
 package com.IWPhone.registration.views;
+
+import com.IWPhone.Models.ApplicationUser;
+import com.IWPhone.Repositories.ApplicationUserRepository;
 import com.IWPhone.security.SecurityService;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.router.Route;
@@ -14,25 +18,24 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Route("register")
 @AnonymousAllowed
 public class mainRegistration extends VerticalLayout {
-    private final UserDetailsService userDetailsService;
+    private final ApplicationUserRepository userRepository;
 
-    public mainRegistration(UserDetailsService userDetailsService){
-        this.userDetailsService = userDetailsService;
+    public mainRegistration(ApplicationUserRepository userRepository){
+        this.userRepository = userRepository;
         TextField username = new TextField("Username");
         PasswordField password = new PasswordField("Password");
         Button register = new Button("Register");
         register.addClickListener(e -> {
-            UserDetails userDetails = User.withUsername(username.getValue())
-                    .password(SecurityService.passwordEncoder().encode(password.getValue()))
-                    .roles("USER")
-                    .build();
-            //Guardar en la base de datos H2 el usuario, agregando persistencia usando UserDetailsService,
-            //inserta un control de errores en caso de que el usuario ya exista
-            ((InMemoryUserDetailsManager) userDetailsService).createUser(userDetails);// TODO: Comprobar si tiene persistencia en memoria.
+            String dniValue = username.getValue();
 
+            Notification.show("DNI: " + dniValue);
 
+            ApplicationUser user = new ApplicationUser();
+            user.setUsername(username.getValue());
+            user.setPassword(SecurityService.passwordEncoder().encode(password.getValue()));
+            //user.setRoles("USER");
+            userRepository.save(user);
         });
         add(username, password, register);
     }
-
 }

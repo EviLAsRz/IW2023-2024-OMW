@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.UUID;
 
 @Entity
-public class Empleado extends ApplicationUser {//Exists as especification of the MainClass User (UserDetail)
+public class Empleado  {//Exists as especification of the MainClass User (UserDetail)
 
     @GeneratedValue
     @Id
