@@ -9,11 +9,12 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.UUID;
 
 @Entity
-public class Empleado {
+public class Empleado extends User {//Exists as especification of the MainClass User (UserDetail)
 
     @GeneratedValue
     @Id
     private UUID id;
+
 
     private String _nombre;
     private String _apellidos;

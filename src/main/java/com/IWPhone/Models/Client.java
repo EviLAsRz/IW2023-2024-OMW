@@ -8,14 +8,8 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.UUID;
 
 @Entity
-public class Client {
-    // _Id: Methods.
-    @GeneratedValue
-    @Id
-    private UUID _Id;
-    public UUID getId() {
-        return _Id;
-    }
+public class Client extends User {
+
 
     // _sName: Methods.
     @NotEmpty
