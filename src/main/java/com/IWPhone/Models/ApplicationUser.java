@@ -8,7 +8,6 @@ import lombok.Getter;
 
 import java.util.UUID;
 @Entity
-@Getter
 public class ApplicationUser {
 
     @Id

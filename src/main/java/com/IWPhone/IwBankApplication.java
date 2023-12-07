@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-@EntityScan("com.IWPhone.playground")
+@EntityScan("com.IWPhone.*")//NO TOCAR EL CAMBIO DE ESCANEO DE ENTIDADES
 public class IwBankApplication {
 
 
