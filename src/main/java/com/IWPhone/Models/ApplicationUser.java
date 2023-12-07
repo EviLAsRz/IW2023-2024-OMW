@@ -9,11 +9,22 @@ import lombok.Getter;
 import java.util.UUID;
 @Entity
 @Getter
-public class User {
+public class ApplicationUser {
 
     @Id
     @GeneratedValue
     private UUID id;
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    @NotEmpty
+    private String dni;
 
     @NotEmpty
     private String name;
