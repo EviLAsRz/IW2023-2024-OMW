@@ -1,0 +1,15 @@
+.login-view {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-layout {
+
+    display: flex;;
+    justify-content: center;;
+    align-items: center;;
+}
+
