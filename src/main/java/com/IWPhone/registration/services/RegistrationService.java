@@ -36,7 +36,7 @@ public class RegistrationService {
     }
 
 
-    //TODO: End this method (check if client is already registered)
+
     public void createUser(String username, String password, String name, String surname, String email){
         if(!checkDNI(username)){
             Notification n = new Notification();

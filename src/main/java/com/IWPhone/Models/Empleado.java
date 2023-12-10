@@ -16,13 +16,6 @@ public class Empleado  {//Exists as especification of the MainClass User (UserDe
     private UUID id;
 
 
-    private String _nombre;
-    private String _apellidos;
-
-    @NotEmpty
-    @Email
-    private String _email;
-
     public UUID getId() {
         return id;
     }
@@ -31,29 +24,6 @@ public class Empleado  {//Exists as especification of the MainClass User (UserDe
         this.id = id;
     }
 
-    public String get_nombre() {
-        return _nombre;
-    }
-
-    public void set_nombre(String _nombre) {
-        this._nombre = _nombre;
-    }
-
-    public String get_apellidos() {
-        return _apellidos;
-    }
-
-    public void set_apellidos(String _apellidos) {
-        this._apellidos = _apellidos;
-    }
-
-    public String get_email() {
-        return _email;
-    }
-
-    public void set_email(String _email) {
-        this._email = _email;
-    }
 
     public String get_dni() {
         return _dni;

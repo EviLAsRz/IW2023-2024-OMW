@@ -14,29 +14,10 @@ public class Client  {
     @GeneratedValue
     private UUID id;
 
-    // _sName: Methods.
-    @NotEmpty
-    private String _sName;
-    public String getName() { return _sName; }
-    public void setName(String name) {
-        if(name == null || name.isEmpty()) throw new IllegalArgumentException(
-                "Nombre no puede ser nulo ni vacío");
-        _sName = name;
-    }
-
-    // _sLastName: Methods.
-    @NotEmpty
-    private String _sLastName;
-    public String getLastName() { return _sLastName; }
-    public void setLastName(String lastname) {
-        if(lastname == null || lastname.isEmpty()) throw new IllegalArgumentException(
-                "Apellido no puede ser nulo ni vacío");
-        _sLastName = lastname;
-    }
 
     // _sDNI: Methods.
     @NotEmpty
-    private String _sDNI;
+    private String _sDNI;//Bind to ApplicationUser.username
     public String getDNI() { return _sDNI; }
     public void setDNI(String dni) {
         if(dni == null || dni.isEmpty()) throw new IllegalArgumentException(
