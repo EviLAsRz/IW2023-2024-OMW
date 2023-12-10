@@ -3,6 +3,7 @@ package com.IWPhone.registration.views;
 import com.IWPhone.Models.ApplicationUser;
 import com.IWPhone.Repositories.ApplicationUserRepository;
 import com.IWPhone.security.SecurityService;
+
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
@@ -13,12 +14,16 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.Icon;
+
+
+
 
 @Route("register")
 @AnonymousAllowed
@@ -30,9 +35,18 @@ public class ClientRegistration extends VerticalLayout {
 
     TextField username = new TextField("DNI", "Introduzca su Documento Nacional de Identidad");
     PasswordField password = new PasswordField("Introduzca su contraseña");
+
+    //Atributos del contrato
+    TextArea contratDetails = new TextArea("Detalles del Contrato", "Introduzca los detalles del contrato");
+
+    TextField maxGbConsumption = new TextField("Consumo Maximo de Datos", "Introduzca el consumo maximo de datos");
+    TextField pricePerGb = new TextField("Precio por Gb", "Introduzca el precio por Gb");
+    TextField pricePerSMS = new TextField("Precio por SMS", "Introduzca el precio por SMS");
+    TextField pricePerCall = new TextField("Precio por Llamada", "Introduzca el precio por llamada");
+
+    Button register = new Button("Solicitar Registro");
     public ClientRegistration(ApplicationUserRepository userRepository){
-    
-        setSizeFull();
+
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
 
@@ -52,7 +66,7 @@ public class ClientRegistration extends VerticalLayout {
         password.setMaxLength(50);
         password.setPlaceholder("* * * * * * * *");
         //Ajustes del campo del mail
-       
+
         email.setLabel("Direccion de Correo Electronico");
         email.getElement().setAttribute("name", "email");
         email.setPlaceholder("username@example.com");
@@ -70,6 +84,37 @@ public class ClientRegistration extends VerticalLayout {
         surname.setMinWidth("400px");
         surname.setRequired(true);
 
+        //Ajustes del campo de los detalles del contrato
+        contratDetails.setMaxWidth("400px");
+        contratDetails.setMinWidth("400px");
+        contratDetails.setMinHeight("200px");
+        contratDetails.setRequired(true);
+        pricePerCall.setMinWidth("400px");
+        pricePerCall.setMaxWidth("400px");
+        pricePerCall.setRequired(true);
+        pricePerGb.setMinWidth("400px");
+        pricePerGb.setMaxWidth("400px");
+        pricePerGb.setRequired(true);
+        pricePerSMS.setMinWidth("400px");
+        pricePerSMS.setMaxWidth("400px");
+        pricePerSMS.setRequired(true);
+        maxGbConsumption.setMinWidth("400px");
+        maxGbConsumption.setMaxWidth("400px");
+        maxGbConsumption.setRequired(true);
+
+
+        VerticalLayout contractDataLayout = new VerticalLayout(
+                new H2("Datos del Contrato"),
+                contratDetails,
+                maxGbConsumption,
+                pricePerGb,
+                pricePerSMS,
+                pricePerCall
+
+        );
+        contractDataLayout.setSizeFull();
+        contractDataLayout.setAlignItems(Alignment.CENTER);
+        contractDataLayout.setJustifyContentMode(JustifyContentMode.CENTER);
 
 
         //Ajustes del campo de la seccion de datos del usuario
@@ -81,11 +126,15 @@ public class ClientRegistration extends VerticalLayout {
                 email,
                 password
         );
+        userDataLayout.setSizeFull();
         userDataLayout.setAlignItems(Alignment.CENTER);
         userDataLayout.setJustifyContentMode(JustifyContentMode.CENTER);
 
+
+
+
         //Ajustes del boton de registro
-        Button register = new Button("Solicitar Registro");
+
         H1 title = new H1("Registro del Nuevo Cliente");
 
         register.addClickListener(e -> {
@@ -96,7 +145,9 @@ public class ClientRegistration extends VerticalLayout {
         });
 
 
-        add(title,userDataLayout, register);
+
+        //Ajustes del layout principal
+        add(title,userDataLayout,contractDataLayout, register);
     }
 
     private boolean checkDNI(String dni){
@@ -131,26 +182,26 @@ public class ClientRegistration extends VerticalLayout {
 
     private void prepareSuccessNotification(Notification notification, String message){
 
-            notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+        notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
 
-            Div text = new Div(new Text(message));
+        Div text = new Div(new Text(message));
 
-            Button closeButton = new Button(new Icon("lumo", "cross"));
-            closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
-            closeButton.getElement().setAttribute("aria-label", "Close");
-            closeButton.addClickListener(event -> {
-                notification.close();
-            });
+        Button closeButton = new Button(new Icon("lumo", "cross"));
+        closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
+        closeButton.getElement().setAttribute("aria-label", "Close");
+        closeButton.addClickListener(event -> {
+            notification.close();
+        });
 
-            HorizontalLayout layout = new HorizontalLayout(text, closeButton);
-            layout.setAlignItems(Alignment.CENTER);
+        HorizontalLayout layout = new HorizontalLayout(text, closeButton);
+        layout.setAlignItems(Alignment.CENTER);
 
-            notification.add(layout);
-            notification.open();
+        notification.add(layout);
+        notification.open();
     }
 
     private void prepareNotificationError(Notification notification, String message){
-        
+
         notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
 
         Div text = new Div(new Text(message));
@@ -168,7 +219,7 @@ public class ClientRegistration extends VerticalLayout {
         notification.add(layout);
         notification.open();
     }
-    
+
     //TODO: End this method (check if client is already registered)
     private void createUser(String username, String password){
         if(!checkDNI(username)){
