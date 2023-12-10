@@ -1,5 +1,6 @@
 package com.IWPhone.login.views;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -8,28 +9,34 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import com.vaadin.flow.component.button.Button;
 import com.IWPhone.registration.views.ClientRegistration;
 
+import javax.swing.text.Position;
 import java.awt.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Route("login")
 @PageTitle("Acceso de Usuario IW")
 @AnonymousAllowed
-@CssImport("./loginStyle.css")
+//@CssImport("./loginStyle.css")
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
     FormLayout formLayout = new FormLayout();
     TextField usernameField = new TextField();
     PasswordField passwordField = new PasswordField();
     Button loginButton = new Button("continuar");
+    Button BacktoRegisterButton = new Button("Registrarse");
 
     public LoginView(){
+
 
         //username settings
         usernameField.setRequiredIndicatorVisible(true);
@@ -62,15 +69,21 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         );
         loginLayout.setAlignItems(Alignment.CENTER);
         loginLayout.setJustifyContentMode(JustifyContentMode.CENTER);
-        
+        loginLayout.setWidth("500px");
+        loginLayout.setHeight("300px");
+        loginLayout.getStyle().set("border", "1px solid black");
+        loginLayout.getElement().getStyle().set("border-radius", "20px");
+
         loginButton.addClickListener(e -> {
             String dniValue = usernameField.getValue();
-            //Test if user exists!!
-            //createUser(usernameField.getValue(), passwordField.getValue());
-
+            String passwordValue = passwordField.getValue();
         });
 
-        add(formLayout, loginLayout, loginButton);
+        BacktoRegisterButton.addClickListener(e -> {
+            UI.getCurrent().navigate("register");
+        });
+
+        add(formLayout, loginLayout, loginButton, BacktoRegisterButton);
     }
 
     @Override
