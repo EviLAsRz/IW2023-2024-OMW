@@ -14,7 +14,6 @@ public class ApplicationUser {
     @GeneratedValue
     private UUID id;
 
-
     public String getUsername() {
         return username;
     }

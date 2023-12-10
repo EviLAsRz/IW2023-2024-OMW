@@ -30,6 +30,8 @@ public class MainView extends VerticalLayout {
     final Button logoutBtn = new Button("Logout");
 
     public MainView(CustomerRepository repo, CustomerService service, SecurityService securityService){
+        getThemeList().add("dark");
+        setSizeFull();setHeightFull();
         this.grid = new Grid<>(Customer.class);
         this.service = service;
         this.securityService = securityService;
