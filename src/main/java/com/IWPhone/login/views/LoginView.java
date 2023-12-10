@@ -2,6 +2,7 @@ package com.IWPhone.login.views;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -29,7 +30,7 @@ import java.util.regex.Pattern;
 //@CssImport("./loginStyle.css")
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
-    FormLayout formLayout = new FormLayout();
+    private final LoginForm login = new LoginForm();
     TextField usernameField = new TextField();
     PasswordField passwordField = new PasswordField();
     Button loginButton = new Button("continuar");
@@ -44,7 +45,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         usernameField.setMinLength(9);
         usernameField.setMaxLength(9);
         usernameField.setLabel("Dni");
-        formLayout.add(usernameField);
+        //formLayout.add(usernameField);
 
         //password settings
         passwordField.setRequiredIndicatorVisible(true);
@@ -52,7 +53,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         passwordField.setMinLength(8);
         passwordField.setMaxLength(50);
         passwordField.setLabel("Contraseña");
-        formLayout.add(passwordField);
+        //formLayout.add(passwordField);
 
         addClassName("login-view");
         setSizeFull();
@@ -60,30 +61,15 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         setJustifyContentMode(JustifyContentMode.CENTER);
 
         //form layout styles
-        formLayout.addClassName("form-layout");
-
-        VerticalLayout loginLayout = new VerticalLayout(
-                new H2("Iniciar sesión"),
-                usernameField,
-                passwordField
-        );
-        loginLayout.setAlignItems(Alignment.CENTER);
-        loginLayout.setJustifyContentMode(JustifyContentMode.CENTER);
-        loginLayout.setWidth("500px");
-        loginLayout.setHeight("300px");
-        loginLayout.getStyle().set("border", "1px solid black");
-        loginLayout.getElement().getStyle().set("border-radius", "20px");
-
-        loginButton.addClickListener(e -> {
-            String dniValue = usernameField.getValue();
-            String passwordValue = passwordField.getValue();
-        });
+        //formLayout.addClassName("form-layout");
+        
+        login.setAction("login");
 
         BacktoRegisterButton.addClickListener(e -> {
             UI.getCurrent().navigate("register");
         });
 
-        add(formLayout, loginLayout, loginButton, BacktoRegisterButton);
+        add(login, BacktoRegisterButton);
     }
 
     @Override
