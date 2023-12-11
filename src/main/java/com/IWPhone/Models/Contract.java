@@ -25,13 +25,12 @@ public class Contract {
         return _sDetails;
     }
     public void setDetails(String details) {
-        if(details == null || details.isEmpty()) throw new IllegalArgumentException(
-                "Los detalles no pueden ser nulos ni vacíos");
-        _sDetails = details;
+        if(details != null) _sDetails = details;
+
     }
 
     // _tStartDate: Methods.
-    @NotEmpty
+
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date _tStartDate;
     public Date getStartDate() {
@@ -56,7 +55,7 @@ public class Contract {
     }
 
     // _dDataGigas: Methods.
-    @NotEmpty
+
     private Double _dDataGigas;
     public Double getDataGigas() {
         return _dDataGigas;
@@ -68,7 +67,7 @@ public class Contract {
     }
 
     // _dPriceGigas: Methods.
-    @NotEmpty
+
     private Double _dPriceGigas;
     public Double getPriceGigas() { return _dPriceGigas; }
     public void setPriceGigas(Double priceGigas) {
@@ -78,7 +77,7 @@ public class Contract {
     }
 
     // _dPriceSMS: Methods.
-    @NotEmpty
+
     private Double _dPriceSMS;
     public Double getPriceSMS() { return _dPriceSMS; }
     public void setPriceSMS(Double priceSMS) {
@@ -88,7 +87,6 @@ public class Contract {
     }
 
     // _dPriceCall: Methods.
-    @NotEmpty
     private Double _dPriceCall;
     public Double getPriceCall() { return _dPriceCall; }
     public void setPriceCall(Double priceCall) {
@@ -99,28 +97,28 @@ public class Contract {
 
     // _Client: Methods.
     @NotEmpty
-    private UUID _Client;
-    public UUID getClient() {
-        return _Client;
+    private String _sClient;//Hace referencia al DNI del cliente.
+    public String getClient() {
+        return _sClient;
     }
-    public void setClient(UUID client) {
+    public void setClient(String client) {
         if(client == null) throw new IllegalArgumentException(
                 "El cliente no puede ser nulo");
-        _Client = client;
+        _sClient = client;
     }
 
     // _Employee: Methods.
-    @NotEmpty
-    private UUID _Employee;
-    public UUID getEmployee() {
-        return _Employee;
+
+    private String _sEmployee=null;//Inicialmente no tiene empleado asignado.
+    public String getEmployee() {
+        return _sEmployee;
     }
-    public void setEmployee(UUID employee) {
+    public void setEmployee(String employee) {
         if(employee == null) throw new IllegalArgumentException(
                 "El empleado no puede ser nulo");
-        _Employee = employee;
+        _sEmployee = employee;
     }
 
-    //! TODO: Falta añadir las opciones de contrato, Cliente que son 1-1.
+
 
 }

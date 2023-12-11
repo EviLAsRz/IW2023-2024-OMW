@@ -18,11 +18,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class RegistrationService {
     private final ApplicationUserRepository userRepository;
+    private final ContractService contractService;
     private final SecurityService securityService;
 
-    RegistrationService(ApplicationUserRepository userRepository, SecurityService securityService){
+    RegistrationService(ApplicationUserRepository userRepository, SecurityService securityService, ContractService contractService){
         this.userRepository = userRepository;
         this.securityService = securityService;
+        this.contractService = contractService;
     }
 
     //Check if the Contract does not exist
@@ -37,7 +39,7 @@ public class RegistrationService {
 
 
 
-    public void createUser(String username, String password, String name, String surname, String email){
+    public void createUser(String username, String password, String name, String surname, String email, String contractDetails, String pricePerCall, String pricePerGb, String pricePerSMS, String maxGbConsumption){
         if(!checkDNI(username)){
             Notification n = new Notification();
             prepareNotificationError(n, "El DNI introducido no es válido");
@@ -59,6 +61,26 @@ public class RegistrationService {
             prepareNotificationError(n, "El usuario ya existe");
             n.open();
         }
+        else if(pricePerCall.isEmpty() || !isNumericField(pricePerCall)){
+            Notification n = new Notification();
+            prepareNotificationError(n, "El precio por llamada no puede estar vacío y tiene que ser un numero");
+            n.open();
+        }
+        else if(pricePerGb.isEmpty() || !isNumericField(pricePerGb)){
+            Notification n = new Notification();
+            prepareNotificationError(n, "El precio por GB no puede estar vacío y tiene que ser un numero");
+            n.open();
+        }
+        else if(pricePerSMS.isEmpty() || !isNumericField(pricePerSMS)){
+            Notification n = new Notification();
+            prepareNotificationError(n, "El precio por SMS no puede estar vacío y tiene que ser un numero");
+            n.open();
+        }
+        else if(maxGbConsumption.isEmpty() || !isNumericField(maxGbConsumption)){
+            Notification n = new Notification();
+            prepareNotificationError(n, "El máximo de GB de consumo no puede estar vacío y tiene que ser un numero");
+            n.open();
+        }
         else{
             ApplicationUser user = new ApplicationUser();
             user.setName(name);
@@ -72,10 +94,23 @@ public class RegistrationService {
             Notification n = new Notification();
             prepareSuccessNotification(n, "Usuario creado correctamente");
 
+            contractService.create(username, contractDetails, Double.parseDouble(maxGbConsumption), Double.parseDouble(pricePerGb),
+                    Double.parseDouble(pricePerSMS), Double.parseDouble(pricePerCall));
             //TODO: Create the Client and Contract Enties Linked to the ApplicationUser
-
+            //TODO: Create endpoint to verify the contract (add the employee that verifies the contract)
         }
 
+    }
+
+
+    boolean isNumericField(String s)
+    {
+       try{
+              Double.parseDouble(s);
+              return true;
+       }catch (NumberFormatException e){
+           return false;
+       }
     }
 
     private boolean checkDNI(String dni){
@@ -84,6 +119,8 @@ public class RegistrationService {
         String dniLetter = dni.substring(8);
         return (dniLetter.matches("^[A-Z]$") && dniNumbers.matches("^[0-9]+$"));
     }
+
+
 
 
     private String checkPassword(String password){

@@ -12,7 +12,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.button.Button;
-
+import com.vaadin.flow.component.notification.Notification;
 
 
 
@@ -132,9 +132,10 @@ public class ClientRegistration extends VerticalLayout {
 
         register.addClickListener(e -> {
             String dniValue = username.getValue();
-            //Create User
-            service.createUser(username.getValue(), password.getValue(), name.getValue(), surname.getValue(), email.getValue());
-
+            //Create User and linked contract
+            service.createUser(username.getValue(), password.getValue(), name.getValue(), surname.getValue(), email.getValue(),contratDetails.getValue(), pricePerCall.getValue(), pricePerGb.getValue(), pricePerSMS.getValue(), maxGbConsumption.getValue());
+           /* Notification n = new Notification("Valor dPriceCall: "+ Double.parseDouble(pricePerCall.getValue()));
+            n.open();*/
         });
 
 
