@@ -29,7 +29,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         ApplicationUser applicationUser = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
         return User.withUsername(applicationUser.getUsername())
                 .password(applicationUser.getPassword())
+                .roles(applicationUser.getRole())
                 .build();
     }
+
+
 
 }

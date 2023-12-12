@@ -18,6 +18,7 @@
     "@vaadin/component-base": "24.2.1",
     "@vaadin/confirm-dialog": "24.2.1",
     "@vaadin/context-menu": "24.2.1",
+    "@vaadin/cookie-consent": "24.2.1",
     "@vaadin/custom-field": "24.2.1",
     "@vaadin/date-picker": "24.2.1",
     "@vaadin/date-time-picker": "24.2.1",
@@ -106,6 +107,7 @@
       "@vaadin/component-base": "24.2.1",
       "@vaadin/confirm-dialog": "24.2.1",
       "@vaadin/context-menu": "24.2.1",
+      "@vaadin/cookie-consent": "24.2.1",
       "@vaadin/custom-field": "24.2.1",
       "@vaadin/date-picker": "24.2.1",
       "@vaadin/date-time-picker": "24.2.1",
@@ -177,7 +179,7 @@
       "workbox-core": "7.0.0",
       "workbox-precaching": "7.0.0"
     },
-    "hash": "122460d5658f2539a3aa40a7a8a3f7e82a6756ebb1ddb3082bc71671f2430047"
+    "hash": "36c71a47b3c5ca03e355d476b28b6b5133fad8a259ebe1039cbaaad5e54f1374"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -247,6 +249,7 @@
     "@polymer/polymer": "$@polymer/polymer",
     "@vaadin/vaadin-themable-mixin": "$@vaadin/vaadin-themable-mixin",
     "date-fns": "$date-fns",
-    "mobile-drag-drop": "$mobile-drag-drop"
+    "mobile-drag-drop": "$mobile-drag-drop",
+    "@vaadin/cookie-consent": "$@vaadin/cookie-consent"
   }
 }

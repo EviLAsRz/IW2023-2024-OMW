@@ -6,13 +6,16 @@ import com.IWPhone.playground.CustomerService;
 import com.IWPhone.security.SecurityService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.textfield.TextField;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
+import org.checkerframework.checker.units.qual.A;
 
-@PermitAll
+@RolesAllowed({"USER"})
 @Route("/")
 public class MainView extends VerticalLayout {
 
@@ -32,6 +35,11 @@ public class MainView extends VerticalLayout {
     public MainView(CustomerRepository repo, CustomerService service, SecurityService securityService){
         getThemeList().add("dark");
         setSizeFull();setHeightFull();
+
+        Notification n = new Notification("Roles de usuario logeado: " + securityService.getAuthenticatedUser().getAuthorities());
+        n.setDuration(5000);
+        n.open();
+
         this.grid = new Grid<>(Customer.class);
         this.service = service;
         this.securityService = securityService;

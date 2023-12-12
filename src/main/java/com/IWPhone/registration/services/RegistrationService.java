@@ -89,6 +89,7 @@ public class RegistrationService {
             user.setUsername(username);
             user.setPassword(SecurityService.passwordEncoder().encode(password));
             //user.setRoles("USER");
+            user.setRole("USER");//TODO: Change this to USER
             userRepository.save(user);
 
             Notification n = new Notification();

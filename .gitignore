@@ -148,3 +148,4 @@ replay_pid*
 
 /frontend/generated/
 # End of https://www.toptal.com/developers/gitignore/api/vaadin,intellij,java
+/node_modules/

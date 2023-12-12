@@ -1,14 +1,17 @@
 package com.IWPhone.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.UUID;
 @Entity
-public class ApplicationUser {
+public class ApplicationUser implements UserDetails {
 
     @Id
     @GeneratedValue
@@ -16,6 +19,26 @@ public class ApplicationUser {
 
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 
     public void setUsername(String username) {
@@ -30,6 +53,31 @@ public class ApplicationUser {
     private String email;
     @NotEmpty
     private String password;
+
+    private String role; // Add this field
+
+    // Existing getters and setters...
+
+
+    public void setRole(String role) {
+        this.role = role;
+        //Save in authorities
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
+        this.authorities = Collections.singletonList(authority);
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Collection<GrantedAuthority> authorities;
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
 
     public UUID getUserId() {
         return id;
