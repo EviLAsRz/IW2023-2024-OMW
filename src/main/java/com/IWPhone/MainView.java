@@ -13,7 +13,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.textfield.TextField;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
-import org.checkerframework.checker.units.qual.A;
+
 
 @RolesAllowed({"USER"})
 @Route("/")
