@@ -39,7 +39,7 @@ public class RegistrationService {
 
 
 
-    public void createUser(String username, String password, String name, String surname, String email, String contractDetails, String pricePerCall, String pricePerGb, String pricePerSMS, String maxGbConsumption){
+    public boolean createUser(String username, String password, String name, String surname, String email, String contractDetails, String pricePerCall, String pricePerGb, String pricePerSMS, String maxGbConsumption){
         if(!checkDNI(username)){
             Notification n = new Notification();
             prepareNotificationError(n, "El DNI introducido no es válido");
@@ -90,7 +90,7 @@ public class RegistrationService {
             user.setPassword(SecurityService.passwordEncoder().encode(password));
             //user.setRoles("USER");
             userRepository.save(user);
-            UI.getCurrent().navigate("login");
+
             Notification n = new Notification();
             prepareSuccessNotification(n, "Usuario creado correctamente");
 
@@ -98,8 +98,9 @@ public class RegistrationService {
                     Double.parseDouble(pricePerSMS), Double.parseDouble(pricePerCall));
             //TODO: Create the Client and Contract Enties Linked to the ApplicationUser
             //TODO: Create endpoint to verify the contract (add the employee that verifies the contract)
+            return true;
         }
-
+        return false;
     }
 
 

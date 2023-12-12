@@ -2,6 +2,7 @@ package com.IWPhone.registration.views;
 
 import com.IWPhone.Repositories.ApplicationUserRepository;
 import com.IWPhone.registration.services.RegistrationService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -133,7 +134,10 @@ public class ClientRegistration extends VerticalLayout {
         register.addClickListener(e -> {
             String dniValue = username.getValue();
             //Create User and linked contract
-            service.createUser(username.getValue(), password.getValue(), name.getValue(), surname.getValue(), email.getValue(),contratDetails.getValue(), pricePerCall.getValue(), pricePerGb.getValue(), pricePerSMS.getValue(), maxGbConsumption.getValue());
+           if(service.createUser(username.getValue(), password.getValue(), name.getValue(), surname.getValue(), email.getValue(),
+                    contratDetails.getValue(), pricePerCall.getValue(), pricePerGb.getValue(), pricePerSMS.getValue(), maxGbConsumption.getValue())){
+               UI.getCurrent().navigate("login");
+           }
            /* Notification n = new Notification("Valor dPriceCall: "+ Double.parseDouble(pricePerCall.getValue()));
             n.open();*/
         });
