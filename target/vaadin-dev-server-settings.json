@@ -9,7 +9,7 @@
   "devBundleOutput": "/Users/antonioroldanandrade/Documents/IW2023-2024-OMW/src/main/dev-bundle/webapp",
   "devBundleStatsOutput": "/Users/antonioroldanandrade/Documents/IW2023-2024-OMW/src/main/dev-bundle/config",
   "jarResourcesFolder": "/Users/antonioroldanandrade/Documents/IW2023-2024-OMW/./frontend/generated/jar-resources",
-  "themeName": "",
+  "themeName": "iphone",
   "clientServiceWorkerSource": "/Users/antonioroldanandrade/Documents/IW2023-2024-OMW/target/sw.ts",
   "pwaEnabled": false,
   "offlineEnabled": false,

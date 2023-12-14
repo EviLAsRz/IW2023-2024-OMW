@@ -1,5 +1,6 @@
 {
  "packageJsonDependencies": {
+  "@fontsource/roboto": "^5.0.8",
   "@polymer/polymer": "3.5.1",
   "@vaadin/a11y-base": "24.2.1",
   "@vaadin/accordion": "24.2.1",
@@ -15,7 +16,6 @@
   "@vaadin/component-base": "24.2.1",
   "@vaadin/confirm-dialog": "24.2.1",
   "@vaadin/context-menu": "24.2.1",
-  "@vaadin/cookie-consent": "24.2.1",
   "@vaadin/custom-field": "24.2.1",
   "@vaadin/date-picker": "24.2.1",
   "@vaadin/date-time-picker": "24.2.1",
@@ -87,7 +87,6 @@
   "@vaadin/component-base": "24.2.1",
   "@vaadin/confirm-dialog": "24.2.1",
   "@vaadin/context-menu": "24.2.1",
-  "@vaadin/cookie-consent": "24.2.1",
   "@vaadin/custom-field": "24.2.1",
   "@vaadin/date-picker": "24.2.1",
   "@vaadin/date-time-picker": "24.2.1",
@@ -136,11 +135,12 @@
   "@vaadin/vertical-layout": "24.2.1",
   "@vaadin/virtual-list": "24.2.1",
   "construct-style-sheets-polyfill": "3.1.0",
-  "cookieconsent": "3.1.1",
   "date-fns": "2.29.3",
+  "is-regexp": "3.1.0",
   "lit-element": "3.3.3",
   "lit-html": "2.8.0",
   "mobile-drag-drop": "2.3.0-rc.2",
+  "strip-css-comments": "5.0.0",
   "tslib": "2.6.2"
  },
  "bundleImports": [
@@ -157,7 +157,6 @@
   "@vaadin/common-frontend/ConnectionIndicator.js",
   "@vaadin/confirm-dialog/theme/lumo/vaadin-confirm-dialog.js",
   "@vaadin/context-menu/theme/lumo/vaadin-context-menu.js",
-  "@vaadin/cookie-consent/theme/lumo/vaadin-cookie-consent.js",
   "@vaadin/custom-field/theme/lumo/vaadin-custom-field.js",
   "@vaadin/date-picker/theme/lumo/vaadin-date-picker.js",
   "@vaadin/date-time-picker/theme/lumo/vaadin-date-time-picker.js",
@@ -216,7 +215,6 @@
   "Frontend/generated/jar-resources/comboBoxConnector.js",
   "Frontend/generated/jar-resources/contextMenuConnector.js",
   "Frontend/generated/jar-resources/contextMenuTargetConnector.js",
-  "Frontend/generated/jar-resources/cookieConsentConnector.js",
   "Frontend/generated/jar-resources/datepickerConnector.js",
   "Frontend/generated/jar-resources/dndConnector.js",
   "Frontend/generated/jar-resources/flow-component-renderer.js",
@@ -236,7 +234,6 @@
   "comboBoxConnector.js": "1d004c3dae9c76f8bcc68678abe1b8f7bdc8b456f5c9c4c7f190df8ed25d66cd",
   "contextMenuConnector.js": "8960e00884b9a8b62e24be63e03fe7045dcb9b6844a8a238eb4619d5595e2cfc",
   "contextMenuTargetConnector.js": "870f67643988dd5618c247bd3c28d843f70aa026ee89f44c3c7556b5e70856af",
-  "cookieConsentConnector.js": "cc362ee370ce0a48d6c0f6882a5faf7fefbda89ea7ac9f483b7b4d65eab9cdf5",
   "datepickerConnector.js": "84d25236e1e478c2e181a7881464ad75228a30ccd99d60f78186f0804b6a4a37",
   "dndConnector.js": "9805235aec2ff3302fcd6e65151fcab1c2fb6944d57281b48d4f5e3b3d06ff4e",
   "flow-component-renderer.js": "f45de3d78e4719c2eb7aa09b48ec758e1e44e171cd4ad545ac9e33c3623dcfb1",
@@ -251,19 +248,16 @@
   "vaadin-time-picker/timepickerConnector.js": "68889ce9748478f71bf1620d488abbbd588f8047618ac558315d9b0b689e75e8",
   "virtualListConnector.js": "e89f6bc6f5cd4765c863ae12721371ebff9079d163679e3989368fb7f74e5e61"
  },
- "themeJsonContents": {},
+ "themeJsonContents": {
+  "iphone": "{\n  \"lumoImports\" : [ \"typography\", \"color\", \"spacing\", \"badge\", \"utility\" ]\n}"
+ },
  "entryScripts": [
-  "VAADIN/build/indexhtml-75b27860.js"
+  "VAADIN/build/indexhtml-4a463360.js"
  ],
  "webComponents": [],
- "cvdlModules": {
-  "@vaadin/cookie-consent": {
-   "name": "vaadin-cookie-consent",
-   "version": "24.2.1"
-  }
- },
- "packageJsonHash": "36c71a47b3c5ca03e355d476b28b6b5133fad8a259ebe1039cbaaad5e54f1374",
+ "cvdlModules": {},
+ "packageJsonHash": "e6fba98a5235019b3b30b84b3373a1fee2018d9f0677cb81e12f94dcc067adeb",
  "indexHtmlGenerated": [
-  "  <script type=\"module\" crossorigin src=\"./VAADIN/build/indexhtml-75b27860.js\"></script>"
+  "  <script type=\"module\" crossorigin src=\"./VAADIN/build/indexhtml-4a463360.js\"></script>"
  ]
 }

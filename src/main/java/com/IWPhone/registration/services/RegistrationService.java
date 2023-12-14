@@ -97,7 +97,7 @@ public class RegistrationService {
 
             contractService.create(username, contractDetails, Double.parseDouble(maxGbConsumption), Double.parseDouble(pricePerGb),
                     Double.parseDouble(pricePerSMS), Double.parseDouble(pricePerCall));
-            //TODO: Create the Client and Contract Enties Linked to the ApplicationUser
+
             //TODO: Create endpoint to verify the contract (add the employee that verifies the contract)
             return true;
         }

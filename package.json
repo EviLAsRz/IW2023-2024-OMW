@@ -3,6 +3,7 @@
   "license": "UNLICENSED",
   "type": "module",
   "dependencies": {
+    "@fontsource/roboto": "^5.0.8",
     "@polymer/polymer": "3.5.1",
     "@vaadin/a11y-base": "24.2.1",
     "@vaadin/accordion": "24.2.1",
@@ -177,7 +178,7 @@
       "workbox-core": "7.0.0",
       "workbox-precaching": "7.0.0"
     },
-    "hash": "122460d5658f2539a3aa40a7a8a3f7e82a6756ebb1ddb3082bc71671f2430047"
+    "hash": "e6fba98a5235019b3b30b84b3373a1fee2018d9f0677cb81e12f94dcc067adeb"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -247,6 +248,7 @@
     "@polymer/polymer": "$@polymer/polymer",
     "@vaadin/vaadin-themable-mixin": "$@vaadin/vaadin-themable-mixin",
     "date-fns": "$date-fns",
-    "mobile-drag-drop": "$mobile-drag-drop"
+    "mobile-drag-drop": "$mobile-drag-drop",
+    "@fontsource/roboto": "$@fontsource/roboto"
   }
 }

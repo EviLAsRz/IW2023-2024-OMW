@@ -1,5 +1,6 @@
 package com.IWPhone;
 
+import com.IWPhone.Layouts.EmployeeLayout;
 import com.IWPhone.playground.Customer;
 import com.IWPhone.playground.CustomerRepository;
 import com.IWPhone.playground.CustomerService;
@@ -15,8 +16,8 @@ import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 
 
-@RolesAllowed({"USER"})
-@Route("/")
+@RolesAllowed({"USER", "ADMIN"})
+@Route(value = "/", layout = EmployeeLayout.class)
 public class MainView extends VerticalLayout {
 
     private final SecurityService securityService;
