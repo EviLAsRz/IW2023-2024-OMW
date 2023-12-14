@@ -9,10 +9,7 @@ import com.IWPhone.security.SecurityService;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-
 import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
-
 
 @PermitAll
 @Route(value = "/", layout = EmployeeLayout.class)
@@ -24,12 +21,12 @@ public class MainView extends VerticalLayout {
         n.setDuration(3000);
         n.open();
         if (securityService.getAuthenticatedUser().getAuthorities().toString().equals("[ROLE_EMPLOYEE]")){
-
             add(new PanelEmpleadosView());
         }
         else{
             add("Panel de Clientes");
         }
+
 
     }
 

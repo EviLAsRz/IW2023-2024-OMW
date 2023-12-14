@@ -81,6 +81,12 @@ public class RegistrationService {
             prepareNotificationError(n, "El máximo de GB de consumo no puede estar vacío y tiene que ser un numero");
             n.open();
         }
+        //Comprobar que no existe un contrato con ese dni
+        else if(contractService.isContractRegistered(username)){
+            Notification n = new Notification();
+            prepareNotificationError(n, "El contrato ya existe, ese usuario ya tiene un contrato asociado contacte con el administrador");
+            n.open();
+        }
         else{
             ApplicationUser user = new ApplicationUser();
             user.setName(name);
