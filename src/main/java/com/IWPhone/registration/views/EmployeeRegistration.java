@@ -1,23 +1,25 @@
 package com.IWPhone.registration.views;
 
 import com.IWPhone.Repositories.ApplicationUserRepo;
+import com.IWPhone.Services.DepartamentoService;
 import com.IWPhone.registration.services.RegistrationService;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextArea;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.router.Route;
+import jakarta.annotation.security.RolesAllowed;
 
 
-@Route("register")
-@AnonymousAllowed
-public class ClientRegistration extends VerticalLayout {
+@Route("registerEmployee")
+@RolesAllowed({"ADMIN"})
+public class EmployeeRegistration extends VerticalLayout {
     private final ApplicationUserRepo userRepository;
     TextField name = new TextField("Nombre", "Introduzca su nombre");
     TextField surname = new TextField("Apellidos", "Introduzca sus apellidos");
@@ -26,16 +28,16 @@ public class ClientRegistration extends VerticalLayout {
     TextField username = new TextField("DNI", "Introduzca su Documento Nacional de Identidad");
     PasswordField password = new PasswordField("Introduzca su contraseña");
 
-    //Atributos del contrato
-    TextArea contratDetails = new TextArea("Detalles del Contrato", "Introduzca los detalles del contrato");
+    //Atributos del empleado
+    Select<String> nombreDepartamento;
 
-    TextField maxGbConsumption = new TextField("Consumo Maximo de Datos", "Introduzca el consumo maximo de datos");
-    TextField pricePerGb = new TextField("Precio por Gb", "Introduzca el precio por Gb");
-    TextField pricePerSMS = new TextField("Precio por SMS", "Introduzca el precio por SMS");
-    TextField pricePerCall = new TextField("Precio por Llamada", "Introduzca el precio por llamada");
     private RegistrationService service;
-    Button register = new Button("Solicitar Registro");
-    public ClientRegistration(ApplicationUserRepo userRepository, RegistrationService service){
+    private DepartamentoService departamentoService;
+    Button register = new Button("Registrar Empleado");
+    public EmployeeRegistration(ApplicationUserRepo userRepository, RegistrationService service, DepartamentoService departamentoService) {
+
+
+        this.departamentoService = departamentoService;
         this.service = service;
 
         setAlignItems(Alignment.CENTER);
@@ -75,38 +77,13 @@ public class ClientRegistration extends VerticalLayout {
         surname.setMinWidth("400px");
         surname.setRequired(true);
 
-        //Ajustes del campo de los detalles del contrato
-        contratDetails.setMaxWidth("400px");
-        contratDetails.setMinWidth("400px");
-        contratDetails.setMinHeight("200px");
-        contratDetails.setRequired(true);
-        pricePerCall.setMinWidth("400px");
-        pricePerCall.setMaxWidth("400px");
-        pricePerCall.setRequired(true);
-        pricePerGb.setMinWidth("400px");
-        pricePerGb.setMaxWidth("400px");
-        pricePerGb.setRequired(true);
-        pricePerSMS.setMinWidth("400px");
-        pricePerSMS.setMaxWidth("400px");
-        pricePerSMS.setRequired(true);
-        maxGbConsumption.setMinWidth("400px");
-        maxGbConsumption.setMaxWidth("400px");
-        maxGbConsumption.setRequired(true);
 
-
-        VerticalLayout contractDataLayout = new VerticalLayout(
-                new H2("Datos del Contrato"),
-                contratDetails,
-                maxGbConsumption,
-                pricePerGb,
-                pricePerSMS,
-                pricePerCall
-
-        );
-        contractDataLayout.setSizeFull();
-        contractDataLayout.setAlignItems(Alignment.CENTER);
-        contractDataLayout.setJustifyContentMode(JustifyContentMode.CENTER);
-
+        //Ajustes del campo del departamento
+        nombreDepartamento = new Select<String>();
+        nombreDepartamento.setLabel("Departamento");
+        nombreDepartamento.setPlaceholder("Seleccione un departamento");
+        nombreDepartamento.setItems(departamentoService.getNombresDepartamentos());
+        nombreDepartamento.setMinWidth("400px");
 
         //Ajustes del campo de la seccion de datos del usuario
         VerticalLayout userDataLayout = new VerticalLayout(
@@ -115,7 +92,8 @@ public class ClientRegistration extends VerticalLayout {
                 surname,
                 username,
                 email,
-                password
+                password,
+                nombreDepartamento
         );
         userDataLayout.setSizeFull();
         userDataLayout.setAlignItems(Alignment.CENTER);
@@ -126,13 +104,12 @@ public class ClientRegistration extends VerticalLayout {
 
         //Ajustes del boton de registro
 
-        H1 title = new H1("Registro del Nuevo Cliente");
+        H1 title = new H1("Registro del Nuevo Empleado");
 
         register.addClickListener(e -> {
             String dniValue = username.getValue();
             //Create User and linked contract
-           if(service.createUser(username.getValue(), password.getValue(), name.getValue(), surname.getValue(), email.getValue(),
-                    contratDetails.getValue(), pricePerCall.getValue(), pricePerGb.getValue(), pricePerSMS.getValue(), maxGbConsumption.getValue())){
+           if(service.createEmployee(username.getValue(), password.getValue(), name.getValue(), surname.getValue(), email.getValue(), nombreDepartamento.getValue())){
                UI.getCurrent().navigate("login");
            }
            /* Notification n = new Notification("Valor dPriceCall: "+ Double.parseDouble(pricePerCall.getValue()));
@@ -143,7 +120,7 @@ public class ClientRegistration extends VerticalLayout {
 
         //Ajustes del layout principal
         getThemeList().add("dark");
-        add(title,userDataLayout,contractDataLayout, register);
+        add(title,userDataLayout, register);
     }
 
 

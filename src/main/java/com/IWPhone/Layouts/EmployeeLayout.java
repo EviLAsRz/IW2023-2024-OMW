@@ -24,6 +24,8 @@ public class EmployeeLayout extends AppLayout {
     SecurityService securityService;
     private Button logoutBtn = new Button("Cerrar Sesión");
     private Button profileBtn = new Button("Perfil");
+
+
     public EmployeeLayout(SecurityService ser) {
         this.securityService = ser;
         createHeader();
@@ -69,8 +71,10 @@ public class EmployeeLayout extends AppLayout {
     }
 
     private void createDrawer() {
+
+        //TODO: Agregar los links a cada endpoint segun el tipo de empleado
         addToDrawer(new VerticalLayout(
-                new H2("Menu")
+                new H2("")
         ));
     }
 }

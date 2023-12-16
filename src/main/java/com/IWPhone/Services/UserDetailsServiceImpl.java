@@ -1,7 +1,7 @@
 package com.IWPhone.Services;
 
 import com.IWPhone.Models.ApplicationUser;
-import com.IWPhone.Repositories.ApplicationUserRepository;
+import com.IWPhone.Repositories.ApplicationUserRepo;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private ApplicationUserRepository userRepository;
+    private ApplicationUserRepo userRepository;
 
-    public UserDetailsServiceImpl(ApplicationUserRepository userRepository){
+    public UserDetailsServiceImpl(ApplicationUserRepo userRepository){
         this.userRepository = userRepository;
     }
 
