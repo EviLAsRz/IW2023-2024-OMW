@@ -54,4 +54,8 @@ public class DepartamentoService {
         return Optional.ofNullable(departamentoRepo.findByNombre(nombre).get().getId());
     }
 
+    public Optional<Departamento> getDepartamentoByUUID(UUID uuid){
+        return departamentoRepo.findById(uuid);
+    }
+
 }

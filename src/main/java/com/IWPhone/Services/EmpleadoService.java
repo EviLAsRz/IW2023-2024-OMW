@@ -30,5 +30,13 @@ public class EmpleadoService {
         addEmpleado(empleado);
     }
 
+    public void updateEmpleado(String dniUsuario, UUID tDepartamento){
+        Empleado empleado = getEmpleado(dniUsuario).get();
+        if(empleado.get_tDepartamento() != null) {
+            empleado.set_tDepartamento(tDepartamento);
+            empleadoRepo.save(empleado);
+        }
+    }
+
 
 }

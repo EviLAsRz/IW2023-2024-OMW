@@ -1,6 +1,7 @@
 package com.IWPhone;
 
 import com.IWPhone.Layouts.EmployeeLayout;
+import com.IWPhone.PanelEmpleados.services.EmployeeProfileService;
 import com.IWPhone.PanelEmpleados.view.PanelEmpleadosView;
 import com.IWPhone.PanelUsuarios.view.PanelUsuariosView;
 import com.IWPhone.playground.CustomerRepository;
@@ -17,12 +18,13 @@ import jakarta.annotation.security.PermitAll;
 @Route(value = "/", layout = EmployeeLayout.class)
 public class MainView extends VerticalLayout {
 
-    public MainView(CustomerRepository repo, CustomerService service, SecurityService securityService) {
+
+    public MainView(CustomerRepository repo, CustomerService service, SecurityService securityService, EmployeeProfileService employeeProfileService) {
         Notification n = new Notification("ROL " + securityService.getAuthenticatedUser().getAuthorities().toString());
         n.setDuration(3000);
         n.open();
         if (securityService.getAuthenticatedUser().getAuthorities().toString().equals("[ROLE_EMPLOYEE]")){
-            add(new PanelEmpleadosView());
+            add(new PanelEmpleadosView(securityService, employeeProfileService));
         }
         else add(new PanelUsuariosView());
     }
