@@ -45,6 +45,18 @@ public class EmployeeProfileService {
         applicationUserService.setSurname(username, newSurname);
     }
 
+    public String getSurname(String username){
+        return applicationUserService.getSurname(username);
+    }
+
+    public String getName(String username){
+        return applicationUserService.getName(username);
+    }
+
+    public String getMail(String username){
+        return applicationUserService.getMail(username);
+    }
+
     public String getEmployeeDepartamento(String username){
 
         //Pillamos el UUID DEL DEPARTAMENTO vinculado al empleado
