@@ -20,44 +20,44 @@ public class EmployeeProfileService {
         this.applicationUserService = applicationUserService;
     }
 
-    public List<String> getAllDepartamentosNombre(){
+    public List<String> getAllDepartamentosNombre() {
         return departamentoService.getNombresDepartamentos();
     }
 
-    public void setDepartamento(String username, String newDepartamento){
+    public void setDepartamento(String username, String newDepartamento) {
         empleadoService.updateEmpleado(username, departamentoService.getUUIDByNombre(newDepartamento).get());
     }
 
-    public void setDNI(String username, String newDNI){
+    public void setDNI(String username, String newDNI) {
         applicationUserService.setUsername(username, newDNI);
 
     }
 
-    public void setMail(String username, String newMail){
+    public void setMail(String username, String newMail) {
         applicationUserService.setMail(username, newMail);
     }
 
-    public void setName(String username, String newName){
+    public void setName(String username, String newName) {
         applicationUserService.setName(username, newName);
     }
 
-    public void setSurname(String username, String newSurname){
+    public void setSurname(String username, String newSurname) {
         applicationUserService.setSurname(username, newSurname);
     }
 
-    public String getSurname(String username){
+    public String getSurname(String username) {
         return applicationUserService.getSurname(username);
     }
 
-    public String getName(String username){
+    public String getName(String username) {
         return applicationUserService.getName(username);
     }
 
-    public String getMail(String username){
+    public String getMail(String username) {
         return applicationUserService.getMail(username);
     }
 
-    public String getEmployeeDepartamento(String username){
+    public String getEmployeeDepartamento(String username) {
 
         //Pillamos el UUID DEL DEPARTAMENTO vinculado al empleado
         UUID departamento = empleadoService.getEmpleado(username).get().get_tDepartamento();
@@ -66,6 +66,10 @@ public class EmployeeProfileService {
 
         return nombreDepartamento;
 
+    }
+
+    public boolean checkMailExistence(String mail) {
+        return applicationUserService.checkMail(mail);
     }
 
 }

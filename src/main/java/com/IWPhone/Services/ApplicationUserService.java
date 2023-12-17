@@ -74,6 +74,8 @@ public class ApplicationUserService {
         appUserRepo.save(appUser);
     }
 
-
+    public boolean checkMail(String mail){
+        return appUserRepo.findByEmail(mail).isEmpty();
+    }
 
 }
