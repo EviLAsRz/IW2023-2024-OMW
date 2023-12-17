@@ -1,7 +1,10 @@
 package com.IWPhone.Layouts;
 
 import com.IWPhone.MainView;
+import com.IWPhone.PanelEmpleados.services.EmployeeProfileService;
 import com.IWPhone.PanelEmpleados.view.PanelEmpleadosView;
+import com.IWPhone.PanelEmpleados.view.ValidarContratosView;
+import com.IWPhone.Services.EmpleadoService;
 import com.IWPhone.security.SecurityService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -22,12 +25,14 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 
 public class EmployeeLayout extends AppLayout {
     SecurityService securityService;
+    EmpleadoService empleadoService;
     private Button logoutBtn = new Button("Cerrar Sesión");
     private Button profileBtn = new Button("Perfil");
 
 
-    public EmployeeLayout(SecurityService ser) {
+    public EmployeeLayout(SecurityService ser, EmpleadoService empleadoService){
         this.securityService = ser;
+        this.empleadoService = empleadoService;
         createHeader();
         createDrawer();
     }
@@ -72,10 +77,28 @@ public class EmployeeLayout extends AppLayout {
 
     private void createDrawer() {
 
+        //Pillamos el departamento del empleado
+        String departamento = empleadoService.getEmpleado(securityService.getAuthenticatedUser().getUsername().toString()).get().
+                get_tDepartamento().toString();
+
+        VerticalLayout layout = new VerticalLayout();
+        layout.setAlignItems(FlexComponent.Alignment.CENTER);
+        layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+        layout.setWidthFull();
+        layout.add(
+                new RouterLink("Volver al incio", MainView.class)
+
+        );
+        if(empleadoService.getNombreDepartamento(securityService.getAuthenticatedUser().getUsername().toString()).equals("Atencion Al Cliente")){//Es de Atencion al cliente
+            layout.add(
+                    new RouterLink("Contratos por validar", ValidarContratosView.class)
+            );
+        }
+
         //TODO: Agregar los links a cada endpoint segun el tipo de empleado
-        addToDrawer(new VerticalLayout(
-                new H2("")
-        ));
+        addToDrawer(
+                layout
+        );
     }
 }
 

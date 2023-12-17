@@ -18,13 +18,17 @@ import jakarta.annotation.security.PermitAll;
 @Route(value = "/", layout = EmployeeLayout.class)
 public class MainView extends VerticalLayout {
 
-
+    // LOS SERVICIOS SE INYECTAN EN EL CONSTRUCTOR del main view o falla al recibirlos.
     public MainView(CustomerRepository repo, CustomerService service, SecurityService securityService, EmployeeProfileService employeeProfileService) {
         Notification n = new Notification("ROL " + securityService.getAuthenticatedUser().getAuthorities().toString());
         n.setDuration(3000);
         n.open();
         if (securityService.getAuthenticatedUser().getAuthorities().toString().equals("[ROLE_EMPLOYEE]")){
             add(new PanelEmpleadosView(securityService, employeeProfileService));
+        }
+       //TODO: Crear vista para administrador
+        if (securityService.getAuthenticatedUser().getAuthorities().toString().equals("[ROLE_ADMIN]")){
+            add("Vista de administrador");
         }
         else add(new PanelUsuariosView());
     }

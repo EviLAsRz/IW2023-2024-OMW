@@ -10,9 +10,10 @@ import java.util.Optional;
 public class EmpleadoService {
 
     private final EmployeeRepo empleadoRepo;
-
-    public EmpleadoService(EmployeeRepo empleadoRepo) {
+    private final DepartamentoService departamentoService;
+    public EmpleadoService(EmployeeRepo empleadoRepo, DepartamentoService departamentoService) {
         this.empleadoRepo = empleadoRepo;
+        this.departamentoService = departamentoService;
     }
 
     public void addEmpleado(Empleado empleado){
@@ -36,6 +37,11 @@ public class EmpleadoService {
             empleado.set_tDepartamento(tDepartamento);
             empleadoRepo.save(empleado);
         }
+    }
+
+    public String getNombreDepartamento(String dniUsuario){
+        UUID tDepartamento = getEmpleado(dniUsuario).get().get_tDepartamento();
+        return departamentoService.getDepartamentoByUUID(tDepartamento).get().getNombre();
     }
 
 

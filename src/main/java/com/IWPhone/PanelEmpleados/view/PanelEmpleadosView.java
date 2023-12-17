@@ -75,7 +75,7 @@ public class PanelEmpleadosView extends VerticalLayout {
 
         add(
                 //TODO: AGREGAR GESTION DE PERFIL
-                new H1("Mi perfil"),
+                new H1("Perfil"),
                 nameSurnameLayout,
                 new HorizontalLayout(dni, mail),
                 departamentos,

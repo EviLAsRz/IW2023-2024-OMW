@@ -142,4 +142,14 @@ public class ContractService {
         }
     }
 
+    public void setEmployee(String dni, String employee){
+        try{
+            Contract contract = contractRepository.findBy_sClient(dni);
+            contract.setEmployee(employee);
+            contractRepository.save(contract);
+        } catch (Exception e){
+            System.out.println("Error al cambiar el empleado del contrato");
+        }
+    }
+
 }
