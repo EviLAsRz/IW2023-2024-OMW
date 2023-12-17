@@ -26,6 +26,10 @@ public class ContractService {
         contractRepository.save(contract);
     }
 
+    public boolean isContractRegistered(String dni){
+        return contractRepository.findBy_sClient(dni) != null;
+    }
+
     public String getClient(String dni){
         return contractRepository.findBy_sClient(dni).getClient();
     }

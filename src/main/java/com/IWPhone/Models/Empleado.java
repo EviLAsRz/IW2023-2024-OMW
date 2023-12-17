@@ -33,19 +33,19 @@ public class Empleado  {//Exists as especification of the MainClass User (UserDe
         this._dni = _dni;
     }
 
-    public Integer get_tDepartamento() {
+    public UUID get_tDepartamento() {
         return _tDepartamento;
     }
 
-    public void set_tDepartamento(Integer _tDepartamento) {
+    public void set_tDepartamento(UUID _tDepartamento) {
         this._tDepartamento = _tDepartamento;
     }
 
     @NotEmpty
     private String _dni;
 
-    @NotEmpty
-    private Integer _tDepartamento;
+
+    private UUID _tDepartamento;
 
     //! Falta añadir la password pq no sabemos si podemos usar el usario de Vaadin.
 

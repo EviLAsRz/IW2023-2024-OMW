@@ -1,10 +1,11 @@
 package com.IWPhone.registration.services;
 
 import com.IWPhone.Models.ApplicationUser;
-import com.IWPhone.Repositories.ApplicationUserRepository;
+import com.IWPhone.Repositories.ApplicationUserRepo;
+import com.IWPhone.Services.DepartamentoService;
+import com.IWPhone.Services.EmpleadoService;
 import com.IWPhone.security.SecurityService;
 import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
@@ -14,17 +15,24 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import org.springframework.stereotype.Service;
+import com.IWPhone.Services.EmpleadoService;
 
 @Service
 public class RegistrationService {
-    private final ApplicationUserRepository userRepository;
+    private final ApplicationUserRepo userRepository;
     private final ContractService contractService;
+    private final EmpleadoService empleadoService;
     private final SecurityService securityService;
 
-    RegistrationService(ApplicationUserRepository userRepository, SecurityService securityService, ContractService contractService){
+    private final DepartamentoService departamentoService;
+
+    RegistrationService(ApplicationUserRepo userRepository, SecurityService securityService, ContractService contractService, DepartamentoService departamentoService, EmpleadoService emp){
         this.userRepository = userRepository;
         this.securityService = securityService;
         this.contractService = contractService;
+        this.departamentoService = departamentoService;
+        this.empleadoService = emp;
+
     }
 
     //Check if the Contract does not exist
@@ -81,6 +89,12 @@ public class RegistrationService {
             prepareNotificationError(n, "El máximo de GB de consumo no puede estar vacío y tiene que ser un numero");
             n.open();
         }
+        //Comprobar que no existe un contrato con ese dni
+        else if(contractService.isContractRegistered(username)){
+            Notification n = new Notification();
+            prepareNotificationError(n, "El contrato ya existe, ese usuario ya tiene un contrato asociado contacte con el administrador");
+            n.open();
+        }
         else{
             ApplicationUser user = new ApplicationUser();
             user.setName(name);
@@ -89,7 +103,7 @@ public class RegistrationService {
             user.setUsername(username);
             user.setPassword(SecurityService.passwordEncoder().encode(password));
             //user.setRoles("USER");
-            user.setRole("USER");//TODO: Change this to USER
+            user.setRole("USER");
             userRepository.save(user);
 
             Notification n = new Notification();
@@ -99,6 +113,63 @@ public class RegistrationService {
                     Double.parseDouble(pricePerSMS), Double.parseDouble(pricePerCall));
 
             //TODO: Create endpoint to verify the contract (add the employee that verifies the contract)
+            return true;
+        }
+        return false;
+    }
+
+    public boolean createEmployee(String username, String password, String name, String surname, String email, String nombreDepartamento){
+        if(!checkDNI(username)){
+            Notification n = new Notification();
+            prepareNotificationError(n, "El DNI introducido no es válido");
+            n.open();
+
+        } else if (checkPassword(password)!=null){
+            Notification n = new Notification();
+            prepareNotificationError(n, checkPassword(password));
+            n.open();
+
+        }
+        else if(name == null || surname == null || name.isEmpty() || surname.isEmpty()){
+            Notification n = new Notification();
+            prepareNotificationError(n, "El nombre y los apellidos no pueden estar vacíos");
+            n.open();
+        }
+        else if(userRepository.findByUsername(username).isPresent()){
+            Notification n = new Notification();
+            prepareNotificationError(n, "El empleado ya existe");
+            n.open();
+        }
+        else if (nombreDepartamento == null || nombreDepartamento.isEmpty()){
+            Notification n = new Notification();
+            prepareNotificationError(n, "El nombre del departamento no puede estar vacío, debe seleccionar uno");
+            n.open();
+        }
+        else if(!departamentoService.getUUIDByNombre(nombreDepartamento).isPresent()){
+            Notification n = new Notification();
+            prepareNotificationError(n, "El departamento seleccionado no existe, si el problema persiste contacte con el administrador");
+            n.open();
+            //No debe ocurrir nunca por definicion pero siempre esta bien cubrirse las espaldas
+        }
+        else{
+            ApplicationUser user = new ApplicationUser();
+            user.setName(name);
+            user.setSurname(surname);
+            user.setEmail(email);
+            user.setUsername(username);
+            user.setPassword(SecurityService.passwordEncoder().encode(password));
+            //user.setRoles("USER");
+            user.setRole("EMPLOYEE");
+            userRepository.save(user);
+
+            //Creamos el empleado
+            empleadoService.createEmpleado(username, departamentoService.getUUIDByNombre(nombreDepartamento).get());
+
+            Notification n = new Notification();
+            prepareSuccessNotification(n, "Usuario creado correctamente");
+
+
+            //TODO: Register all the data needeed in employee
             return true;
         }
         return false;
