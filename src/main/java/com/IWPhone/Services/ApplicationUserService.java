@@ -4,6 +4,8 @@ import com.IWPhone.Models.ApplicationUser;
 import com.IWPhone.Repositories.ApplicationUserRepo;
 import com.IWPhone.security.SecurityService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -77,5 +79,7 @@ public class ApplicationUserService {
     public boolean checkMail(String mail){
         return appUserRepo.findByEmail(mail).isEmpty();
     }
-
+    public List<String> getAllUsernames(){
+        return appUserRepo.findAllByIdIsNotNull().stream().map(ApplicationUser::getUsername).toList();
+    }
 }
