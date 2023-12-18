@@ -1,6 +1,6 @@
 package com.IWPhone.PanelEmpleados.view;
 
-import com.IWPhone.Layouts.EmployeeLayout;
+import com.IWPhone.Layouts.AppLayout;
 import com.IWPhone.PanelEmpleados.services.ValidarContratoService;
 import com.IWPhone.Services.EmpleadoService;
 import com.IWPhone.security.SecurityService;
@@ -9,7 +9,7 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 
 @RolesAllowed({"EMPLOYEE", "ADMIN"})
-@Route(value = "validarContratos", layout = EmployeeLayout.class)
+@Route(value = "validarContratos", layout = AppLayout.class)
 public class ValidarContratosView extends VerticalLayout {
 
     //TODO: SOLO PUEDEN HACER ESTO LOS EMPLEADOS DE ATENCION AL CLIENTE

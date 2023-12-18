@@ -1,6 +1,6 @@
 package com.IWPhone.PanelEmpleados.view;
 
-import com.IWPhone.Layouts.EmployeeLayout;
+import com.IWPhone.Layouts.AppLayout;
 import com.IWPhone.PanelEmpleados.services.EmployeeProfileService;
 import com.IWPhone.security.SecurityService;
 import com.vaadin.flow.component.button.Button;
@@ -13,9 +13,8 @@ import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
-import org.springframework.beans.factory.annotation.Autowired;
 
-@Route( layout = EmployeeLayout.class)
+@Route( layout = AppLayout.class)
 @RolesAllowed({"EMPLOYEE", "ADMIN"})
 public class PanelEmpleadosView extends VerticalLayout {
 

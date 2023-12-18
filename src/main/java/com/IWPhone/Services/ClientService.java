@@ -29,37 +29,37 @@ public class ClientService {
     }
 
     public String getAddressByDNI(String dni){
-        return clientRepo.findByDni(dni).getAddress();
+        return clientRepo.findBy_sDNI(dni).getAddress();
     }
 
     public void setAddressByDNI(String dni, String address){
-        Client c = clientRepo.findByDni(dni);
+        Client c = clientRepo.findBy_sDNI(dni);
         c.setAddress(address);
         clientRepo.save(c);
     }
 
     public String getMobilePhoneByDNI(String dni){
-        return clientRepo.findByDni(dni).getMobilePhone();
+        return clientRepo.findBy_sDNI(dni).getMobilePhone();
     }
 
     public void setMobilePhoneByDNI(String dni, String mobilePhone){
-        Client c = clientRepo.findByDni(dni);
+        Client c = clientRepo.findBy_sDNI(dni);
         c.setMobilePhone(mobilePhone);
         clientRepo.save(c);
     }
 
     public String getLandlineByDNI(String dni){
-        return clientRepo.findByDni(dni).getLandline();
+        return clientRepo.findBy_sDNI(dni).getLandline();
     }
 
     public void setLandlineByDNI(String dni, String landline){
-        Client c = clientRepo.findByDni(dni);
+        Client c = clientRepo.findBy_sDNI(dni);
         c.setLandline(landline);
         clientRepo.save(c);
     }
 
     public Client getClientByDNI(String dni){
-        return clientRepo.findByDni(dni);
+        return clientRepo.findBy_sDNI(dni);
     }
 
     public Client getClientById(UUID id){

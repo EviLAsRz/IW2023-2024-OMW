@@ -1,19 +1,14 @@
 package com.IWPhone.Layouts;
 
 import com.IWPhone.MainView;
-import com.IWPhone.PanelEmpleados.services.EmployeeProfileService;
-import com.IWPhone.PanelEmpleados.view.PanelEmpleadosView;
 import com.IWPhone.PanelEmpleados.view.ValidarContratosView;
 import com.IWPhone.Services.EmpleadoService;
 import com.IWPhone.security.SecurityService;
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.contextmenu.SubMenu;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.menubar.MenuBarVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -23,21 +18,30 @@ import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
 
-public class EmployeeLayout extends AppLayout {
+public class AppLayout extends com.vaadin.flow.component.applayout.AppLayout {
     private final SecurityService securityService;
     private final EmpleadoService empleadoService;
     private Button logoutBtn = new Button("Cerrar Sesión");
     private Button profileBtn = new Button("Perfil");
 
 
-    public EmployeeLayout(SecurityService ser, EmpleadoService empleadoService){
+    public AppLayout(SecurityService ser, EmpleadoService empleadoService){
         this.securityService = ser;
         this.empleadoService = empleadoService;
-        createHeader();
-        createDrawer();
+
+
+
+        if(securityService.getAuthenticatedUser().getAuthorities().toString().equals("[ROLE_EMPLOYEE]")){
+            createHeader("Empleado");
+            createEmployeeDrawer();
+        } else if (securityService.getAuthenticatedUser().getAuthorities().toString().equals("[ROLE_USER]")) {
+            createHeader("Usuario");
+            createUserDrawer();
+        }
+
     }
 
-    private void createHeader() {
+    private void createHeader(String role) {
 
         //Eventos
         logoutBtn.addClickListener(e -> {
@@ -47,7 +51,7 @@ public class EmployeeLayout extends AppLayout {
         });
 
 
-        H1 logo = new H1("Panel del Empleado de IWPhone");
+        H1 logo = new H1("Panel del " + role +"  de IWPhone");
         logo.addClassNames(
                 LumoUtility.FontSize.LARGE,
                 LumoUtility.Margin.MEDIUM);
@@ -75,7 +79,7 @@ public class EmployeeLayout extends AppLayout {
 
     }
 
-    private void createDrawer() {
+    private void createEmployeeDrawer() {
 
         //Pillamos el departamento del empleado
         String departamento = empleadoService.getEmpleado(securityService.getAuthenticatedUser().getUsername().toString()).get().
@@ -93,6 +97,24 @@ public class EmployeeLayout extends AppLayout {
                     new RouterLink("Contratos por validar", ValidarContratosView.class)
             );
         }
+
+        //TODO: Agregar los links a cada endpoint segun el tipo de empleado
+        addToDrawer(
+                layout
+        );
+    }
+    private void createUserDrawer() {
+
+        //Pillamos el departamento del empleado
+
+        VerticalLayout layout = new VerticalLayout();
+        layout.setAlignItems(FlexComponent.Alignment.CENTER);
+        layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+        layout.setWidthFull();
+        layout.add(
+                new RouterLink("Volver al incio", MainView.class)
+        );
+
 
         //TODO: Agregar los links a cada endpoint segun el tipo de empleado
         addToDrawer(

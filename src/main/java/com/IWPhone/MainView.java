@@ -1,11 +1,9 @@
 package com.IWPhone;
 
-import com.IWPhone.Layouts.EmployeeLayout;
+import com.IWPhone.Layouts.AppLayout;
 import com.IWPhone.PanelEmpleados.services.EmployeeProfileService;
 import com.IWPhone.PanelEmpleados.view.PanelEmpleadosView;
 import com.IWPhone.PanelUsuarios.view.PanelUsuariosView;
-import com.IWPhone.playground.CustomerRepository;
-import com.IWPhone.playground.CustomerService;
 import com.IWPhone.security.SecurityService;
 
 import com.vaadin.flow.component.notification.Notification;
@@ -15,11 +13,11 @@ import jakarta.annotation.security.PermitAll;
 
 @PermitAll
 //TODO: Modificar route para que reciba varios layouts, o cambiar estructura de los layouts
-@Route(value = "/", layout = EmployeeLayout.class)
+@Route(value = "/", layout = AppLayout.class)
 public class MainView extends VerticalLayout {
 
     // LOS SERVICIOS SE INYECTAN EN EL CONSTRUCTOR del main view o falla al recibirlos.
-    public MainView(CustomerRepository repo, CustomerService service, SecurityService securityService, EmployeeProfileService employeeProfileService) {
+    public MainView(SecurityService securityService, EmployeeProfileService employeeProfileService) {
         Notification n = new Notification("ROL " + securityService.getAuthenticatedUser().getAuthorities().toString());
         n.setDuration(3000);
         n.open();
@@ -30,6 +28,7 @@ public class MainView extends VerticalLayout {
         if (securityService.getAuthenticatedUser().getAuthorities().toString().equals("[ROLE_ADMIN]")){
             add("Vista de administrador");
         }
-        else add(new PanelUsuariosView());
+        else if(securityService.getAuthenticatedUser().getAuthorities().toString().equals("[ROLE_USER]")) add(new PanelUsuariosView());
+        else add("No tienes permisos para acceder a esta vista, tu rol es: " + securityService.getAuthenticatedUser().getAuthorities().toString() + " vuelve a la pagina de inicio");
     }
 }
