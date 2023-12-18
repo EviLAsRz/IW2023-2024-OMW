@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -32,11 +33,11 @@ public class Contract {
     // _tStartDate: Methods.
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date _tStartDate;
-    public Date getStartDate() {
+    private LocalDate _tStartDate;
+    public LocalDate getStartDate() {
         return _tStartDate;
     }
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         if(startDate == null) throw new IllegalArgumentException(
                 "La fecha de inicio no puede ser nula");
         _tStartDate = startDate;
@@ -44,11 +45,11 @@ public class Contract {
 
     // _tEndDate: Methods.
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date _EndDate;
-    public Date getEndDate() {
+    private LocalDate _EndDate;
+    public LocalDate getEndDate() {
         return _EndDate;
     }
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         if(endDate == null) throw new IllegalArgumentException(
                 "La fecha de fin no puede ser nula");
         _EndDate = endDate;

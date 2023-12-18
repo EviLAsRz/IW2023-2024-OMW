@@ -4,6 +4,8 @@ import com.IWPhone.Models.Contract;
 import com.IWPhone.Repositories.ContractRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.Date;
 @Service
 public class ContractService {
@@ -114,15 +116,15 @@ public class ContractService {
         }
     }
 
-    public Date getStartDate(String dni){
+    public LocalDate getStartDate(String dni){
         return contractRepository.findBy_sClient(dni).getStartDate();
     }
 
-    public Date getEndDate(String dni){
+    public LocalDate getEndDate(String dni){
         return contractRepository.findBy_sClient(dni).getEndDate();
     }
 
-    public void setStartDate(String dni, Date startDate){
+    public void setStartDate(String dni, LocalDate startDate){
         try{
             Contract contract = contractRepository.findBy_sClient(dni);
             contract.setStartDate(startDate);
@@ -132,7 +134,7 @@ public class ContractService {
         }
     }
 
-    public void setEndDate(String dni, Date endDate){
+    public void setEndDate(String dni, LocalDate endDate){
         try{
             Contract contract = contractRepository.findBy_sClient(dni);
             contract.setEndDate(endDate);

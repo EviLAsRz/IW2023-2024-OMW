@@ -1,7 +1,7 @@
 package com.IWPhone.Layouts;
 
 import com.IWPhone.MainView;
-import com.IWPhone.PanelEmpleados.view.ValidarContratosView;
+import com.IWPhone.PanelEmpleados.view.ContratosView;
 import com.IWPhone.Services.EmpleadoService;
 import com.IWPhone.security.SecurityService;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -94,7 +94,7 @@ public class AppLayout extends com.vaadin.flow.component.applayout.AppLayout {
         );
         if(empleadoService.getNombreDepartamento(securityService.getAuthenticatedUser().getUsername().toString()).equals("Atencion Al Cliente")){//Es de Atencion al cliente
             layout.add(
-                    new RouterLink("Contratos por validar", ValidarContratosView.class)
+                    new RouterLink("Contratos", ContratosView.class)
             );
         }
 
