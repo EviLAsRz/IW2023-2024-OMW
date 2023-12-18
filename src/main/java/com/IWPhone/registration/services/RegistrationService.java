@@ -112,7 +112,6 @@ public class RegistrationService {
             contractService.create(username, contractDetails, Double.parseDouble(maxGbConsumption), Double.parseDouble(pricePerGb),
                     Double.parseDouble(pricePerSMS), Double.parseDouble(pricePerCall));
 
-            //TODO: Create endpoint to verify the contract (add the employee that verifies the contract)
             return true;
         }
         return false;
@@ -169,7 +168,7 @@ public class RegistrationService {
             prepareSuccessNotification(n, "Usuario creado correctamente");
 
 
-            //TODO: Register all the data needeed in employee
+
             return true;
         }
         return false;
