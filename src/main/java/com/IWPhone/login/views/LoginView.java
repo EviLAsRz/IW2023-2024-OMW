@@ -1,29 +1,16 @@
 package com.IWPhone.login.views;
 
-import com.IWPhone.Services.SMTPService;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.textfield.PasswordField;
-import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import com.IWPhone.registration.views.ClientRegistration;
-
-import javax.swing.text.Position;
-import java.awt.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Route("login")
 @PageTitle("Acceso de Usuario IW")
