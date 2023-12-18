@@ -24,8 +24,8 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 
 
 public class EmployeeLayout extends AppLayout {
-    SecurityService securityService;
-    EmpleadoService empleadoService;
+    private final SecurityService securityService;
+    private final EmpleadoService empleadoService;
     private Button logoutBtn = new Button("Cerrar Sesión");
     private Button profileBtn = new Button("Perfil");
 
@@ -87,7 +87,6 @@ public class EmployeeLayout extends AppLayout {
         layout.setWidthFull();
         layout.add(
                 new RouterLink("Volver al incio", MainView.class)
-
         );
         if(empleadoService.getNombreDepartamento(securityService.getAuthenticatedUser().getUsername().toString()).equals("Atencion Al Cliente")){//Es de Atencion al cliente
             layout.add(
