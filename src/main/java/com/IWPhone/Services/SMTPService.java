@@ -1,20 +1,19 @@
 package com.IWPhone.Services;
 
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-
 @Service
 public class SMTPService {
 
-    private final JavaMailSender emailSender;
+    private static JavaMailSender emailSender = null;
 
     public SMTPService(JavaMailSender emailSender){ this.emailSender = emailSender; }
 
-    public void sendEmail(String to, String subject, String content){
+    public static void sendEmail(String to, String subject, String content){
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
@@ -24,6 +23,6 @@ public class SMTPService {
             helper.setSubject(subject);
             helper.setText(content, true);
             emailSender.send(message);
-        } catch(jakarta.mail.MessagingException e) { e.printStackTrace(System.out); }
+        } catch(MessagingException e) { e.printStackTrace(System.out); }
     }
 }

@@ -1,5 +1,6 @@
 package com.IWPhone.login.views;
 
+import com.IWPhone.Services.SMTPService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.login.LoginForm;
@@ -62,8 +63,12 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
         //form layout styles
         //formLayout.addClassName("form-layout");
-        
+
+
         login.setAction("login");
+        login.addForgotPasswordListener(event -> {
+            UI.getCurrent().navigate("reset-password");
+        });
 
         BacktoRegisterButton.addClickListener(e -> {
             UI.getCurrent().navigate("register");
