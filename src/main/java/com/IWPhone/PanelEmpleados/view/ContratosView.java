@@ -3,7 +3,9 @@ package com.IWPhone.PanelEmpleados.view;
 import com.IWPhone.Layouts.AppLayout;
 import com.IWPhone.Models.Contract;
 import com.IWPhone.PanelEmpleados.services.ValidarContratoService;
+import com.IWPhone.Repositories.OpcionesRepo;
 import com.IWPhone.Services.ApplicationUserService;
+import com.IWPhone.Services.ClientService;
 import com.IWPhone.Services.EmpleadoService;
 import com.IWPhone.security.SecurityService;
 import com.vaadin.flow.component.button.Button;
@@ -37,6 +39,11 @@ public class ContratosView extends VerticalLayout {
 
     private final ApplicationUserService applicationUserService;
 
+    private final ClientService clientService;
+
+    private final OpcionesRepo opcionesRepo;
+
+
     private Grid<Contract> gridContratos = new Grid<>();
 
     private Contract selectedContract = null;
@@ -58,13 +65,15 @@ public class ContratosView extends VerticalLayout {
     Button validarContratoBtn = new Button("Guardar Cambios");
     boolean bRoaming = false;
     boolean bBloquearNumerosEspeciales = false;
-    ContratosView(ValidarContratoService validarContratoService, EmpleadoService empleadoService, SecurityService securityService, ApplicationUserService applicationUserService){
+    ContratosView(ValidarContratoService validarContratoService, EmpleadoService empleadoService, SecurityService securityService, ApplicationUserService applicationUserService, ClientService clientService, OpcionesRepo opcionesRepo){
 
         //Servicios
         this.validarContratoService = validarContratoService;
         this.empleadoService = empleadoService;
         this.securityService = securityService;
         this.applicationUserService = applicationUserService;
+        this.clientService = clientService;
+        this.opcionesRepo = opcionesRepo;
 
         if(!empleadoService.getNombreDepartamento(securityService.getAuthenticatedUser().getUsername().toString()).equals("Atencion Al Cliente")){
             add("No tienes permisos para acceder a esta vista, vuelve a tu panel de empleado");
@@ -162,12 +171,9 @@ public class ContratosView extends VerticalLayout {
             contractOptions.addFormItem(descuentoSMS, "Descuento SMS");
             contractOptions.addFormItem(direccion, "Direccion");
             opcionesBasicas.addValueChangeListener(event -> {
-                if(event.getValue().contains("Bloquear Numeros Especiales")){
-                    bBloquearNumerosEspeciales = true;
-                }
-                if(event.getValue().contains("Roaming")){
-                    bRoaming = true;
-                }
+                bBloquearNumerosEspeciales = event.getValue().contains("Bloquear Numeros Especiales");
+
+                bRoaming = event.getValue().contains("Roaming");
             });
 
             validarContratoBtn.addClickListener(e -> {
@@ -210,7 +216,26 @@ public class ContratosView extends VerticalLayout {
                 precioGb.setValue(selectedContract.getPriceGigas());
                 precioLlamada.setValue(selectedContract.getPriceCall());
                 precioSms.setValue(selectedContract.getPriceSMS());
-
+                //Cargamos los valores del cliente y el contrato en caso de existir
+                if(opcionesRepo.findBy_contrato(selectedContract.getId()) != null){
+                    descuentoGB.setValue(opcionesRepo.findBy_contrato(selectedContract.getId()).get_descuentoGB());
+                    descuentoLlamadas.setValue(opcionesRepo.findBy_contrato(selectedContract.getId()).get_descuentoLlamada());
+                    descuentoSMS.setValue(opcionesRepo.findBy_contrato(selectedContract.getId()).get_descuentoSMS());
+                    direccion.setValue(clientService.getAddressByDNI(selectedContract.getClient()));
+                    //Seleccionamos los checkbox en caso de que esten activados
+                    if(opcionesRepo.findBy_contrato(selectedContract.getId()).get_roaming()){
+                        opcionesBasicas.select("Roaming");
+                    }
+                    if(opcionesRepo.findBy_contrato(selectedContract.getId()).get_numeroEspeciales()){
+                        opcionesBasicas.select("Bloquear Numeros Especiales");
+                    }
+                }
+                else{
+                    descuentoGB.setValue(0.0);
+                    descuentoLlamadas.setValue(0.0);
+                    descuentoSMS.setValue(0.0);
+                    direccion.setValue("");
+                }
             }
         });
 
@@ -273,7 +298,7 @@ public class ContratosView extends VerticalLayout {
             notification.open();
         }
         else{ //TODO CORRECTO por lo que procedemos a validar el contrato
-            if(validarContratoService.validateContract(dniClienteCombo.getValue(), securityService.getAuthenticatedUser().getUsername().toString(), fechaInicio.getValue(), direccion.getValue(),
+            if(validarContratoService.validateContract(dniClienteCombo.getValue(), securityService.getAuthenticatedUser().getUsername().toString(),detallesContractuales.getValue(), fechaInicio.getValue(), direccion.getValue(),
                     precioGb.getValue(), precioLlamada.getValue(), precioSms.getValue(), descuentoGB.getValue(), descuentoLlamadas.getValue(), descuentoSMS.getValue(), bBloquearNumerosEspeciales, bRoaming)){
                 Notification notification = new Notification("Contrato validado correctamente", 3000);
                 notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
@@ -290,7 +315,7 @@ public class ContratosView extends VerticalLayout {
     }
 
     //TODO: Si el contrato tiene opciones previas pillarlas de la base de datos
-    //TODO: Guardar y crear las opciones del contrato
+
 
 }
 

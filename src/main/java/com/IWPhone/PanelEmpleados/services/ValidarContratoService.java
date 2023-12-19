@@ -51,7 +51,7 @@ public class ValidarContratoService {
 
     //TODO: Comprobar si existe numero de telefono en la base de datos
 
-    public boolean validateContract(String dni, String employee, LocalDate startDate,String address,
+    public boolean validateContract(String dni, String employee, String contractDetails, LocalDate startDate,String address,
                                  double priceGB, double priceCall, double priceSMS, double discountGB, double discountCall, double discountSMS,
                                     boolean bNumerosEspeciales, boolean bRoaming
     ){
@@ -61,13 +61,13 @@ public class ValidarContratoService {
         Contract contract = contractRepository.findBy_sClient(dni);
         //Actualizamos el empleado que ha validado el contrato
         contract.setEmployee(employee);
+        contract.setDetails(contractDetails);
         contract.setStartDate(startDate);
         contract.setPriceGigas(priceGB);
         contract.setPriceCall(priceCall);
         contract.setPriceSMS(priceSMS);
         UUID idContrato = contract.getId();
-        Notification n = new Notification("Contrato: "+idContrato, 3000);
-        n.open();
+
         try {
             contractRepository.save(contract);
         }catch (Exception e){
@@ -86,7 +86,9 @@ public class ValidarContratoService {
                 String sNumeroFijo = generarNumeroTelefonoAleatorio();
                 client.setMobilePhone(sNumeroMovil);
                 client.setLandline(sNumeroFijo);
-                client.setAddress("Calle " + address);
+                if(address.contains("Calle")){
+                    client.setAddress(address);
+                }else client.setAddress("Calle " + address);
                 try {
                     clientRepository.save(client);
                 } catch (Exception e) {
@@ -96,7 +98,11 @@ public class ValidarContratoService {
             }
             else{//Existe por lo que lo actualizamos
                 Client client = clientService.getClientByDNI(dni);
-                client.setAddress("Calle " + address);
+                if(address.contains("Calle")){
+                    client.setAddress(address);
+                }else {
+                    client.setAddress("Calle " + address);
+                }
                 try {
                     clientRepository.save(client);
                 } catch (Exception e) {
@@ -122,15 +128,12 @@ public class ValidarContratoService {
                 options.set_descuentoSMS(discountSMS);
                 options.set_roaming(bRoaming);
                 options.set_numeroEspeciales(bNumerosEspeciales);
-                opcionesRepo.save(options);
-                /*
                 try {
                     opcionesRepo.save(options);
                 } catch (Exception e) {
                     bEstadoEscritura = false;
                     System.out.println(e.getMessage());
                 }
-                 */
             }
             else{//Existe por lo que lo actualizamos
                 Opciones options = opcionesRepo.findBy_contrato(idContrato);
