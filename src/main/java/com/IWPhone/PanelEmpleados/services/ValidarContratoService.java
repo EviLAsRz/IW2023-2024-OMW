@@ -8,14 +8,17 @@ import com.IWPhone.Repositories.ContractRepository;
 import com.IWPhone.Repositories.OpcionesRepo;
 import com.IWPhone.Services.ClientService;
 import com.IWPhone.registration.services.ContractService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.notification.Notification;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.LocalDate;
 
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ValidarContratoService {
@@ -23,8 +26,8 @@ public class ValidarContratoService {
     private final ContractRepository contractRepository;
     private final ContractService contractService;
     private final OpcionesRepo opcionesRepo;
-
     private final ClientService clientService;
+    HttpClient httpClient = HttpClient.newHttpClient();
     public ValidarContratoService(ContractRepository contractRepository, ContractService contractService, ClientRepo clientRepo, OpcionesRepo opcionesRepo, ClientService clientService) {
         this.clientRepository = clientRepo;
         this.clientService = clientService;
@@ -95,6 +98,9 @@ public class ValidarContratoService {
                     bEstadoEscritura = false;
                     System.out.println(e.getMessage());
                 }
+                guardarNumeroApi(sNumeroMovil, dni);
+                guardarNumeroApi(sNumeroFijo, dni);
+
             }
             else{//Existe por lo que lo actualizamos
                 Client client = clientService.getClientByDNI(dni);
@@ -163,6 +169,34 @@ public class ValidarContratoService {
         long restoNumero = (long) (random.nextInt(900000000) + 100000000); // Genera un número entre 100000000 y 999999999
         return String.valueOf(digitoInicial) + String.valueOf(restoNumero);
 
+    }
+
+    public void guardarNumeroApi(String numero, String dniCliente){//POSTEANDO EN LA API DE OMRSIMULATOR
+        Map<String, String> data = new HashMap<>();
+        data.put("name", dniCliente);
+        data.put("surname", dniCliente);
+        data.put("carrier", "IWPHONE");
+        data.put("phoneNumber", numero);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = "";
+        try{
+             requestBody = objectMapper.writeValueAsString(data);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://omr-simulator.us-east-1.elasticbeanstalk.com/"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+        try{
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(response.body());
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
 }
