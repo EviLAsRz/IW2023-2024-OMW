@@ -6,6 +6,7 @@ import com.IWPhone.PanelEmpleados.services.ValidarContratoService;
 import com.IWPhone.Services.ApplicationUserService;
 import com.IWPhone.Services.EmpleadoService;
 import com.IWPhone.security.SecurityService;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.combobox.ComboBoxVariant;
@@ -16,6 +17,7 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
@@ -52,6 +54,10 @@ public class ContratosView extends VerticalLayout {
     NumberField descuentoGB = new NumberField();
     NumberField descuentoLlamadas = new NumberField();
     NumberField descuentoSMS = new NumberField();
+    TextField direccion = new TextField();
+    Button validarContratoBtn = new Button("Guardar Cambios");
+    boolean bRoaming = false;
+    boolean bBloquearNumerosEspeciales = false;
     ContratosView(ValidarContratoService validarContratoService, EmpleadoService empleadoService, SecurityService securityService, ApplicationUserService applicationUserService){
 
         //Servicios
@@ -91,13 +97,14 @@ public class ContratosView extends VerticalLayout {
             //Pricing layout
 
             precioGb.setSuffixComponent(new Span("EUR"));
+            precioGb.setMin(0);
 
 
             precioLlamada.setSuffixComponent(new Span("EUR"));
-
+            precioLlamada.setMin(0);
 
             precioSms.setSuffixComponent(new Span("EUR"));
-
+            precioSms.setMin(0);
             FormLayout genLayout = new FormLayout();
             genLayout.setResponsiveSteps(
                     new FormLayout.ResponsiveStep("1000px", 2)
@@ -136,22 +143,44 @@ public class ContratosView extends VerticalLayout {
             contractOptions.addFormItem(opcionesBasicas, "Opciones Basicas");
 
             descuentoGB.setSuffixComponent(new Span("%"));
+            descuentoGB.setMin(0);
+            descuentoGB.setMax(100);
             descuentoLlamadas.setSuffixComponent(new Span("%"));
+            descuentoLlamadas.setMin(0);
+            descuentoLlamadas.setMax(100);
             descuentoSMS.setSuffixComponent(new Span("%"));
+            descuentoSMS.setMin(0);
+            descuentoSMS.setMax(100);
             descuentoGB.setMinWidth("300px");
             descuentoLlamadas.setMinWidth("300px");
             descuentoSMS.setMinWidth("300px");
+            direccion.setMinWidth("450px");
+
 
             contractOptions.addFormItem(descuentoGB, "Descuento GB");
             contractOptions.addFormItem(descuentoLlamadas, "Descuento Llamadas");
             contractOptions.addFormItem(descuentoSMS, "Descuento SMS");
+            contractOptions.addFormItem(direccion, "Direccion");
+            opcionesBasicas.addValueChangeListener(event -> {
+                if(event.getValue().contains("Bloquear Numeros Especiales")){
+                    bBloquearNumerosEspeciales = true;
+                }
+                if(event.getValue().contains("Roaming")){
+                    bRoaming = true;
+                }
+            });
+
+            validarContratoBtn.addClickListener(e -> {
+                validateContract();
+            });
 
             add(new H1("Visualizar/Editar Contratos"),
                     gridContratos,
                     genLayout,
                     pricingLayout,
                     new H2("Opciones del contrato"),
-                    contractOptions
+                    contractOptions,
+                    validarContratoBtn
             );
         }
 
@@ -187,8 +216,80 @@ public class ContratosView extends VerticalLayout {
 
     }
 
-    //TODO: Hacer funcionalidad para permitir la validacion de un contrato unicamente (establecer fecha de hoy en comienzo)
-    //TODO: Si el contrato tiene opciones prebias pillarlas de la base de datos
+    void validateContract(){
+        //Comprobamos que los campos esten rellenos y en caso de serlos mostramos notificacion con LUMO.ERROR
+        if(dniClienteCombo.getValue() == null){
+            Notification notification = new Notification("El campo DNI Cliente no puede estar vacio", 3000);
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            notification.setDuration(3000);
+            notification.open();
+        }
+        else if (fechaInicio.getValue() == null){
+            Notification notification = new Notification("El campo Fecha de inicio no puede estar vacio", 3000);
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            notification.setDuration(3000);
+            notification.open();
+        }
+        else if (detallesContractuales.getValue() == null){
+            Notification notification = new Notification("El campo Detalles contractuales no puede estar vacio", 3000);
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            notification.setDuration(3000);
+            notification.open();
+        }
+        else if (precioGb.getValue() == null){
+            Notification notification = new Notification("El campo Precio GB no puede estar vacio", 3000);
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            notification.setDuration(3000);
+            notification.open();
+        }
+        else if (precioLlamada.getValue() == null){
+            Notification notification = new Notification("El campo Precio Llamada no puede estar vacio", 3000);
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            notification.setDuration(3000);
+            notification.open();
+        }
+        else if (precioSms.getValue() == null){
+            Notification notification = new Notification("El campo Precio SMS no puede estar vacio", 3000);
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            notification.setDuration(3000);
+            notification.open();
+        }
+        else if (descuentoGB.getValue() == null){
+            Notification notification = new Notification("El campo Descuento GB no puede estar vacio", 3000);
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            notification.setDuration(3000);
+            notification.open();
+        }
+        else if (descuentoLlamadas.getValue() == null){
+            Notification notification = new Notification("El campo Descuento Llamadas no puede estar vacio", 3000);
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            notification.setDuration(3000);
+            notification.open();
+        }
+        else if (descuentoSMS.getValue() == null){
+            Notification notification = new Notification("El campo Descuento SMS no puede estar vacio", 3000);
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            notification.setDuration(3000);
+            notification.open();
+        }
+        else{ //TODO CORRECTO por lo que procedemos a validar el contrato
+            if(validarContratoService.validateContract(dniClienteCombo.getValue(), securityService.getAuthenticatedUser().getUsername().toString(), fechaInicio.getValue(), direccion.getValue(),
+                    precioGb.getValue(), precioLlamada.getValue(), precioSms.getValue(), descuentoGB.getValue(), descuentoLlamadas.getValue(), descuentoSMS.getValue(), bBloquearNumerosEspeciales, bRoaming)){
+                Notification notification = new Notification("Contrato validado correctamente", 3000);
+                notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                notification.setDuration(3000);
+                notification.open();
+            }
+            else{
+                Notification notification = new Notification("Error al validar el contrato", 3000);
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                notification.setDuration(3000);
+                notification.open();
+            }
+        }
+    }
+
+    //TODO: Si el contrato tiene opciones previas pillarlas de la base de datos
     //TODO: Guardar y crear las opciones del contrato
 
 }

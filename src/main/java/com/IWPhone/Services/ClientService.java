@@ -66,4 +66,8 @@ public class ClientService {
         return clientRepo.findById(id).get();
     }
 
+    public boolean telefonoExiste(String telefono){
+        return clientRepo.findBy_sMobilePhone(telefono) != null || clientRepo.findBy_sLandline(telefono) != null;
+    }
+
 }

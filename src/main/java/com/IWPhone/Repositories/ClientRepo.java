@@ -7,4 +7,6 @@ import java.util.UUID;
 
 public interface ClientRepo extends JpaRepository<Client, UUID> {
     Client findBy_sDNI(String dni);
+    Client findBy_sMobilePhone(String mobilePhone);
+    Client findBy_sLandline(String landline);
 }
