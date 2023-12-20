@@ -3,6 +3,7 @@ package com.IWPhone.Layouts;
 import com.IWPhone.MainView;
 import com.IWPhone.PanelEmpleados.view.ContratosView;
 import com.IWPhone.Services.EmpleadoService;
+import com.IWPhone.registration.views.AdminRegistration;
 import com.IWPhone.registration.views.EmployeeRegistration;
 import com.IWPhone.security.SecurityService;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -135,7 +136,7 @@ public class AppLayout extends com.vaadin.flow.component.applayout.AppLayout {
         layout.setWidthFull();
         layout.add(
                 new RouterLink("Mi perfil", MainView.class),
-                new RouterLink("Registrar Empleado", EmployeeRegistration.class),
+                new RouterLink("Registrar Administrador", AdminRegistration.class),
                 new RouterLink("Gestion de empleados", MainView.class)
 
         );

@@ -195,7 +195,7 @@ public class RegistrationService {
 
 
 
-    private String checkPassword(String password){
+    public static String checkPassword(String password){
         if (password == null || password.length() < 8) {
             return "La contraseña debe tener al menos 8 caractéres.";
         }

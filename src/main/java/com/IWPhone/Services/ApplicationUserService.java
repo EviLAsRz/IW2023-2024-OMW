@@ -87,4 +87,15 @@ public class ApplicationUserService {
         appUserRepo.save(appUser);
     }
 
+    public void createAdmin(String username, String password, String name, String surname, String email){
+        ApplicationUser appUser = new ApplicationUser();
+        appUser.setUsername(username);
+        appUser.setPassword(SecurityService.passwordEncoder().encode(password));
+        appUser.setName(name);
+        appUser.setSurname(surname);
+        appUser.setEmail(email);
+        appUser.setRole("ADMIN");
+        appUserRepo.save(appUser);
+    }
+
 }
