@@ -1,0 +1,22 @@
+@startuml blogging-container
+!include  https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(client, "Usuario", "Cliente de la aplicación 'IWPhone'")
+System_Boundary(c1, "Sistema Teleoperadora") {
+    Container(weba, "Aplicación Web", "Container: Java y Spring MVC", "Muestra el contenido estático de la web y la página de la teleoperadora")
+    Container(spa, "Aplicación de página unica", "Container: Java y Spring MVC", "Provee todas las funcionalidades del sistema teleoperadora al cliente")
+    Container(api, "Aplicación API", "Container: Java y Spring MVC", "Provee a la teleoperadora funcionalidad mediante HTTP")
+    ContainerDb(database, "Base de Datos", "Container: MySQL", "Almacena los datos de los clientes, credenciales de autenticación, etc.")
+}
+Container(email, "Sistema E-mail", "Sistema Software", "Sistema interno de mensajería electrónica")
+Container(mainframe, "Mainframe", "Sistema Software", "Almacena la información de la teleoperadora como la información de los usuarios, los contratos, los servicios, etc.")
+
+Rel(client, weba, "Usa", "HTTP")
+Rel(client, spa, "Usa", "HTTP")
+Rel_L(weba, spa, "Envía")
+Rel_L(spa, api, "Usa", "async/HTTP")
+Rel_L(api, database, "Lee y escribe en", "sync, JDBC")
+Rel(api, mainframe, "Usa", "sync/async,HTTP")
+Rel(email, client, "Envía e-mails a")
+Rel(api, email, "Envía e-mails", "sync, SMTP")
+@enduml

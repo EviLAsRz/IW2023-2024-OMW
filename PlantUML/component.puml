@@ -1,0 +1,21 @@
+@startuml blogging-component
+!include  https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Container_Boundary(c1, "Aplicación API") {
+    Component(seguridad, "Controlador de seguridad", "Spring Bean", "Provee funcionalidades relacionadas con acceso de usuarios y cambio de contraseñas, etc.")
+    Component(notificacion, "Notificaciones", "Habilita las notificiaciones del usuario final")
+    Component(gestion, "Gestiones", "Para las llamadas y el consumo")
+}
+
+Container(spa, "Aplicación de página unica", "Container: Java y Spring MVC", "Provee todas las funcionalidades del sistema teleoperadora al cliente")
+ContainerDb(database, "Base de Datos", "Container: MySQL", "Almacena los datos de los clientes, credenciales de autenticación, etc.")
+Container(email, "Sistema E-mail", "Sistema Software", "Sistema interno de mensajería electrónica")
+Container(mainframe, "Mainframe", "Sistema Software", "Almacena la información de la teleoperadora como la información de los usuarios, los contratos, los servicios, etc.")
+
+Rel(notificacion, email, "Usa", "SMTP")
+Rel(seguridad, database, "Lee y Escribe", "JDBC")
+Rel(spa, gestion, "Usa", "HTTP")
+Rel(gestion, notificacion, "Usa")
+Rel(gestion, seguridad, "Usa")
+Rel(gestion, mainframe, "Usa", "HTTP")
+@enduml
