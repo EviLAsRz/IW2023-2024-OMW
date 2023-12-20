@@ -82,4 +82,9 @@ public class ApplicationUserService {
     public List<String> getAllUsernames(){
         return appUserRepo.findAllByIdIsNotNull().stream().map(ApplicationUser::getUsername).toList();
     }
+
+    public void updateApplicationUser(ApplicationUser appUser){
+        appUserRepo.save(appUser);
+    }
+
 }

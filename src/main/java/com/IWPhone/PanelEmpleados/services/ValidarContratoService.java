@@ -171,6 +171,7 @@ public class ValidarContratoService {
 
     }
 
+    //API USAGE
     public void guardarNumeroApi(String numero, String dniCliente){//POSTEANDO EN LA API DE OMRSIMULATOR
         Map<String, String> data = new HashMap<>();
         data.put("name", dniCliente);
@@ -192,7 +193,7 @@ public class ValidarContratoService {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
         try{
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());//HACER PETICION
             System.out.println(response.body());
         }catch (Exception e){
             System.out.println(e.getMessage());

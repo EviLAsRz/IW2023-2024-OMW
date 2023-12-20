@@ -3,6 +3,7 @@ package com.IWPhone.Layouts;
 import com.IWPhone.MainView;
 import com.IWPhone.PanelEmpleados.view.ContratosView;
 import com.IWPhone.Services.EmpleadoService;
+import com.IWPhone.registration.views.EmployeeRegistration;
 import com.IWPhone.security.SecurityService;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
@@ -37,6 +38,10 @@ public class AppLayout extends com.vaadin.flow.component.applayout.AppLayout {
         } else if (securityService.getAuthenticatedUser().getAuthorities().toString().equals("[ROLE_USER]")) {
             createHeader("Usuario");
             createUserDrawer();
+        }
+        else if (securityService.getAuthenticatedUser().getAuthorities().toString().equals("[ROLE_ADMIN]")){
+            createHeader("Administrador");
+            createAdminDrawer();
         }
 
     }
@@ -113,6 +118,26 @@ public class AppLayout extends com.vaadin.flow.component.applayout.AppLayout {
         layout.setWidthFull();
         layout.add(
                 new RouterLink("Volver al incio", MainView.class)
+        );
+
+
+        //TODO: Agregar los links a cada endpoint segun el tipo de empleado
+        addToDrawer(
+                layout
+        );
+    }
+
+    private void createAdminDrawer() {
+
+        VerticalLayout layout = new VerticalLayout();
+        layout.setAlignItems(FlexComponent.Alignment.CENTER);
+        layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+        layout.setWidthFull();
+        layout.add(
+                new RouterLink("Mi perfil", MainView.class),
+                new RouterLink("Registrar Empleado", EmployeeRegistration.class),
+                new RouterLink("Gestion de empleados", MainView.class)
+
         );
 
 

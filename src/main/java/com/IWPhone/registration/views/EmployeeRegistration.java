@@ -1,5 +1,6 @@
 package com.IWPhone.registration.views;
 
+import com.IWPhone.Layouts.AppLayout;
 import com.IWPhone.Repositories.ApplicationUserRepo;
 import com.IWPhone.Services.DepartamentoService;
 import com.IWPhone.registration.services.RegistrationService;
@@ -17,7 +18,7 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 
 
-@Route("registerEmployee")
+@Route(value = "registerEmployee", layout = AppLayout.class)
 @RolesAllowed({"ADMIN"})
 public class EmployeeRegistration extends VerticalLayout {
     private final ApplicationUserRepo userRepository;
