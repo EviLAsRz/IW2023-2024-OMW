@@ -50,9 +50,8 @@ public class ValidarContratoService {
         return contractRepository.findAll();
     }
 
-    //TODO: Pillar opciones de contrato desde database
 
-    //TODO: Comprobar si existe numero de telefono en la base de datos
+
 
     public boolean validateContract(String dni, String employee, String contractDetails, LocalDate startDate,String address,
                                  double priceGB, double priceCall, double priceSMS, double discountGB, double discountCall, double discountSMS,
@@ -119,7 +118,6 @@ public class ValidarContratoService {
             }
 
 
-            //TODO: Consumir la API para para registrar el numero de telefono
         }
 
         if (bEstadoEscritura){
