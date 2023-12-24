@@ -19,7 +19,7 @@ public class EmailService {
 
     public void sendEmail(String to, String subject, String text) {
 
-        String from = "IWPhone2023@gmail.com";
+        String from = "iwphone2023@gmail.com";
 
         try {
             MimeMessagePreparator preparator = new MimeMessagePreparator() {
