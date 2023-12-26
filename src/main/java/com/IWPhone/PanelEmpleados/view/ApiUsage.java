@@ -27,9 +27,11 @@ public class ApiUsage extends VerticalLayout {
         }
 
         //ID De telefono de prueba
-        Integer numberOfCalls = service.getCallsConsumption("6155169263", "2023-12-01", "2023-12-31");
+        service.deletePhone("9895624092");
 
-        add("Se han realizado " + numberOfCalls + " llamadas en el mes de diciembre de 2023");
+        add("Se han cosumido :" +service.getDataConsumption("6155169263","2023-12-01","2023-12-31") + " GB de datos");
     }
+
+
 
 }

@@ -5,14 +5,12 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.h2.util.json.JSONArray;
-
-import java.util.Scanner;
 
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -117,6 +115,76 @@ public class ApiManagerService {
 
         return -1;
     }
+
+    public double getDataConsumption(String number, String startDate, String endDate){
+        //Pillamos el id del telefono
+        String numberId = getLineId(number);
+
+        //Pillamos el consumo de ese telefono en un intervalo de fechas dado
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + numberId + "/datausagerecords?carrier="+carrier+"&startDate=" + startDate +"&endDate=" + endDate))
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
+        try{
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());//HACER PETICION
+
+            //Sumamos el consumo total de datos de ese telefono
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Map<String, Object>> listaDatos = objectMapper.readValue(response.body(), new TypeReference<List<Map<String, Object>>>(){});
+
+            double sumaMegaBytes = 0.0;
+            for (Map<String, Object> dato : listaDatos) {
+                double megaBytes = Double.parseDouble(dato.get("megaBytes").toString());
+                sumaMegaBytes += megaBytes;
+            }
+            System.out.println("Suma de megabytes: " + sumaMegaBytes);
+            return sumaMegaBytes/1024;//Medimos el consumo en gigabytes
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return -1;
+    }
+
+    public String getLineId(String number){
+        //La fechas tienen que estar en formato yyyy-MM-dd
+        //Pillamos los datos de ese movil usanodo la api
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + "search/phoneNumber/"+ number +"?carrier=" + carrier))
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
+        try{
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());//HACER PETICION
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonNode = objectMapper.readTree(response.body());
+            String numberId = jsonNode.get("id").asText();
+            return numberId;
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
+
+    public void deletePhone(String number){
+        String numberId = getLineId(number);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + numberId+ "?carrier="+ carrier))
+                .header("Content-Type", "application/json")
+                .DELETE()
+                .build();
+        try{
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());//HACER PETICION
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
 
 }
 
