@@ -7,6 +7,7 @@ import com.IWPhone.Models.Empleado;
 import com.IWPhone.PanelEmpleados.services.EmployeeProfileService;
 import com.IWPhone.PanelEmpleados.services.GestionEmpleadosService;
 import com.IWPhone.Services.ApplicationUserService;
+import com.IWPhone.Services.DepartamentoService;
 import com.IWPhone.Services.EmpleadoService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -14,6 +15,7 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
 
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
@@ -29,6 +31,7 @@ import java.util.Optional;
 public class GestionEmpleados extends VerticalLayout {
     private final GestionEmpleadosService gestionEmpleadosService;
     private final EmployeeProfileService employeeProfileService;
+    private final DepartamentoService departamentoService;
     private final EmpleadoService empleadoService;
     private final ApplicationUserService applicationUserService;
     private ComboBox<String> comboClient = new ComboBox<>();
@@ -44,12 +47,13 @@ public class GestionEmpleados extends VerticalLayout {
     private Button saveBtn = new Button("Guardar cambios");
 
     GestionEmpleados(GestionEmpleadosService gestionEmpleadosService, EmployeeProfileService employeeProfileService,
-                     EmpleadoService empleadoService, ApplicationUserService applicationUserService) {
+                     EmpleadoService empleadoService, ApplicationUserService applicationUserService, DepartamentoService departamentoService) {
         //Servicios
         this.gestionEmpleadosService = gestionEmpleadosService;
         this.employeeProfileService = employeeProfileService;
         this.empleadoService = empleadoService;
         this.applicationUserService = applicationUserService;
+        this.departamentoService = departamentoService;
         //Configuramos el grid
         configComboClients(comboClient);
 
@@ -66,7 +70,7 @@ public class GestionEmpleados extends VerticalLayout {
 
         //Pillamos los datos del empleado
         //dni.setValue(securityService.getAuthenticatedUser().getUsername().toString());
-        dni.setLabel("DNI");
+        dni.setLabel("DNI (no modificable)");
 
         //surname.setValue(employeeProfileService.getSurname(securityService.getAuthenticatedUser().getUsername().toString()));
         surname.setLabel("Apellidos");
@@ -78,6 +82,7 @@ public class GestionEmpleados extends VerticalLayout {
         mail.setLabel("Correo electronico");
 
         dni.setMinWidth("400px");
+        dni.setReadOnly(true);
         surname.setMinWidth("400px");
         name.setMinWidth("400px");
         mail.setMinWidth("400px");
@@ -86,15 +91,7 @@ public class GestionEmpleados extends VerticalLayout {
 
         //Funcionalidad del boton de guardar cambios
         saveBtn.addClickListener(e -> {
-            /*
-            if(checkMail(mail.getValue())){
-                employeeProfileService.setMail(dni.getValue(), mail.getValue());
-                Notification notification = new Notification("Mail cambiado correctamente");
-                notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                notification.setDuration(3000);
-                notification.open();
-            }
-                         */
+            saveChanges(dni.getValue(), name.getValue(), surname.getValue(), mail.getValue(), departamentos.getValue());
         });
 
         add(new H1("Gestión de empleados"),
@@ -156,5 +153,37 @@ public class GestionEmpleados extends VerticalLayout {
         return null;
     }
 
+    private void saveChanges(String dni, String name, String surname, String mail, String departamento){
+
+        //Como admin no tiene requisitos de seguridad asi que unicamente comprobamos que no esten vacios
+        if (dni.isEmpty() || name.isEmpty() || surname.isEmpty() || mail.isEmpty() || departamento.isEmpty()){
+            Notification notification = new Notification("Error al guardar los cambios, no puede haber campos vacios");
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            notification.setDuration(3000);
+            notification.open();
+            return;
+        }
+
+        //Primero guardamos los resultados del usuario
+        ApplicationUser applicationUser = getSelectedUserData(dni);
+        applicationUser.setName(name);
+        applicationUser.setSurname(surname);
+
+        applicationUser.setEmail(mail);
+
+
+
+        //Guardamos los cambios
+        empleadoService.updateEmpleado(dni,departamentoService.getUUIDByNombre(departamento).get());
+
+        applicationUserService.updateApplicationUser(applicationUser);
+
+        Notification notification = new Notification("Cambios guardados correctamente");
+        notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+        notification.setDuration(3000);
+        notification.open();
+
+
+    }
 
 }
