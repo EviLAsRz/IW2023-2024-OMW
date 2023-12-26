@@ -25,7 +25,11 @@ public class ApiUsage extends VerticalLayout {
         } else {
             result = "Error al obtener los datos de la API";
         }
-        add(result);
+
+        //ID De telefono de prueba
+        Integer numberOfCalls = service.getCallsConsumption("6155169263", "2023-12-01", "2023-12-31");
+
+        add("Se han realizado " + numberOfCalls + " llamadas en el mes de diciembre de 2023");
     }
 
 }
