@@ -2,6 +2,7 @@ package com.IWPhone.Layouts;
 
 import com.IWPhone.MainView;
 import com.IWPhone.PanelEmpleados.view.ContratosView;
+import com.IWPhone.PanelEmpleados.view.GestionEmpleados;
 import com.IWPhone.Services.EmpleadoService;
 import com.IWPhone.registration.views.AdminRegistration;
 import com.IWPhone.registration.views.EmployeeRegistration;
@@ -69,7 +70,6 @@ public class AppLayout extends com.vaadin.flow.component.applayout.AppLayout {
         menuBar.addClassNames(LumoUtility.Margin.Start.LARGE);
         MenuItem share = menuBar.addItem(securityService.getAuthenticatedUser().getUsername());
         SubMenu shareSubMenu = share.getSubMenu();
-        shareSubMenu.addItem("Perfil");
         shareSubMenu.addItem(logoutBtn);
 
 
@@ -137,7 +137,7 @@ public class AppLayout extends com.vaadin.flow.component.applayout.AppLayout {
         layout.add(
                 new RouterLink("Mi perfil", MainView.class),
                 new RouterLink("Registrar Administrador", AdminRegistration.class),
-                new RouterLink("Gestion de empleados", MainView.class)
+                new RouterLink("Gestion de empleados", GestionEmpleados.class)
 
         );
 

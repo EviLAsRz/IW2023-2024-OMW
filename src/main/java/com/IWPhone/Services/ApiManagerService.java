@@ -52,7 +52,7 @@ public class ApiManagerService {
     }
 
 
-    public void saveClientPhone(String numero, String dniCliente){//POSTEANDO EN LA API DE OMRSIMULATOR
+    public void saveClientPhone(String numero, String dniCliente){//POSTEANDO EN LA API DE OMRSIMULATOR TEST
         Map<String, String> data = new HashMap<>();
         data.put("name", dniCliente);
         data.put("surname", dniCliente);
@@ -104,8 +104,8 @@ public class ApiManagerService {
                     .build();
             response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());//HACER PETICION
 
-            String[] elementos = response.body().split("\\{");
-            return elementos.length -1 ;
+            String[] elementos = response.body().split("\\{");// []
+            return elementos.length;
 
 
         }
@@ -138,7 +138,6 @@ public class ApiManagerService {
                 double megaBytes = Double.parseDouble(dato.get("megaBytes").toString());
                 sumaMegaBytes += megaBytes;
             }
-            System.out.println("Suma de megabytes: " + sumaMegaBytes);
             return sumaMegaBytes/1024;//Medimos el consumo en gigabytes
         }
         catch (Exception e){

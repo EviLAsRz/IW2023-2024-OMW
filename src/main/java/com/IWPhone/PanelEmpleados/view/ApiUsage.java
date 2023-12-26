@@ -4,11 +4,11 @@ package com.IWPhone.PanelEmpleados.view;
 import com.IWPhone.Services.ApiManagerService;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+import jakarta.annotation.security.PermitAll;
 
 import java.util.Map;
 
-@AnonymousAllowed
+@PermitAll
 @Route("apiUsage")
 public class ApiUsage extends VerticalLayout {
     private final ApiManagerService service;

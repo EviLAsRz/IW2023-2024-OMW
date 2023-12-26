@@ -22,13 +22,10 @@ public class MainView extends VerticalLayout {
 
     // LOS SERVICIOS SE INYECTAN EN EL CONSTRUCTOR del main view o falla al recibirlos.
     public MainView(SecurityService securityService, EmployeeProfileService employeeProfileService, AdminProfileService adminProfileService) {
-        Notification n = new Notification("ROL " + securityService.getAuthenticatedUser().getAuthorities().toString());
-        n.setDuration(3000);
-        n.open();
+
         if (securityService.getAuthenticatedUser().getAuthorities().toString().equals("[ROLE_EMPLOYEE]")){
             add(new PanelEmpleadosView(securityService, employeeProfileService));
         }
-       //TODO: Crear vista para administrador
         if (securityService.getAuthenticatedUser().getAuthorities().toString().equals("[ROLE_ADMIN]")){
             add(new PanelAdministracion(securityService, employeeProfileService,adminProfileService));
         }
