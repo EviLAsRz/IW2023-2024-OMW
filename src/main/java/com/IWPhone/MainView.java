@@ -5,7 +5,10 @@ import com.IWPhone.PanelEmpleados.services.AdminProfileService;
 import com.IWPhone.PanelEmpleados.services.EmployeeProfileService;
 import com.IWPhone.PanelEmpleados.view.PanelAdministracion;
 import com.IWPhone.PanelEmpleados.view.PanelEmpleadosView;
+import com.IWPhone.PanelUsuarios.services.UserProfileService;
 import com.IWPhone.PanelUsuarios.view.PanelUsuariosView;
+import com.IWPhone.Services.ApplicationUserService;
+import com.IWPhone.Services.ClientService;
 import com.IWPhone.security.SecurityService;
 
 import com.vaadin.flow.component.notification.Notification;
@@ -21,7 +24,8 @@ import jakarta.annotation.security.PermitAll;
 public class MainView extends VerticalLayout {
 
     // LOS SERVICIOS SE INYECTAN EN EL CONSTRUCTOR del main view o falla al recibirlos.
-    public MainView(SecurityService securityService, EmployeeProfileService employeeProfileService, AdminProfileService adminProfileService) {
+    public MainView(SecurityService securityService, EmployeeProfileService employeeProfileService, AdminProfileService adminProfileService,
+                    UserProfileService userProfileService, ApplicationUserService applicationUserService, ClientService clientService) {
 
         if (securityService.getAuthenticatedUser().getAuthorities().toString().equals("[ROLE_EMPLOYEE]")){
             add(new PanelEmpleadosView(securityService, employeeProfileService));
@@ -29,7 +33,7 @@ public class MainView extends VerticalLayout {
         if (securityService.getAuthenticatedUser().getAuthorities().toString().equals("[ROLE_ADMIN]")){
             add(new PanelAdministracion(securityService, employeeProfileService,adminProfileService));
         }
-        else if(securityService.getAuthenticatedUser().getAuthorities().toString().equals("[ROLE_USER]")) add(new PanelUsuariosView());
+        else if(securityService.getAuthenticatedUser().getAuthorities().toString().equals("[ROLE_USER]")) add(new PanelUsuariosView(securityService,userProfileService, applicationUserService,clientService));
         else add("No tienes permisos para acceder a esta vista, tu rol es: " + securityService.getAuthenticatedUser().getAuthorities().toString() + " vuelve a la pagina de inicio");
     }
 }
