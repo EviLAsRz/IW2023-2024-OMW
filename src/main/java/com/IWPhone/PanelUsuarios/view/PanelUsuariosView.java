@@ -14,6 +14,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
@@ -28,7 +29,7 @@ public class PanelUsuariosView extends VerticalLayout{
     final ClientService clientService;
     TextField nombre = new TextField("Nombre");
     TextField apellidos = new TextField("Apellidos");
-    TextField email = new TextField("Email");
+    EmailField email = new EmailField("Email");
 
     TextField telefonoMovil = new TextField("Telefono Movil");
     TextField telefonoFijo = new TextField("Telefono Fijo");
@@ -53,7 +54,9 @@ public class PanelUsuariosView extends VerticalLayout{
         setComponentData();//Cargamos los datos del usuario al entrar en la vista
         //Agregamos los eventos a los botones
         changePasswordbtn.addClickListener(e -> changePassword());
+        saveChangesbtn.addClickListener(e -> changeData());
         //Layout
+        styleComponents();
         add(
                 new H1("Mi perfil"),
                 new HorizontalLayout(nombre, apellidos),
@@ -70,20 +73,24 @@ public class PanelUsuariosView extends VerticalLayout{
     private void styleComponents(){
         //Todos los campos tiene que tener 400px de largo excepto botones, y la direccion tiene que ser 800px
         nombre.setWidth("400px");
+        nombre.setEnabled(false);
         apellidos.setWidth("400px");
+        apellidos.setEnabled(false);
         email.setWidth("400px");
         telefonoMovil.setWidth("400px");
+        telefonoMovil.setEnabled(false);
         telefonoFijo.setWidth("400px");
+        telefonoFijo.setEnabled(false);
         telefonoFijo.setReadOnly(true);
         telefonoMovil.setReadOnly(true);
 
-        direccion.setWidth("800px");
+        direccion.setMinWidth("800px");
         password.setWidth("400px");
         password2.setWidth("400px");
         saveChangesbtn.setWidth("400px");
         changePasswordbtn.setWidth("400px");
 
-
+        email.setPattern("^.+@(alum\\.uca.es|gmail\\.com|hotmail\\.com|outlook\\.com|yahoo\\.com)$");
 
     }
 
@@ -125,6 +132,23 @@ public class PanelUsuariosView extends VerticalLayout{
             n.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             n.open();
 
+        }
+    }
+
+    private void changeData(){
+        //Comprobamos que los campos no esten vacios
+        if(email.getValue().isEmpty() || direccion.getValue().isEmpty()){
+            Notification n = new Notification("Los campos no pueden estar vacios", 3000);
+            n.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            n.open();
+            return;
+        }else{
+            //Todo correcto, cambiamos los datos
+            applicationUserService.setMail(securityService.getAuthenticatedUser().getUsername(), email.getValue());
+            clientService.setAddressByDNI(securityService.getAuthenticatedUser().getUsername(), direccion.getValue());
+            Notification n = new Notification("Datos cambiados con exito", 3000);
+            n.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            n.open();
         }
     }
 
