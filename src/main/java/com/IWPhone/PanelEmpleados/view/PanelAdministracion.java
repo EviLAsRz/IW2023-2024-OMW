@@ -134,4 +134,6 @@ public class PanelAdministracion extends VerticalLayout {
         return password.equals(confirmPassword);
     }
 
+    //TODO: VISTA PARA ELIMINAR LOS USUARIOS DEL SISTEMA
+
 }

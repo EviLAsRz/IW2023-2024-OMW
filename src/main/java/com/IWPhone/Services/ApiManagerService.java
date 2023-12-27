@@ -6,12 +6,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.*;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.h2.util.json.JSONArray;
-
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

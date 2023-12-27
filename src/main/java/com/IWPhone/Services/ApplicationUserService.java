@@ -76,7 +76,7 @@ public class ApplicationUserService {
         appUserRepo.save(appUser);
     }
 
-    public boolean checkMail(String mail){
+    public boolean checkMailExistence(String mail){
         return appUserRepo.findByEmail(mail).isEmpty();
     }
     public List<String> getAllUsernames(){

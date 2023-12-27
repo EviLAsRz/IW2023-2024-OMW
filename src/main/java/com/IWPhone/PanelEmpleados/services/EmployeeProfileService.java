@@ -69,7 +69,7 @@ public class EmployeeProfileService {
     }
 
     public boolean checkMailExistence(String mail) {
-        return applicationUserService.checkMail(mail);
+        return applicationUserService.checkMailExistence(mail);
     }
 
 }
