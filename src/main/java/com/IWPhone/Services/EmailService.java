@@ -56,6 +56,38 @@ public class EmailService {
         }
 
     }
+
+    public void sendCustomEmail(String to, String subject, String text) {
+
+        String from = "iwphone2023@gmail.com";
+
+        try {
+            MimeMessagePreparator preparator = new MimeMessagePreparator() {
+                @Override
+                public void prepare(MimeMessage mimeMessage) throws Exception {
+                    MimeBodyPart textBodyPart = new MimeBodyPart();
+                    textBodyPart.setText(text);
+
+                    MimeMultipart mimeMultipart = new MimeMultipart();
+                    mimeMultipart.addBodyPart(textBodyPart);
+
+                    InternetAddress iaSender = new InternetAddress(from);
+                    InternetAddress iaTo = new InternetAddress(to);
+
+                    mimeMessage.setSender(iaSender);
+                    mimeMessage.setSubject(subject);
+                    mimeMessage.setRecipients(RecipientType.TO, new InternetAddress[]{iaTo});
+                    mimeMessage.setContent(mimeMultipart);
+
+                }
+            };
+            emailSender.send(preparator);
+
+        } catch (Exception ex) {
+            ex.printStackTrace(System.out);
+        }
+
+    }
 }
 
 

@@ -1,12 +1,10 @@
 
-import com.IWPhone.Models.Departamento;
 import com.IWPhone.Models.Empleado;
 import com.IWPhone.Repositories.EmployeeRepo;
 import com.IWPhone.Services.DepartamentoService;
 import com.IWPhone.Services.EmpleadoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
@@ -38,7 +39,7 @@ public class ApplicationUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return eliminationDate == null;
     }
 
     public void setUsername(String username) {
@@ -56,8 +57,16 @@ public class ApplicationUser implements UserDetails {
 
     private String role; // Add this field
 
-    // Existing getters and setters...
+    public LocalDate getEliminationDate() {
+        return eliminationDate;
+    }
 
+    public void setEliminationDate(LocalDate eliminationDate) {
+        this.eliminationDate = eliminationDate;
+    }
+// Existing getters and setters...
+
+    private LocalDate eliminationDate = null;// Guardamos la fecha de eliminación de la cuenta
 
     public void setRole(String role) {
         this.role = role;

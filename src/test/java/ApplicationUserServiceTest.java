@@ -10,7 +10,7 @@ import com.IWPhone.Repositories.ApplicationUserRepo;
 import com.IWPhone.Services.ApplicationUserService;
 import java.util.Optional;
 
-@SpringBootTest(classes = IwBankApplicationTests.class)
+@SpringBootTest(classes = IwBankApplicationTests.class)//Pasar Contexto del test
 public class ApplicationUserServiceTest {
 
     @MockBean

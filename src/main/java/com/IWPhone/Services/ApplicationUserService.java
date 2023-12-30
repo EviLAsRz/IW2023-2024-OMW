@@ -98,4 +98,22 @@ public class ApplicationUserService {
         appUserRepo.save(appUser);
     }
 
+    public void disableUser(String username){
+        ApplicationUser appUser = getApplicationUser(username).get();
+        appUser.setRole("DISABLED");
+        appUser.setEliminationDate(java.time.LocalDate.now());
+        appUserRepo.save(appUser);
+    }
+
+    public void enableUser(String username){
+        ApplicationUser appUser = getApplicationUser(username).get();
+        appUser.setRole("USER");
+        appUser.setEliminationDate(null);
+        appUserRepo.save(appUser);
+    }
+
+    public List<ApplicationUser> getAllUsers(){
+        return appUserRepo.findAll();
+    }
+
 }
