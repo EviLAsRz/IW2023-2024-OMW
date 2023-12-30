@@ -6,6 +6,7 @@ import com.IWPhone.PanelEmpleados.services.ValidarContratoService;
 import com.IWPhone.Repositories.OpcionesRepo;
 import com.IWPhone.Services.ApplicationUserService;
 import com.IWPhone.Services.ClientService;
+import com.IWPhone.Services.EmailService;
 import com.IWPhone.Services.EmpleadoService;
 import com.IWPhone.security.SecurityService;
 import com.vaadin.flow.component.button.Button;
@@ -38,7 +39,7 @@ public class ContratosView extends VerticalLayout {
     private final ValidarContratoService validarContratoService;
     private final EmpleadoService empleadoService;
     private final SecurityService securityService;
-
+    private final EmailService emailService;
     private final ApplicationUserService applicationUserService;
 
     private final ClientService clientService;
@@ -65,11 +66,15 @@ public class ContratosView extends VerticalLayout {
     NumberField descuentoSMS = new NumberField();
     TextField direccion = new TextField();
     Button validarContratoBtn = new Button("Guardar Cambios");
+    Button eliminarContratoBtn = new Button("Dar de baja el contrato");
+    Button habilitarContratoBtn = new Button("Habilitar el contrato");
     boolean bRoaming = false;
     boolean bBloquearNumerosEspeciales = false;
-    ContratosView(ValidarContratoService validarContratoService, EmpleadoService empleadoService, SecurityService securityService, ApplicationUserService applicationUserService, ClientService clientService, OpcionesRepo opcionesRepo){
+    ContratosView(ValidarContratoService validarContratoService, EmpleadoService empleadoService, SecurityService securityService,
+                  ApplicationUserService applicationUserService, ClientService clientService, OpcionesRepo opcionesRepo, EmailService emailService){
 
         //Servicios
+        this.emailService = emailService;
         this.validarContratoService = validarContratoService;
         this.empleadoService = empleadoService;
         this.securityService = securityService;
@@ -141,7 +146,7 @@ public class ContratosView extends VerticalLayout {
             //3)Seleccionamos el contrato y cargamos la creacion de contrato y establecemos el cliente y la fecha de inicio
 
             //4) Mostramos notificacion con los datos del cliente asignado (su telefono, su tarifa, etc)
-            //TODO: Mandar correo al cliente con los datos de su contrato.
+
             FormLayout contractOptions = new FormLayout();
             contractOptions.setResponsiveSteps(
                     new FormLayout.ResponsiveStep("600px", 3)
@@ -182,8 +187,58 @@ public class ContratosView extends VerticalLayout {
                 validateContract();
             });
 
+            eliminarContratoBtn.addClickListener(e -> {
+                if(selectedContract != null){
+                    if(validarContratoService.disableContract(dniClienteCombo.getValue())){
+                        Notification notification = new Notification("Contrato eliminado correctamente, su usuario se ha deshabilitado en consecuencia", 3000);
+                        notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                        notification.setDuration(3000);
+                        notification.open();
+                        gridContratos.setItems(validarContratoService.getAll());//Actualizamos la tabla
+                    }
+                    else{
+                        Notification notification = new Notification("Error al eliminar el contrato", 3000);
+                        notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                        notification.setDuration(3000);
+                        notification.open();
+                    }
+                }
+                else{
+                    Notification notification = new Notification("No hay ningun contrato seleccionado", 3000);
+                    notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                    notification.setDuration(3000);
+                    notification.open();
+                }
+            });
+
+            habilitarContratoBtn.addClickListener(e -> {
+                if(selectedContract != null){
+                    if(validarContratoService.disableContract(dniClienteCombo.getValue())){
+                        Notification notification = new Notification("Contrato Habilitado correctamente, su usuario se ha habilitado en consecuencia", 3000);
+                        notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                        notification.setDuration(3000);
+                        notification.open();
+                        validarContratoService.enableContract(dniClienteCombo.getValue());
+                        gridContratos.setItems(validarContratoService.getAll());//Actualizamos la tabla
+                    }
+                    else{
+                        Notification notification = new Notification("Error al habilitar el contrato", 3000);
+                        notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                        notification.setDuration(3000);
+                        notification.open();
+                    }
+                }
+                else{
+                    Notification notification = new Notification("No hay ningun contrato seleccionado", 3000);
+                    notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                    notification.setDuration(3000);
+                    notification.open();
+                }
+            });
+
             add(new H1("Visualizar/Editar Contratos"),
                     gridContratos,
+                    new HorizontalLayout(eliminarContratoBtn, habilitarContratoBtn),
                     genLayout,
                     pricingLayout,
                     new H2("Opciones del contrato"),
@@ -299,13 +354,24 @@ public class ContratosView extends VerticalLayout {
             notification.setDuration(3000);
             notification.open();
         }
-        else{ //TODO CORRECTO por lo que procedemos a validar el contrato
+        else{
             if(validarContratoService.validateContract(dniClienteCombo.getValue(), securityService.getAuthenticatedUser().getUsername().toString(),detallesContractuales.getValue(), fechaInicio.getValue(), direccion.getValue(),
                     precioGb.getValue(), precioLlamada.getValue(), precioSms.getValue(), descuentoGB.getValue(), descuentoLlamadas.getValue(), descuentoSMS.getValue(), bBloquearNumerosEspeciales, bRoaming)){
                 Notification notification = new Notification("Contrato validado correctamente", 3000);
                 notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                 notification.setDuration(3000);
                 notification.open();
+                //Enviamos un correo al cliente con los datos de su contrato
+                //Pillamos el mail del cliente
+                String sClientMail = applicationUserService.getMail(dniClienteCombo.getValue());
+                emailService.sendCustomEmail(sClientMail, "Contrato validado correctamente",
+                        "Su contrato ha sido validado correctamente, puede acceder a su panel de cliente para ver los detalles del mismo, bienvenido a IWPhone");
+                if(!applicationUserService.getApplicationUser(dniClienteCombo.getValue()).get().isEnabled()){
+                   //Si el usuario no esta habilitado lo habilitamos
+                    applicationUserService.enableUser(dniClienteCombo.getValue());
+                }
+                gridContratos.setItems(validarContratoService.getAll());//Actualizamos la tabla
+
             }
             else{
                 Notification notification = new Notification("Error al validar el contrato", 3000);
@@ -316,7 +382,7 @@ public class ContratosView extends VerticalLayout {
         }
     }
 
-    //TODO: Si el contrato tiene opciones previas pillarlas de la base de datos
+
 
 
 }

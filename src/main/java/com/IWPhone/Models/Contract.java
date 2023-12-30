@@ -50,8 +50,6 @@ public class Contract {
         return _EndDate;
     }
     public void setEndDate(LocalDate endDate) {
-        if(endDate == null) throw new IllegalArgumentException(
-                "La fecha de fin no puede ser nula");
         _EndDate = endDate;
     }
 

@@ -6,6 +6,7 @@ import com.IWPhone.Models.Opciones;
 import com.IWPhone.Repositories.ClientRepo;
 import com.IWPhone.Repositories.ContractRepository;
 import com.IWPhone.Repositories.OpcionesRepo;
+import com.IWPhone.Services.ApplicationUserService;
 import com.IWPhone.Services.ClientService;
 import com.IWPhone.registration.services.ContractService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,9 +28,12 @@ public class ValidarContratoService {
     private final ContractService contractService;
     private final OpcionesRepo opcionesRepo;
     private final ClientService clientService;
+    private final ApplicationUserService applicationUserService;
     HttpClient httpClient = HttpClient.newHttpClient();
-    public ValidarContratoService(ContractRepository contractRepository, ContractService contractService, ClientRepo clientRepo, OpcionesRepo opcionesRepo, ClientService clientService) {
+    public ValidarContratoService(ContractRepository contractRepository, ContractService contractService, ClientRepo clientRepo,
+                                  OpcionesRepo opcionesRepo, ClientService clientService, ApplicationUserService applicationUserService) {
         this.clientRepository = clientRepo;
+        this.applicationUserService = applicationUserService;
         this.clientService = clientService;
         this.opcionesRepo = opcionesRepo;
         this.contractRepository = contractRepository;
@@ -103,6 +107,7 @@ public class ValidarContratoService {
             }
             else{//Existe por lo que lo actualizamos
                 Client client = clientService.getClientByDNI(dni);
+                contract.setEndDate(null);
                 if(address.contains("Calle")){
                     client.setAddress(address);
                 }else {
@@ -197,6 +202,34 @@ public class ValidarContratoService {
             System.out.println(e.getMessage());
         }
     }
+
+    //Al eliminar el contrato de un usuario tambien se le da de baja el acceso de usuario.
+    public boolean disableContract(String dni){
+        try{
+            Contract contract = contractRepository.findBy_sClient(dni);
+            contract.setEndDate(LocalDate.now());
+            contractRepository.save(contract);
+            applicationUserService.disableUser(dni);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public boolean enableContract(String dni){
+        try{
+            Contract contract = contractRepository.findBy_sClient(dni);
+            contract.setEndDate(null);
+            contractRepository.save(contract);
+            applicationUserService.enableUser(dni);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
 
 }
 
