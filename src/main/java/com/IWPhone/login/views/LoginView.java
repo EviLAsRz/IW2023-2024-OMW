@@ -60,9 +60,12 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         BacktoRegisterButton.addClickListener(e -> {
             UI.getCurrent().navigate("register");
         });
-        //TODO: Idear una forma de añadir un boton para recuperar contraseña!
+
+
         add(login, BacktoRegisterButton);
     }
+
+
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
@@ -71,6 +74,8 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
                 .getQueryParameters()
                 .getParameters()
                 .containsKey("error")) {
+            login.setError(true);
+
         }
     }
 }
