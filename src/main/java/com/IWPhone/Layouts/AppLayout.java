@@ -4,6 +4,7 @@ import com.IWPhone.MainView;
 import com.IWPhone.PanelEmpleados.view.ContratosView;
 import com.IWPhone.PanelEmpleados.view.DeleteUserView;
 import com.IWPhone.PanelEmpleados.view.GestionEmpleados;
+import com.IWPhone.PanelEmpleados.view.GestionNumeros;
 import com.IWPhone.Services.EmpleadoService;
 import com.IWPhone.registration.views.AdminRegistration;
 import com.IWPhone.registration.views.EmployeeRegistration;
@@ -101,7 +102,8 @@ public class AppLayout extends com.vaadin.flow.component.applayout.AppLayout {
         );
         if(empleadoService.getNombreDepartamento(securityService.getAuthenticatedUser().getUsername().toString()).equals("Atencion Al Cliente")){//Es de Atencion al cliente
             layout.add(
-                    new RouterLink("Contratos", ContratosView.class)
+                    new RouterLink("Contratos", ContratosView.class),
+                    new RouterLink("Telefonos", GestionNumeros.class)
             );
         }
 

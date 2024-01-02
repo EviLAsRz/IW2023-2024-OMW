@@ -40,8 +40,6 @@ public class Client  {
     private String _sMobilePhone;
     public String getMobilePhone() { return _sMobilePhone; }
     public void setMobilePhone(String mobilePhone) {
-        if(mobilePhone == null || mobilePhone.isEmpty()) throw new IllegalArgumentException(
-                "Teléfono móvil no puede ser nulo ni vacío");
         _sMobilePhone = mobilePhone;
     }
 

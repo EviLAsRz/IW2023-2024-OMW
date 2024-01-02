@@ -1,0 +1,13 @@
+FROM postgres:latest
+
+# Set environment variables
+ENV POSTGRES_PASSWORD=root
+ENV POSTGRES_DB=testdb
+ENV POSTGRES_USER=user
+
+# Set the exposed port
+EXPOSE 5432
+
+# Set the command for running the database
+CMD ["postgres"]
+
