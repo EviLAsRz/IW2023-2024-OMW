@@ -20,6 +20,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RolesAllowed("ADMIN")//Solo los administradores pueden acceder a esta vista
+@PageTitle("Gestion de empleados")
 @Route(value = "editEmployee",layout = AppLayout.class)
 public class GestionEmpleados extends VerticalLayout {
     private final GestionEmpleadosService gestionEmpleadosService;

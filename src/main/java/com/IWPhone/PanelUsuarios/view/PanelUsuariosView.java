@@ -17,11 +17,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 
 @Route(layout = UserLayout.class)
 @RolesAllowed({"USER", "ADMIN"})
+@PageTitle("Panel de usuarios")
 public class PanelUsuariosView extends VerticalLayout{
     final SecurityService securityService;
     final UserProfileService userProfileService;
