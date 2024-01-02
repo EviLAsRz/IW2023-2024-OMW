@@ -1,1 +1,6 @@
-com\IWPhone\IwBankApplicationTests.class
+DepartamentoServiceTest.class
+ApiManagerServiceTest.class
+ClientServiceTest.class
+IwBankApplicationTests.class
+ApplicationUserServiceTest.class
+EmpleadoServiceTest.class

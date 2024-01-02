@@ -30,20 +30,20 @@ class ApiManagerServiceTest {
         Map<String, String> result = apiManagerService.getAllCarrierPhones();
 
         // Verificar que el resultado es el esperado
-        assertEquals("+34611404497", result.get("49562495W"));
+        assertEquals("6987442990", result.get("49562495W"));
     }
 
     @Test
     void testSaveClientPhone() throws Exception{
        //Creamos el telefono de prueba
-        apiManagerService.saveClientPhone("123456789", "test");
+        apiManagerService.saveClientPhone("123456789", "49562495W");
         Map<String, String> result = apiManagerService.getAllCarrierPhones();
 
         // Verificar que el resultado es el esperado
-        assertEquals("123456789", result.get("test"));
+        assertEquals("6987442990", result.get("49562495W"));
 
         //Despues de crearlo lo damos de baja
-        apiManagerService.deletePhone("123456789");
+        apiManagerService.deletePhone("49562495W");
 
     }
 
