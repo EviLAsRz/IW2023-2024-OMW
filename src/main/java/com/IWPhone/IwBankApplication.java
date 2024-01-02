@@ -1,7 +1,9 @@
 package com.IWPhone;
 
 import com.IWPhone.Models.ApplicationUser;
+import com.IWPhone.Models.Departamento;
 import com.IWPhone.Repositories.ApplicationUserRepo;
+import com.IWPhone.Repositories.DepartamentoRepo;
 import com.IWPhone.Services.ApplicationUserService;
 import com.IWPhone.security.SecurityService;
 import org.springframework.boot.CommandLineRunner;
@@ -21,7 +23,8 @@ public class IwBankApplication {
     }
 
     @Bean
-    public CommandLineRunner loadData(SecurityService securityService, ApplicationUserService applicationUserService, ApplicationUserRepo applicationUserRepo){
+    public CommandLineRunner loadData(SecurityService securityService, ApplicationUserService applicationUserService,
+                                      ApplicationUserRepo applicationUserRepo, DepartamentoRepo departamentoRepo){
 
         return (args) -> {
             //Creamos un usuario admin si no existe, usando la repo
@@ -35,6 +38,28 @@ public class IwBankApplication {
                 admin.setRole("ADMIN");
                 applicationUserRepo.save(admin);
             }
+
+            //Creamos los departamentos si no existen, usando la repo
+            if(departamentoRepo.findByNombre("Atencion Al Cliente").isEmpty()){
+                Departamento departamento = new Departamento();
+                departamento.setNombre("Atencion Al Cliente");
+                departamentoRepo.save(departamento);
+            }
+
+            //Lo mismo con ventas
+            if(departamentoRepo.findByNombre("Ventas").isEmpty()){
+                Departamento departamento = new Departamento();
+                departamento.setNombre("Ventas");
+                departamentoRepo.save(departamento);
+            }
+
+            //Lo mismo con marketing
+            if(departamentoRepo.findByNombre("Marketing").isEmpty()){
+                Departamento departamento = new Departamento();
+                departamento.setNombre("Marketing");
+                departamentoRepo.save(departamento);
+            }
+
 
         };
     }
