@@ -3,6 +3,7 @@ import com.IWPhone.Models.Client;
 import com.IWPhone.Layouts.AppLayout;
 import com.IWPhone.Services.ClientService;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
@@ -21,7 +22,7 @@ public class GestionNumeros extends VerticalLayout {
 
     private final ClientService clientService;
     Grid<Client> grid = new Grid<>(Client.class, false);
-    Button eliminarTelefono = new Button("Eliminar teléfono");
+    Button eliminarTelefono = new Button("Eliminar teléfonos");
     Button modificarTelefonoMovil = new Button("Modificar teléfono móvil");
     Button modificarTelefonoFijo = new Button("Modificar teléfono fijo");
     TextField numeroMovil = new TextField();
@@ -46,7 +47,7 @@ public class GestionNumeros extends VerticalLayout {
                 grid,
                 new HorizontalLayout(numeroMovil, modificarTelefonoMovil),//TODO: HACERLO CON FORM
                 new HorizontalLayout(numeroFijo, modificarTelefonoFijo),
-                new HorizontalLayout(generarTelefono)
+                new HorizontalLayout(generarTelefono, eliminarTelefono)
         );
     }
 
@@ -67,12 +68,14 @@ public class GestionNumeros extends VerticalLayout {
         //Eliminar teléfono
         eliminarTelefono.addClickListener(e -> {
 
-            clientService.setMobilePhoneByDNI(grid.asSingleSelect().getValue().getDNI(), null);
+            clientService.setMobilePhoneByDNI(grid.asSingleSelect().getValue().getDNI(), "XXXXXXXXX");
+            clientService.setLandlineByDNI(grid.asSingleSelect().getValue().getDNI(), "XXXXXXXXX");
             Notification n = new Notification("Teléfono móvil eliminado, RECUERDA AGREGAR UN TELEFONO!!!", 3000);
             n.addThemeVariants(NotificationVariant.LUMO_ERROR);
             n.open();
             populateGrid();
         });
+        eliminarTelefono.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
         //Modificar teléfono a eleccion.
         modificarTelefonoMovil.addClickListener(e -> {
@@ -161,6 +164,8 @@ public class GestionNumeros extends VerticalLayout {
         });
 
     }
+
+
 
     //TODO: Metodos para eliminar, agregar y modificar números de teléfono.
 
