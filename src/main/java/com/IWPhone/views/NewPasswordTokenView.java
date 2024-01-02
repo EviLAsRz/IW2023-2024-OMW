@@ -5,16 +5,14 @@ import com.IWPhone.login.views.LoginView;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
-import com.vaadin.flow.router.BeforeEvent;
-import com.vaadin.flow.router.HasUrlParameter;
-import com.vaadin.flow.router.OptionalParameter;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
 @Route("new-password")
+@PageTitle("Nueva contraseña")
 @AnonymousAllowed
 public class NewPasswordTokenView extends FlexLayout implements HasUrlParameter<String> {
 

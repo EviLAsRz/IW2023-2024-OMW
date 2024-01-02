@@ -6,6 +6,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 @Route("change-password")
+@PageTitle("Cambiar contraseña")
 @AnonymousAllowed
 public class ChangePasswordView extends FlexLayout {
 

@@ -14,11 +14,13 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 
 
 @Route(value = "registerEmployee", layout = AppLayout.class)
+@PageTitle("Registro de Empleados")
 @RolesAllowed({"ADMIN"})
 public class EmployeeRegistration extends VerticalLayout {
     private final ApplicationUserRepo userRepository;

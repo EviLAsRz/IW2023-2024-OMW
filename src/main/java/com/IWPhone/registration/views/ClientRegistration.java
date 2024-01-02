@@ -9,6 +9,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextArea;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.component.textfield.TextField;
@@ -16,6 +17,7 @@ import com.vaadin.flow.component.button.Button;
 
 
 @Route("register")
+@PageTitle("Registro de Clientes")
 @AnonymousAllowed
 public class ClientRegistration extends VerticalLayout {
     private final ApplicationUserRepo userRepository;
