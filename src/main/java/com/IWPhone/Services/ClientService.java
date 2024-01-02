@@ -13,11 +13,13 @@ public class ClientService {
     SecurityService securityService;
     ClientRepo clientRepo;
     ApplicationUserService applicationUserService;
+    private final ApiManagerService apiManagerService;
     private static final Random RANDOM = new Random();
-    public ClientService(SecurityService securityService, ClientRepo clientRepo, ApplicationUserService applicationUserService) {
+    public ClientService(SecurityService securityService, ClientRepo clientRepo, ApplicationUserService applicationUserService, ApiManagerService apiManagerService) {
         this.securityService = securityService;
         this.clientRepo = clientRepo;
         this.applicationUserService = applicationUserService;
+        this.apiManagerService = apiManagerService;
     }
 
     public String getDNI(UUID idCliente){
@@ -46,6 +48,11 @@ public class ClientService {
 
     public void setMobilePhoneByDNI(String dni, String mobilePhone){
         Client c = clientRepo.findBy_sDNI(dni);
+        //Borramos el telefono anterior del usuario
+        if(c.getMobilePhone() != null){
+            String oldMobilePhone = c.getMobilePhone();
+            apiManagerService.deletePhone(oldMobilePhone);
+        }
         c.setMobilePhone(mobilePhone);
         clientRepo.save(c);
     }
@@ -55,7 +62,13 @@ public class ClientService {
     }
 
     public void setLandlineByDNI(String dni, String landline){
+
         Client c = clientRepo.findBy_sDNI(dni);
+        if (c.getLandline() != null){
+            String oldLandline = c.getLandline();
+            apiManagerService.deletePhone(oldLandline);
+        }
+
         c.setLandline(landline);
         clientRepo.save(c);
     }
@@ -78,12 +91,14 @@ public class ClientService {
 
     public void eraseMobilePhone(String dni){
         Client c = clientRepo.findBy_sDNI(dni);
+        apiManagerService.deletePhone(c.getMobilePhone());
         c.setMobilePhone(null);
         clientRepo.save(c);
     }
 
     public void eraseLandline(String dni){
         Client c = clientRepo.findBy_sDNI(dni);
+        apiManagerService.deletePhone(c.getLandline());
         c.setLandline(null);
         clientRepo.save(c);
     }

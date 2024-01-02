@@ -9,10 +9,12 @@ import java.util.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Service;
+
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+@Service
 public class ApiManagerService {
 
     private HttpClient httpClient = HttpClient.newHttpClient();

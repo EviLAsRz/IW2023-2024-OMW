@@ -7,6 +7,7 @@ import com.IWPhone.PanelEmpleados.view.GestionEmpleados;
 import com.IWPhone.PanelEmpleados.view.GestionNumeros;
 import com.IWPhone.Services.EmpleadoService;
 import com.IWPhone.registration.views.AdminRegistration;
+import com.IWPhone.registration.views.ClientRegistration;
 import com.IWPhone.registration.views.EmployeeRegistration;
 import com.IWPhone.security.SecurityService;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -104,6 +105,12 @@ public class AppLayout extends com.vaadin.flow.component.applayout.AppLayout {
             layout.add(
                     new RouterLink("Contratos", ContratosView.class),
                     new RouterLink("Telefonos", GestionNumeros.class)
+            );
+        }
+
+        if(empleadoService.getNombreDepartamento(securityService.getAuthenticatedUser().getUsername().toString()).equals("Marketing")){//Es de Atencion al cliente
+            layout.add(
+                    new RouterLink("Registrar Contrato", ClientRegistration.class)
             );
         }
 

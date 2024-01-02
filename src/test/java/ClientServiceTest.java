@@ -1,5 +1,6 @@
 import com.IWPhone.Models.Client;
 import com.IWPhone.Repositories.ClientRepo;
+import com.IWPhone.Services.ApiManagerService;
 import com.IWPhone.Services.ApplicationUserService;
 import com.IWPhone.Services.ClientService;
 import com.IWPhone.security.SecurityService;
@@ -21,12 +22,12 @@ public class ClientServiceTest {
     @MockBean
     ClientRepo clientRepo;
     ApplicationUserService applicationUserService;
-
+    ApiManagerService apiManagerService;
     ClientService clientService;
 
     @BeforeEach
     void setup() {
-        clientService = new ClientService(securityService, clientRepo, applicationUserService);
+        clientService = new ClientService(securityService, clientRepo, applicationUserService, apiManagerService);
     }
 
     @Test

@@ -22,11 +22,10 @@ public class GestionNumeros extends VerticalLayout {
     private final ClientService clientService;
     Grid<Client> grid = new Grid<>(Client.class, false);
     Button eliminarTelefono = new Button("Eliminar teléfono");
-
     Button modificarTelefonoMovil = new Button("Modificar teléfono móvil");
     Button modificarTelefonoFijo = new Button("Modificar teléfono fijo");
-    TextField numeroMovil = new TextField("Número de teléfono móvil");
-    TextField numeroFijo = new TextField("Número de teléfono fijo");
+    TextField numeroMovil = new TextField();
+    TextField numeroFijo = new TextField();
 
     Button generarTelefono = new Button("Generar teléfono nuevo");
     GestionNumeros(ClientService clientService){
@@ -34,12 +33,11 @@ public class GestionNumeros extends VerticalLayout {
         //Set grid
         configureGrid();
         populateGrid();
-
+        configButtons();
         //Actualizamos el valor de los campos de texto con los valores del cliente seleccionado.
         grid.asSingleSelect().addValueChangeListener(event -> {
-            Client c = grid.asSingleSelect().getValue();
-            numeroMovil.setValue(c.getMobilePhone());
-            numeroFijo.setValue(c.getLandline());
+            numeroMovil.setValue(grid.asSingleSelect().getValue().getMobilePhone());
+            numeroFijo.setValue(grid.asSingleSelect().getValue().getLandline());
         });
 
 
@@ -64,12 +62,12 @@ public class GestionNumeros extends VerticalLayout {
     }
 
     void configButtons(){
-        Client c = grid.asSingleSelect().getValue();//Cliente seleccionado
+       //Cliente seleccionado
 
         //Eliminar teléfono
         eliminarTelefono.addClickListener(e -> {
 
-            clientService.setMobilePhoneByDNI(c.getDNI(), null);
+            clientService.setMobilePhoneByDNI(grid.asSingleSelect().getValue().getDNI(), null);
             Notification n = new Notification("Teléfono móvil eliminado, RECUERDA AGREGAR UN TELEFONO!!!", 3000);
             n.addThemeVariants(NotificationVariant.LUMO_ERROR);
             n.open();
@@ -79,7 +77,7 @@ public class GestionNumeros extends VerticalLayout {
         //Modificar teléfono a eleccion.
         modificarTelefonoMovil.addClickListener(e -> {
            //Comprobamos que este seleccionado un cliente.
-              if(c == null) {
+              if(grid.asSingleSelect().getValue() == null) {
                   Notification n = new Notification("Debes seleccionar un cliente para modificar su teléfono", 3000);
                   n.addThemeVariants(NotificationVariant.LUMO_ERROR);
                   n.open();
@@ -89,24 +87,22 @@ public class GestionNumeros extends VerticalLayout {
                       n.addThemeVariants(NotificationVariant.LUMO_ERROR);
                       n.open();
                   }
-                  if(numeroMovil.getValue().length() != 9){
-                      Notification n = new Notification("El número de teléfono debe tener 9 dígitos", 3000);
+                  if(numeroMovil.getValue().length() != 9 && numeroMovil.getValue().length() != 13){
+                      Notification n = new Notification("El número de teléfono debe tener 9 dígitos, tiene "+ numeroMovil.getValue().length(), 3000);
                       n.addThemeVariants(NotificationVariant.LUMO_ERROR);
                       n.open();
                   }
-                  if(numeroMovil.getValue().length() == 9){//El telefono tiene 9 caracteres
-                     //Comprobamos que el telefono que se desa poner no este ya en uso.
-                      if(clientService.telefonoExiste(numeroMovil.getValue())){
-                          Notification n = new Notification("El número de teléfono ya está en uso", 3000);
-                          n.addThemeVariants(NotificationVariant.LUMO_ERROR);
-                          n.open();
-                      }else{
-                          clientService.setMobilePhoneByDNI(c.getDNI(), numeroMovil.getValue());
-                          Notification n = new Notification("Teléfono móvil modificado", 3000);
-                          n.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                          n.open();
-                          populateGrid();
-                      }
+
+                  if(clientService.telefonoExiste(numeroMovil.getValue())){
+                      Notification n = new Notification("El número de teléfono ya está en uso", 3000);
+                      n.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                      n.open();
+                  }else{
+                      clientService.setMobilePhoneByDNI(grid.asSingleSelect().getValue().getDNI(), numeroMovil.getValue());
+                      Notification n = new Notification("Teléfono móvil modificado", 3000);
+                      n.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                      n.open();
+                      populateGrid();
                   }
               }
         });
@@ -114,7 +110,7 @@ public class GestionNumeros extends VerticalLayout {
         //Modificar telefono fijo, hacer exactamente lo mismo que con el movil.
         modificarTelefonoFijo.addClickListener(e -> {
             //Comprobamos que este seleccionado un cliente.
-            if(c == null) {
+            if(grid.asSingleSelect().getValue() == null) {
                 Notification n = new Notification("Debes seleccionar un cliente para modificar su teléfono", 3000);
                 n.addThemeVariants(NotificationVariant.LUMO_ERROR);
                 n.open();
@@ -124,24 +120,21 @@ public class GestionNumeros extends VerticalLayout {
                     n.addThemeVariants(NotificationVariant.LUMO_ERROR);
                     n.open();
                 }
-                if(numeroFijo.getValue().length() != 9){
-                    Notification n = new Notification("El número de teléfono debe tener 9 dígitos", 3000);
+                if(numeroFijo.getValue().length() != 9 && numeroFijo.getValue().length() != 13){
+                    Notification n = new Notification("El número de teléfono debe tener 9 o 13 dígitos", 3000);
                     n.addThemeVariants(NotificationVariant.LUMO_ERROR);
                     n.open();
                 }
-                if(numeroFijo.getValue().length() == 9){//El telefono tiene 9 caracteres
-                    //Comprobamos que el telefono que se desa poner no este ya en uso.
-                    if(clientService.telefonoExiste(numeroFijo.getValue())){
-                        Notification n = new Notification("El número de teléfono ya está en uso", 3000);
-                        n.addThemeVariants(NotificationVariant.LUMO_ERROR);
-                        n.open();
-                    }else{
-                        clientService.setLandlineByDNI(c.getDNI(), numeroFijo.getValue());
-                        Notification n = new Notification("Teléfono fijo modificado", 3000);
-                        n.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                        n.open();
-                        populateGrid();
-                    }
+                if(clientService.telefonoExiste(numeroFijo.getValue())){
+                    Notification n = new Notification("El número de teléfono ya está en uso", 3000);
+                    n.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                    n.open();
+                }else{
+                    clientService.setLandlineByDNI(grid.asSingleSelect().getValue().getDNI(), numeroFijo.getValue());
+                    Notification n = new Notification("Teléfono fijo modificado", 3000);
+                    n.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                    n.open();
+                    populateGrid();
                 }
             }
         });
@@ -149,7 +142,7 @@ public class GestionNumeros extends VerticalLayout {
         //Generar teléfono nuevo de forma aleatoria.
         generarTelefono.addClickListener(e -> {
             //Comprobamos que este seleccionado un cliente.
-            if(c == null) {
+            if(grid.asSingleSelect().getValue() == null) {
                 Notification n = new Notification("Debes seleccionar un cliente para modificar su teléfono", 3000);
                 n.addThemeVariants(NotificationVariant.LUMO_ERROR);
                 n.open();
@@ -157,6 +150,8 @@ public class GestionNumeros extends VerticalLayout {
                 //Generamos un número de teléfono aleatorio.
                 String sMobileNumber = ClientService.generateMobileNumber();
                 String sLandlineNumber = ClientService.generateLandlineNumber();
+                clientService.setMobilePhoneByDNI(grid.asSingleSelect().getValue().getDNI(), sMobileNumber);
+                clientService.setLandlineByDNI(grid.asSingleSelect().getValue().getDNI(), sLandlineNumber);
                 //Las comprobaciones se hacen dentro del generador de números de teléfono.
                 Notification n = new Notification("Teléfono móvil generado: " + sMobileNumber + " Teléfono fijo generado: " + sLandlineNumber, 3000);
                 n.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
