@@ -4,6 +4,7 @@ import com.IWPhone.Models.ApplicationUser;
 import com.IWPhone.Repositories.ApplicationUserRepo;
 import com.IWPhone.security.SecurityService;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +48,11 @@ public class ApplicationUserService {
         ApplicationUser appUser = getApplicationUser(username).get();
         appUser.setPassword(SecurityService.passwordEncoder().encode(newPassword));
         appUserRepo.save(appUser);
+    }
+
+    public boolean verifyPassword(String currentPassword, String hashedPassword){
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.matches(currentPassword, hashedPassword);
     }
 
     public String getMail(String username){
