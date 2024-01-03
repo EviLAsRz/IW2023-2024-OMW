@@ -15,7 +15,9 @@ public class ApplicationUserService {
     public ApplicationUserService(ApplicationUserRepo appUserRepo) {
         this.appUserRepo = appUserRepo;
     }
-
+    public Optional<ApplicationUser> getApplicationUserMail(String mail){
+        return appUserRepo.findByEmail(mail);
+    }
     //Setter and getter de los usuarios de la aplicación
 
     public Optional<ApplicationUser> getApplicationUser(String username){
@@ -34,6 +36,11 @@ public class ApplicationUserService {
         ApplicationUser appUser = getApplicationUser(username).get();
         appUser.setUsername(newUsername);
         appUserRepo.save(appUser);
+    }
+
+    public String getPassword(String mail){
+        ApplicationUser appUser = getApplicationUserMail(mail).get();
+        return appUser.getPassword();
     }
 
     public void setPassword(String username, String newPassword){
