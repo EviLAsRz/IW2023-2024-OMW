@@ -24,7 +24,9 @@ public class EmpleadoService {
     public Optional<Empleado> getEmpleado(String username){
         return empleadoRepo.findBy_dni(username);
     }
-
+    public Optional<Empleado> getEmpleadoByUUID(UUID uuid){
+        return empleadoRepo.findById(uuid);
+    }
     public void createEmpleado(String dniUsuario, UUID tDepartamento){
         Empleado empleado = new Empleado();
         empleado.set_dni(dniUsuario);

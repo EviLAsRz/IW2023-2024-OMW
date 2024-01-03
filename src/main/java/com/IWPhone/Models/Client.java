@@ -14,6 +14,9 @@ public class Client  {
     @GeneratedValue
     private UUID id;
 
+    public UUID getId() {
+        return id;
+    }
 
     // _sDNI: Methods.
     @NotEmpty
