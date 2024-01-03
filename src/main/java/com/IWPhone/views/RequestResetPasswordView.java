@@ -1,7 +1,6 @@
 package com.IWPhone.views;
 
 import com.IWPhone.Models.PasswordResetToken;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
@@ -16,10 +15,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.IWPhone.Services.EmailService;
 import com.IWPhone.Services.PasswordResetService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 @Route("reset-password")
@@ -52,7 +48,7 @@ public class RequestResetPasswordView extends FlexLayout {
         FirstSection.getStyle().set("background-color", "#2d3d53");
         FirstSection.getStyle().set("padding", "10px");
         add(FirstSection);
-        
+
         add(secondSection);
 
         //Estilos
@@ -97,8 +93,6 @@ public class RequestResetPasswordView extends FlexLayout {
                 Paragraph myParagraph = new Paragraph("We have sent an email to " + email + ". Please check your inbox for further instructions.");
                 myParagraph.getElement().getStyle().set("font-size", "20px");
                 secondSection.add(myParagraph);
-
-                //TODO: Manejar el envio del correo para reestablecer la contraseña
             }
         });
         return submitButton;
