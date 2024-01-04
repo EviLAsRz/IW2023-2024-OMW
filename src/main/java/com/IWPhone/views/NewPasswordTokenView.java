@@ -12,6 +12,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
@@ -21,6 +22,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.flow.component.dependency.JavaScript;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -47,22 +49,34 @@ public class NewPasswordTokenView extends FlexLayout implements HasUrlParameter<
         Optional<String> tokenOptional = event.getLocation().getQueryParameters().getSingleParameter("token");
         Optional<String> mailOptional = event.getLocation().getQueryParameters().getSingleParameter("mail");
 
+
         if (tokenOptional.isPresent() && mailOptional.isPresent()) {
             String token = tokenOptional.get();
             mail = mailOptional.get();
+
 
             boolean isTokenValid = passwordService.verifyToken(token);
             Notification.show("Is token valid: " + isTokenValid);
             Notification.show("Email del destinatario: " + mail);
 
+
             //si no es valido se reenvia al login
-            if (!isTokenValid && mail.isEmpty())
-                event.rerouteTo(LoginView.class);
+            if (!isTokenValid)
+                UI.getCurrent().access(() -> UI.getCurrent().navigate(LoginView.class));
+        }else UI.getCurrent().access(() -> UI.getCurrent().navigate(LoginView.class));
+
+
+        Optional<ApplicationUser> optionalUser = applicationUserService.getApplicationUserMail(mail);
+        Notification.show("Valor de ispresent: " + optionalUser.isPresent());
+        if (optionalUser.isPresent()) {
+            target = optionalUser.get();
+            Notification.show("Usuario valido: " + target);
+
+        } else {
+            Notification.show("Error: No se encontró un usuario con el correo electrónico proporcionado.", 5000, Position.MIDDLE);
+            UI.getCurrent().access(() -> UI.getCurrent().navigate(LoginView.class));
         }
 
-
-        //Inicializacion global
-        target = applicationUserService.getApplicationUserMail(mail).get();
         applicationUserServiceInt = applicationUserService;
 
         //Creación del formulario en la funcion setParameter
@@ -109,13 +123,14 @@ public class NewPasswordTokenView extends FlexLayout implements HasUrlParameter<
     }
     public NewPasswordTokenView(){
         //vacia ya que queremos que toda la lógica de la vista esté en setParameter
+
     }
 
     private Button getButton(PasswordField currentPassword, PasswordField newPassword, PasswordField confirmPassword) {
         Button submitButton = new Button("Continue");
         submitButton.setThemeName("primary");
         submitButton.setSizeFull();
-        Notification.show("Contraseña actual: "+ applicationUserService.getPassword(mail));
+        Notification.show("Contraseña actual: "+ applicationUserServiceInt.getPassword(mail));
         submitButton.addClickListener(event-> {
 
             if (!isValidCurrentPassword(currentPassword.getValue(), target.getPassword())) {
