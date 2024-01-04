@@ -11,4 +11,5 @@ public interface ClienteConsultaRepo extends JpaRepository<Cliente_Consulta_Empl
     List<Cliente_Consulta_Empleado> findBy_clienteAndAnswered(UUID id, boolean answered);
     Cliente_Consulta_Empleado findBy_consulta(UUID id);
     List<Cliente_Consulta_Empleado> findBy_empleado(UUID id);
+    List<Cliente_Consulta_Empleado> findByAnsweredIsFalse();
 }

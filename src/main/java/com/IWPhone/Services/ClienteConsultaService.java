@@ -16,9 +16,14 @@ public class ClienteConsultaService {
     private final ClientService clienteService;
     private final ConsultRepo consultRepo;
     private final EmpleadoService empleadoService;
+    private final ApplicationUserService applicationUserService;
+    private final EmailService emailService;
 
-    public ClienteConsultaService(ClienteConsultaRepo clienteConsultaRepo, ClientService clienteService, ConsultRepo consultRepo, EmpleadoService empleadoService){
+    public ClienteConsultaService(ClienteConsultaRepo clienteConsultaRepo, ClientService clienteService, ConsultRepo consultRepo,
+                                  EmpleadoService empleadoService, ApplicationUserService applicationUserService, EmailService emailService){
         this.clienteConsultaRepo = clienteConsultaRepo;
+        this.emailService = emailService;
+        this.applicationUserService = applicationUserService;
         this.consultRepo = consultRepo;
         this.clienteService = clienteService;
         this.empleadoService = empleadoService;
@@ -115,15 +120,29 @@ public class ClienteConsultaService {
     }
 
 
-    public void setAnswered(UUID id){
-        Cliente_Consulta_Empleado c = clienteConsultaRepo.findById(id);
-        c.setAnswered(true);
+    public void setAnswered(UUID id, boolean answered){
+        Cliente_Consulta_Empleado c = clienteConsultaRepo.findBy_consulta(id);
+        c.setAnswered(answered);
         clienteConsultaRepo.save(c);
     }
 
-    public void deleteConsulta(UUID id){
+    public void sendMailToCliente(UUID id){
         Cliente_Consulta_Empleado c = clienteConsultaRepo.findById(id);
-        clienteConsultaRepo.delete(c);
+        Client cliente = clienteService.getClientById(c.get_cliente());
+        Consult consult = consultRepo.findById(c.get_consulta());
+        String email = applicationUserService.getMail(cliente.getDNI());
+        String subject = "Respuesta a su consulta";
+        String body = "Su consulta: " + consult.getDetails() + " ha sido respondida";
+        emailService.sendCustomEmail(email, subject, body);
+    }
+
+    public List<Consult>getUnasweredConsults(){
+        List<Consult> consults = new ArrayList<>();
+        List<Cliente_Consulta_Empleado> cces = clienteConsultaRepo.findByAnsweredIsFalse();
+        for(Cliente_Consulta_Empleado cce : cces){
+            consults.add(consultRepo.findById(cce.get_consulta()));
+        }
+        return consults;
     }
 
 
