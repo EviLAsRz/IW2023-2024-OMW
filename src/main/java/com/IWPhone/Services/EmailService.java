@@ -12,6 +12,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 @Service
 public class EmailService {
 
@@ -44,7 +47,7 @@ public class EmailService {
 
                     //modificamos en enlace para que el usuario no vea una ruta "extraña"
                     String title = "Click here to reset your password";
-                    String link = "http://localhost:8080/new-password?token=" + tokenClass.getToken();
+                    String link = "http://localhost:8080/new-password?token=" + tokenClass.getToken() + "&mail=" + URLEncoder.encode(to, StandardCharsets.UTF_8.toString());
                     String htmlLink = "<a href=\"" + link + "\" title=\"" + title + "\">" + title + "</a>";
                     mimeMessage.setContent(htmlLink, "text/html");
                 }

@@ -4,7 +4,8 @@ import com.IWPhone.Models.ApplicationUser;
 import com.IWPhone.Repositories.ApplicationUserRepo;
 import com.IWPhone.security.SecurityService;
 import org.springframework.stereotype.Service;
-import java.util.UUID;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -15,15 +16,13 @@ public class ApplicationUserService {
     public ApplicationUserService(ApplicationUserRepo appUserRepo) {
         this.appUserRepo = appUserRepo;
     }
-
+    public Optional<ApplicationUser> getApplicationUserMail(String mail){
+        return appUserRepo.findByEmail(mail);
+    }
     //Setter and getter de los usuarios de la aplicación
 
     public Optional<ApplicationUser> getApplicationUser(String username){
         return appUserRepo.findByUsername(username);
-    }
-
-    public ApplicationUser getApplicationUserById(UUID id){
-        return appUserRepo.findById(id);
     }
 
     public String getName(String username){
@@ -40,10 +39,20 @@ public class ApplicationUserService {
         appUserRepo.save(appUser);
     }
 
+    public String getPassword(String mail){
+        ApplicationUser appUser = getApplicationUserMail(mail).get();
+        return appUser.getPassword();
+    }
+
     public void setPassword(String username, String newPassword){
         ApplicationUser appUser = getApplicationUser(username).get();
         appUser.setPassword(SecurityService.passwordEncoder().encode(newPassword));
         appUserRepo.save(appUser);
+    }
+
+    public boolean verifyPassword(String currentPassword, String hashedPassword){
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.matches(currentPassword, hashedPassword);
     }
 
     public String getMail(String username){
