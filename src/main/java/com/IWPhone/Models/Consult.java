@@ -16,14 +16,15 @@ public class Consult {
     public UUID getId() { return _Id; }
 
     // _sDetails: Methods.
-    @NotEmpty
+
     private String _sDetails;
     public String getDetails() {
         return _sDetails;
     }
     public void setDetails(String details) {
-        if(details == null || details.isEmpty()) throw new IllegalArgumentException(
-                "Los detalles no pueden ser nulos ni vacíos");
+
         _sDetails = details;
     }
+
+
 }

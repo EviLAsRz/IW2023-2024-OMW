@@ -7,6 +7,6 @@ import java.util.UUID;
 
 public interface ConsultRepo extends JpaRepository<Consult, Long> {
     Consult findById(UUID id);
-    List<Consult> getAllByClienteId(UUID id);
+
 
 }

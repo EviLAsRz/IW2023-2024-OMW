@@ -13,13 +13,11 @@ public class Cliente_Consulta_Empleado {
     @Id
     private UUID id;
 
-    @NotEmpty
+
     private UUID _cliente;
 
-    @NotEmpty
     private UUID _empleado;
 
-    @NotEmpty
     private UUID _consulta;
 
     public UUID getId() {
@@ -53,4 +51,15 @@ public class Cliente_Consulta_Empleado {
     public void set_consulta(UUID _consulta) {
         this._consulta = _consulta;
     }
+
+    private boolean answered = false;//Si esta cerrada o contestada se
+
+    public boolean isAnswered() {
+        return answered;
+    }
+
+    public void setAnswered(boolean answered) {
+        this.answered = answered;
+    }
+
 }

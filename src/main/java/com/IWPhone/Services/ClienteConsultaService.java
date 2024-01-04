@@ -8,9 +8,7 @@ import com.IWPhone.Repositories.ClienteConsultaRepo;
 import com.IWPhone.Repositories.ConsultRepo;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ClienteConsultaService {
@@ -26,18 +24,32 @@ public class ClienteConsultaService {
         this.empleadoService = empleadoService;
     }
 
-    public void delete(long id){
-        clienteConsultaRepo.deleteById(id);
+    public void delete(Consult c){
+        consultRepo.delete(c);
+        //Buscamos el cliente consulta que tenga la consulta que queremos borrar
+        Cliente_Consulta_Empleado cce = clienteConsultaRepo.findBy_consulta(c.getId());
+        //Borramos el cliente consulta
+        clienteConsultaRepo.delete(cce);
+
     }
 
-    public void deleteByClienteId(UUID id){
-        Cliente_Consulta_Empleado c = clienteConsultaRepo.findByClienteId(id);
-        clienteConsultaRepo.delete(c);
-    }
 
     public List<Consult>getConsultasByClienteId(UUID id){
-        Cliente_Consulta_Empleado c = clienteConsultaRepo.findByClienteId(id);
-        return consultRepo.getAllByClienteId(c.get_cliente());
+        List<Cliente_Consulta_Empleado> c = clienteConsultaRepo.findBy_cliente(id);
+        List<Consult> consults = new ArrayList<>();
+        for(Cliente_Consulta_Empleado cce : c){
+            consults.add(consultRepo.findById(cce.get_consulta()));
+        }
+        return consults;
+    }
+
+    public List<Consult>getConsultasByEmpleadoId(UUID id){
+        List<Cliente_Consulta_Empleado> c = clienteConsultaRepo.findBy_empleado(id);
+        List<Consult> consults = new ArrayList<>();
+        for(Cliente_Consulta_Empleado cce : c){
+            consults.add(consultRepo.findById(cce.get_consulta()));
+        }
+        return consults;
     }
 
     public List<Consult>getAllConsultas(){
@@ -50,18 +62,16 @@ public class ClienteConsultaService {
         consultRepo.save(c);
     }
 
-    public void createClienteConsulta(String dniCliente, String dniEmpleado, String detallesConsulta){
+    public void createClienteConsulta(String dniCliente, String detallesConsulta){
 
         Cliente_Consulta_Empleado c = new Cliente_Consulta_Empleado();
 
         //El cliente siempre va a existir
         Client cliente = clienteService.getClientByDNI(dniCliente);
         c.set_cliente(cliente.getId());
+        c.setAnswered(false);
 
-        //El empleado siempre existe
-        Empleado e = empleadoService.getEmpleado(dniEmpleado).get();
-        if(empleadoService.getEmpleado(dniEmpleado).isEmpty()) throw new IllegalArgumentException("El empleado no existe");
-        c.set_empleado(e.getId());
+        //El empleado no es necesario poner el empleado, ya que se asigna a cerrar la consulta
 
         //Creamos y guardamos los detalles de la consulta
         Consult consult = new Consult();
@@ -78,7 +88,7 @@ public class ClienteConsultaService {
         //Pillamos todos los clientes que tienen consultas
         List<Cliente_Consulta_Empleado> clientesConsultas = clienteConsultaRepo.findAll();
         //Creamos un mapa para guardar los clientes y sus consultas
-        Map<Client,Consult> clientesConsultasMap = null;
+        Map<Client,Consult> clientesConsultasMap = new HashMap<>();
         //Por cada cliente consulta, pillamos el cliente y la consulta y lo metemos en el mapa
         for(Cliente_Consulta_Empleado c : clientesConsultas){
             Client cliente = clienteService.getClientById(c.get_cliente());
@@ -89,10 +99,32 @@ public class ClienteConsultaService {
     }
 
     public Empleado getLinkedEmployee(UUID id){
-        Cliente_Consulta_Empleado c = clienteConsultaRepo.findByClienteId(id);
+        Cliente_Consulta_Empleado c = clienteConsultaRepo.findById(id);
         return empleadoService.getEmpleadoByUUID(c.get_empleado()).get();
     }
 
+    public List<Consult> getAllUnansweredConsults(UUID clienteId){
+
+        List<Consult> consults = new ArrayList<>();
+        List<Cliente_Consulta_Empleado> cces = clienteConsultaRepo.findBy_clienteAndAnswered(clienteId,false);
+        for(Cliente_Consulta_Empleado cce : cces){
+            consults.add(consultRepo.findById(cce.get_consulta()));
+        }
+        return consults;
+
+    }
+
+
+    public void setAnswered(UUID id){
+        Cliente_Consulta_Empleado c = clienteConsultaRepo.findById(id);
+        c.setAnswered(true);
+        clienteConsultaRepo.save(c);
+    }
+
+    public void deleteConsulta(UUID id){
+        Cliente_Consulta_Empleado c = clienteConsultaRepo.findById(id);
+        clienteConsultaRepo.delete(c);
+    }
 
 
 }

@@ -4,7 +4,7 @@ import com.IWPhone.Models.ApplicationUser;
 import com.IWPhone.Repositories.ApplicationUserRepo;
 import com.IWPhone.security.SecurityService;
 import org.springframework.stereotype.Service;
-
+import java.util.UUID;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +20,10 @@ public class ApplicationUserService {
 
     public Optional<ApplicationUser> getApplicationUser(String username){
         return appUserRepo.findByUsername(username);
+    }
+
+    public ApplicationUser getApplicationUserById(UUID id){
+        return appUserRepo.findById(id);
     }
 
     public String getName(String username){

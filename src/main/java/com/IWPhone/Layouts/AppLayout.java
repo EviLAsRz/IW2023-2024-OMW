@@ -1,10 +1,9 @@
 package com.IWPhone.Layouts;
 
 import com.IWPhone.MainView;
-import com.IWPhone.PanelEmpleados.view.ContratosView;
-import com.IWPhone.PanelEmpleados.view.DeleteUserView;
-import com.IWPhone.PanelEmpleados.view.GestionEmpleados;
-import com.IWPhone.PanelEmpleados.view.GestionNumeros;
+import com.IWPhone.PanelEmpleados.view.*;
+
+import com.IWPhone.PanelUsuarios.view.CreacionConsultasView;
 import com.IWPhone.Services.EmpleadoService;
 import com.IWPhone.registration.views.AdminRegistration;
 import com.IWPhone.registration.views.ClientRegistration;
@@ -104,7 +103,8 @@ public class AppLayout extends com.vaadin.flow.component.applayout.AppLayout {
         if(empleadoService.getNombreDepartamento(securityService.getAuthenticatedUser().getUsername().toString()).equals("Atencion Al Cliente")){//Es de Atencion al cliente
             layout.add(
                     new RouterLink("Contratos", ContratosView.class),
-                    new RouterLink("Telefonos", GestionNumeros.class)
+                    new RouterLink("Telefonos", GestionNumeros.class),
+                    new RouterLink("Consultas", GestionConsultasView.class)
             );
         }
 
@@ -128,7 +128,8 @@ public class AppLayout extends com.vaadin.flow.component.applayout.AppLayout {
         layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         layout.setWidthFull();
         layout.add(
-                new RouterLink("Volver al incio", MainView.class)
+                new RouterLink("Volver al incio", MainView.class),
+                new RouterLink("Consultas", CreacionConsultasView.class)
         );
 
 
