@@ -6,7 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 public class PasswordResetToken {
@@ -21,9 +20,14 @@ public class PasswordResetToken {
 
     private String email;
 
+    private boolean isValid;
+
     // Getters and setters...
 
 
+    public boolean isValid() { return isValid; }
+
+    public void setValid(boolean valid) {this.isValid = valid; }
     public Long getId() {
         return id;
     }

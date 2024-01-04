@@ -21,8 +21,6 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.flow.component.dependency.JavaScript;
-
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -38,10 +36,14 @@ public class NewPasswordTokenView extends FlexLayout implements HasUrlParameter<
     @Autowired
     private ApplicationUserService applicationUserService;
 
+    @Autowired
+    private PasswordResetService passwordResetService;
+
     private VerticalLayout formLayout;
     private Div firstSection;
     private Div secondSection;
     private String mail;
+    private boolean isValidToken;
     private static ApplicationUser target;
     private static ApplicationUserService applicationUserServiceInt;
     @Override
@@ -54,26 +56,27 @@ public class NewPasswordTokenView extends FlexLayout implements HasUrlParameter<
             String token = tokenOptional.get();
             mail = mailOptional.get();
 
+            isValidToken = passwordService.verifyToken(token);
 
-            boolean isTokenValid = passwordService.verifyToken(token);
-            Notification.show("Is token valid: " + isTokenValid);
             Notification.show("Email del destinatario: " + mail);
-
+            //Desactivamos el valor del token
+            passwordResetService.changeisValidValuetoFalse(token);
+            Notification.show("Se llama a isValidValuetoFalse");
 
             //si no es valido se reenvia al login
-            if (!isTokenValid)
-                UI.getCurrent().access(() -> UI.getCurrent().navigate(LoginView.class));
         }else UI.getCurrent().access(() -> UI.getCurrent().navigate(LoginView.class));
 
 
         Optional<ApplicationUser> optionalUser = applicationUserService.getApplicationUserMail(mail);
-        Notification.show("Valor de ispresent: " + optionalUser.isPresent());
         if (optionalUser.isPresent()) {
             target = optionalUser.get();
             Notification.show("Usuario valido: " + target);
 
         } else {
-            Notification.show("Error: No se encontró un usuario con el correo electrónico proporcionado.", 5000, Position.MIDDLE);
+            if (!isValidToken)
+                Notification.show("Error: El token ha caducado. Vuelve a solicitar un nuevo código.", 5000, Position.MIDDLE);
+            else
+                Notification.show("Error: No se encontró un usuario con el correo electrónico proporcionado.", 5000, Position.MIDDLE);
             UI.getCurrent().access(() -> UI.getCurrent().navigate(LoginView.class));
         }
 

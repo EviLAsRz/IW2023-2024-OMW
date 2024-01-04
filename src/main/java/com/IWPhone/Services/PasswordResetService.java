@@ -2,6 +2,7 @@ package com.IWPhone.Services;
 
 import com.IWPhone.Models.PasswordResetToken;
 import com.IWPhone.Repositories.PasswordResetTokenRepository;
+import com.vaadin.flow.component.notification.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,20 +35,33 @@ public class PasswordResetService {
         tokenRepository.save(token);
     }
 
+    public void changeisValidValuetoFalse(String token) {
+        Optional<PasswordResetToken> optionalToken = tokenRepository.findByToken(token);
+        if(optionalToken.isPresent()) {
+            Notification.show("Token cambia valor a false");
+            optionalToken.get().setValid(false);
+            tokenRepository.save(optionalToken.get());
+        }
+    }
     public boolean verifyToken(String token){
         Optional<PasswordResetToken> optionalToken = tokenRepository.findByToken(token);
 
-        if(optionalToken.isEmpty())
-            //token no encontrado
+        if(optionalToken.isEmpty()) {
+            Notification.show("Token no encontrado");
             return false;
+        }
 
-        return true;
-        //comprobar si el token ha expirado
+        if (!optionalToken.get().isValid()) {
+            Notification.show("Token no valido");
+            return false;
+        }
         /*
-        PasswordResetToken foundToken = optionalToken.get();
-        return !foundToken.getExpiryDate().isBefore(ChronoLocalDateTime.from(LocalTime.now()));
-
-         */
+        if (!optionalToken.get().getExpiryDate().isBefore(ChronoLocalDateTime.from(LocalTime.now()))) {
+            Notification.show("Token expirado");
+            return false;
+        }
+        */
+        return true;
     }
 
     // Otros métodos relacionados con el restablecimiento de la contraseña...
