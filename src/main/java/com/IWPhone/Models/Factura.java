@@ -65,5 +65,4 @@ public class Factura {
     @NotEmpty
     private Double _iva;
 
-
 }

@@ -60,6 +60,13 @@ public class IwBankApplication {
                 departamentoRepo.save(departamento);
             }
 
+            //Lo mismo con finanzas
+            if(departamentoRepo.findByNombre("Finanzas").isEmpty()){
+                Departamento departamento = new Departamento();
+                departamento.setNombre("Finanzas");
+                departamentoRepo.save(departamento);
+            }
+
 
         };
     }

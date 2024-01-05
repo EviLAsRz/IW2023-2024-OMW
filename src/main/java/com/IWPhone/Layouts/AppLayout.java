@@ -3,7 +3,7 @@ package com.IWPhone.Layouts;
 import com.IWPhone.MainView;
 import com.IWPhone.PanelEmpleados.view.*;
 
-import com.IWPhone.PanelUsuarios.view.CreacionConsultasView;
+        import com.IWPhone.PanelUsuarios.view.CreacionConsultasView;
 import com.IWPhone.Services.EmpleadoService;
 import com.IWPhone.registration.views.AdminRegistration;
 import com.IWPhone.registration.views.ClientRegistration;
@@ -98,7 +98,7 @@ public class AppLayout extends com.vaadin.flow.component.applayout.AppLayout {
         layout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         layout.setWidthFull();
         layout.add(
-                new RouterLink("Volver al incio", MainView.class)
+                new RouterLink("Volver al inicio", MainView.class)
         );
         if(empleadoService.getNombreDepartamento(securityService.getAuthenticatedUser().getUsername().toString()).equals("Atencion Al Cliente")){//Es de Atencion al cliente
             layout.add(
@@ -108,9 +108,15 @@ public class AppLayout extends com.vaadin.flow.component.applayout.AppLayout {
             );
         }
 
-        if(empleadoService.getNombreDepartamento(securityService.getAuthenticatedUser().getUsername().toString()).equals("Marketing")){//Es de Atencion al cliente
+        if(empleadoService.getNombreDepartamento(securityService.getAuthenticatedUser().getUsername().toString()).equals("Marketing")){//Es de Marketing
             layout.add(
                     new RouterLink("Registrar Contrato", ClientRegistration.class)
+            );
+        }
+
+        if(empleadoService.getNombreDepartamento(securityService.getAuthenticatedUser().getUsername().toString()).equals("Finanzas")){//Es de Finanzas
+            layout.add(
+                    new RouterLink("Facturas", FacturasView.class)
             );
         }
 
