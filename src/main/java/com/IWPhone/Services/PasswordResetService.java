@@ -28,6 +28,7 @@ public class PasswordResetService {
         token.setToken(UUID.randomUUID().toString());
         token.setExpiryDate(expiryDate);
         token.setEmail(email);
+        token.setValid(true);
         return token;
     }
 
