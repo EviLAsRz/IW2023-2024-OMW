@@ -3,7 +3,8 @@ package com.IWPhone.Layouts;
 import com.IWPhone.MainView;
 import com.IWPhone.PanelEmpleados.view.*;
 
-        import com.IWPhone.PanelUsuarios.view.CreacionConsultasView;
+import com.IWPhone.PanelUsuarios.view.ConsumoView;
+import com.IWPhone.PanelUsuarios.view.CreacionConsultasView;
 import com.IWPhone.Services.EmpleadoService;
 import com.IWPhone.registration.views.AdminRegistration;
 import com.IWPhone.registration.views.ClientRegistration;
@@ -135,7 +136,9 @@ public class AppLayout extends com.vaadin.flow.component.applayout.AppLayout {
         layout.setWidthFull();
         layout.add(
                 new RouterLink("Volver al incio", MainView.class),
-                new RouterLink("Consultas", CreacionConsultasView.class)
+                new RouterLink("Consultas", CreacionConsultasView.class),
+                new RouterLink("Facturas", FacturasView.class),
+                new RouterLink("Consumo", ConsumoView.class)
         );
 
 

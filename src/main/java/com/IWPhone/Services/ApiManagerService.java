@@ -6,6 +6,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.*;
+
+import com.IWPhone.Models.ConsumoAuxiliar;
+import com.IWPhone.Models.LlamadaAuxiliar;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -165,6 +168,84 @@ public class ApiManagerService {
             System.out.println(e.getMessage());
         }
 
+        return null;
+    }
+
+    public List<LlamadaAuxiliar> desgloseLLamadas(String phone){
+
+        //String numberId = getLineId(phone);
+        String numberId = getLineId("+34611404497");//TODO: CAMBIAR ESTO POR EL NUMERO DE TELEFONO DEL CLIENTE
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + numberId+ "/callrecords?carrier="+ carrier))
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
+        try{
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());//HACER PETICION
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonNode = objectMapper.readTree(response.body());
+            List<LlamadaAuxiliar> llamadas = new ArrayList<>();
+            for (JsonNode node : jsonNode) {
+                LlamadaAuxiliar llamada = new LlamadaAuxiliar();
+                llamada.setTlfDestino(node.get("destinationPhoneNumber").asText());
+                llamada.setDuracion(node.get("seconds").asText());
+                llamada.setFecha(node.get("dateTime").asText());
+                llamada.setTlfOrigen(phone);
+                llamadas.add(llamada);
+            }
+
+            //Recorremos las llamadas y las ordenamos de mas reciente a mas antigua
+            llamadas.sort(new Comparator<LlamadaAuxiliar>() {
+                @Override
+                public int compare(LlamadaAuxiliar o1, LlamadaAuxiliar o2) {
+                    return o2.getFecha().compareTo(o1.getFecha());
+                }
+            });
+
+            return llamadas;
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public List<ConsumoAuxiliar> desgloseConsumo(String phone){
+        //String numberId = getLineId(phone);
+        String numberId = getLineId("+34611404497");//TODO: CAMBIAR ESTO POR EL NUMERO DE TELEFONO DEL CLIENTE
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + numberId+ "/datausagerecords?carrier="+ carrier))
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
+        try{
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());//HACER PETICION
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonNode = objectMapper.readTree(response.body());
+            List<ConsumoAuxiliar> consumos = new ArrayList<>();
+            for (JsonNode node : jsonNode) {
+                ConsumoAuxiliar consumo = new ConsumoAuxiliar();
+                consumo.setFecha(node.get("date").asText());
+                consumo.setConsumoMb(node.get("megaBytes").asText());
+                consumo.setTelefono(phone);
+                consumos.add(consumo);
+            }
+
+            //Recorremos las llamadas y las ordenamos de mas reciente a mas antigua
+            consumos.sort(new Comparator<ConsumoAuxiliar>() {
+                @Override
+                public int compare(ConsumoAuxiliar o1, ConsumoAuxiliar o2) {
+                    return o2.getFecha().compareTo(o1.getFecha());
+                }
+            });
+
+            return consumos;
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         return null;
     }
 

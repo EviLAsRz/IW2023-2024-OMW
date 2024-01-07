@@ -1,7 +1,9 @@
 package com.IWPhone.registration.services;
 
 import com.IWPhone.Models.Contract;
+import com.IWPhone.Models.Opciones;
 import com.IWPhone.Repositories.ContractRepository;
+import com.IWPhone.Repositories.OpcionesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +13,10 @@ import java.util.Date;
 public class ContractService {
     @Autowired
     private ContractRepository contractRepository;
-    ContractService(ContractRepository contractRepository){
+    private final OpcionesRepo opcionesRepository;
+    ContractService(ContractRepository contractRepository, OpcionesRepo opcionesRepository){
         this.contractRepository = contractRepository;
+        this.opcionesRepository = opcionesRepository;
     }
 
     public void create(String clientDNI,String details, Double maxGbConsumption, Double pricePerGb, Double pricePerSMS,
@@ -152,6 +156,14 @@ public class ContractService {
         } catch (Exception e){
             System.out.println("Error al cambiar el empleado del contrato");
         }
+    }
+
+    public Opciones getLinkedOptionsToContract(String dniCliente){
+        //Pillamos el contrato vinculado al cliente
+        Contract contract = contractRepository.findBy_sClient(dniCliente);
+        //Pillamos las opciones vinculadas al contrato
+        Opciones opciones = opcionesRepository.findBy_contrato(contract.getId());
+        return opciones;
     }
 
 }

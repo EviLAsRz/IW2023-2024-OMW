@@ -1,6 +1,7 @@
 package com.IWPhone.PanelEmpleados.view;
 import com.IWPhone.Models.Client;
 import com.IWPhone.Layouts.AppLayout;
+import com.IWPhone.Services.ApiManagerService;
 import com.IWPhone.Services.ClientService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -29,8 +30,9 @@ public class GestionNumeros extends VerticalLayout {
     TextField numeroFijo = new TextField();
 
     Button generarTelefono = new Button("Generar teléfono nuevo");
-    GestionNumeros(ClientService clientService){
+    GestionNumeros(ClientService clientService, ApiManagerService apiManagerService){
         this.clientService = clientService;
+
         //Set grid
         configureGrid();
         populateGrid();
@@ -134,6 +136,7 @@ public class GestionNumeros extends VerticalLayout {
                     n.open();
                 }else{
                     clientService.setLandlineByDNI(grid.asSingleSelect().getValue().getDNI(), numeroFijo.getValue());
+
                     Notification n = new Notification("Teléfono fijo modificado", 3000);
                     n.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                     n.open();

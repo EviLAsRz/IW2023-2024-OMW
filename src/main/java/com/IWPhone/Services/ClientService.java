@@ -54,6 +54,7 @@ public class ClientService {
             apiManagerService.deletePhone(oldMobilePhone);
         }
         c.setMobilePhone(mobilePhone);
+        apiManagerService.saveClientPhone(mobilePhone, dni);
         clientRepo.save(c);
     }
 
@@ -70,6 +71,7 @@ public class ClientService {
         }
 
         c.setLandline(landline);
+        apiManagerService.saveClientPhone(landline, dni);
         clientRepo.save(c);
     }
 
