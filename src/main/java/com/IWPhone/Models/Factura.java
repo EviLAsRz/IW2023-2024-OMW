@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -42,7 +44,7 @@ public class Factura {
         return _fecha;
     }
 
-    public void set_fecha(Date _fecha) {
+    public void set_fecha(LocalDate _fecha) {
         this._fecha = _fecha;
     }
 
