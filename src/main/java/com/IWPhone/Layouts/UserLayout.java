@@ -39,7 +39,7 @@ public class UserLayout extends AppLayout {
         logoutBtn.addClickListener(e -> logoutBtn.getUI().ifPresent(ui ->
                 ui.navigate("login")));
 
-        //TODO: Gestionar la vista del perfil del los usuarios
+
         profileBtn.addClickListener(e -> profileBtn.getUI().ifPresent(ui ->
                 ui.navigate("login")));
 
@@ -68,7 +68,7 @@ public class UserLayout extends AppLayout {
         addToNavbar(header);
 
     }
-    //TODO: Verificar si es necesario crear endpoints para los usuarios
+
     private void createDrawer() {
 
 

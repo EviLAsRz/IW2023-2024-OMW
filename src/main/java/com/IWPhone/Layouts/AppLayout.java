@@ -121,7 +121,7 @@ public class AppLayout extends com.vaadin.flow.component.applayout.AppLayout {
             );
         }
 
-        //TODO: Agregar los links a cada endpoint segun el tipo de empleado
+
         addToDrawer(
                 layout
         );
@@ -142,7 +142,7 @@ public class AppLayout extends com.vaadin.flow.component.applayout.AppLayout {
         );
 
 
-        //TODO: Agregar los links a cada endpoint segun el tipo de empleado
+
         addToDrawer(
                 layout
         );
@@ -164,7 +164,6 @@ public class AppLayout extends com.vaadin.flow.component.applayout.AppLayout {
         );
 
 
-        //TODO: Agregar los links a cada endpoint segun el tipo de empleado
         addToDrawer(
                 layout
         );

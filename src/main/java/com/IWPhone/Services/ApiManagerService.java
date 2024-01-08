@@ -173,8 +173,7 @@ public class ApiManagerService {
 
     public List<LlamadaAuxiliar> desgloseLLamadas(String phone){
 
-        //String numberId = getLineId(phone);
-        String numberId = getLineId("+34611404497");//TODO: CAMBIAR ESTO POR EL NUMERO DE TELEFONO DEL CLIENTE
+        String numberId = getLineId(phone);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url + numberId+ "/callrecords?carrier="+ carrier))
                 .header("Content-Type", "application/json")
@@ -212,8 +211,7 @@ public class ApiManagerService {
     }
 
     public List<ConsumoAuxiliar> desgloseConsumo(String phone){
-        //String numberId = getLineId(phone);
-        String numberId = getLineId("+34611404497");//TODO: CAMBIAR ESTO POR EL NUMERO DE TELEFONO DEL CLIENTE
+        String numberId = getLineId(phone);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url + numberId+ "/datausagerecords?carrier="+ carrier))
                 .header("Content-Type", "application/json")

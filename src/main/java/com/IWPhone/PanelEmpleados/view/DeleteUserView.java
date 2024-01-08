@@ -77,7 +77,7 @@ public class DeleteUserView extends VerticalLayout {
                 if (user.getEliminationDate() == null){
                     //Damos de baja al usuario
                     applicationUserService.disableUser(user.getUsername());
-                    //TODO:Mandar un correo al dar de baja
+
                     emailService.sendCustomEmail(user.getEmail(),"Baja de usuario","Su cuenta ha sido dada de baja");
                 }
 
@@ -102,7 +102,7 @@ public class DeleteUserView extends VerticalLayout {
                     //Damos de baja al usuario
                     applicationUserService.enableUser(user.getUsername());
                     emailService.sendCustomEmail(user.getEmail(),"Alta de usuario","Su cuenta ha sido dada de alta");
-                    //TODO: Agregar al correo la direccion de la pagina de reclamaciones
+
                 }
 
             }
