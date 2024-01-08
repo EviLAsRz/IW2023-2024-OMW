@@ -47,7 +47,7 @@ public class GestionNumeros extends VerticalLayout {
         add(
                 new H1("Gestión de números de telefono de los clientes."),
                 grid,
-                new HorizontalLayout(numeroMovil, modificarTelefonoMovil),//TODO: HACERLO CON FORM
+                new HorizontalLayout(numeroMovil, modificarTelefonoMovil),
                 new HorizontalLayout(numeroFijo, modificarTelefonoFijo),
                 new HorizontalLayout(generarTelefono, eliminarTelefono)
         );
@@ -170,7 +170,6 @@ public class GestionNumeros extends VerticalLayout {
 
 
 
-    //TODO: Metodos para eliminar, agregar y modificar números de teléfono.
 
 }
 
