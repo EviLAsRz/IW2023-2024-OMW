@@ -7,5 +7,4 @@ import java.util.UUID;
 
 public interface FacturaRepository  extends JpaRepository<Factura, Long> {
     Factura findById(UUID id);
-    Factura findBy_contrato(UUID contrato);
 }

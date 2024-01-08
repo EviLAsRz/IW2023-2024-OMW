@@ -1,13 +1,12 @@
 package com.IWPhone.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -19,6 +18,9 @@ public class Contract {
     public UUID getId() {
         return _Id;
     }
+
+    @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL)
+    private Set<Factura> facturas;
 
     // _sDetails: Methods.
     private String _sDetails;
@@ -117,7 +119,5 @@ public class Contract {
                 "El empleado no puede ser nulo");
         _sEmployee = employee;
     }
-
-
 
 }

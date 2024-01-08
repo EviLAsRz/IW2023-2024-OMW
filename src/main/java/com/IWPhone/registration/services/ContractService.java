@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
 @Service
 public class ContractService {
     @Autowired
@@ -164,6 +167,10 @@ public class ContractService {
         //Pillamos las opciones vinculadas al contrato
         Opciones opciones = opcionesRepository.findBy_contrato(contract.getId());
         return opciones;
+    }
+
+    public List<UUID> getAllContracts() {
+        return contractRepository.findAllByIdIsNotNull().stream().map(Contract::getId).toList();
     }
 
 }

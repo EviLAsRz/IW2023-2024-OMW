@@ -17,6 +17,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.combobox.ComboBoxVariant;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
@@ -31,6 +32,8 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.UUID;
 
 
 @RolesAllowed({"EMPLOYEE", "ADMIN"})
@@ -52,7 +55,7 @@ public class FacturasView extends VerticalLayout {
     //Elementos de la vista
 
     TextArea detallesContractuales = new TextArea();
-    NumberField idFactura = new NumberField();
+    NumberField idContrato = new NumberField();
     NumberField perIva = new NumberField();
     TextField contratoFact = new TextField();
     TextField direccion = new TextField();
@@ -61,9 +64,8 @@ public class FacturasView extends VerticalLayout {
     NumberField mobile = new NumberField();
     NumberField totalDatos = new NumberField();
     NumberField totalLLamadas = new NumberField();
-    LocalDate fechaEmitida;
-    ComboBox<String> dniClienteCombo = new ComboBox<>();
-
+    DatePicker fechaEmitida = new DatePicker();
+    ComboBox<UUID> contratoCombo = new ComboBox<>();
     Button validarFacturaBtn = new Button("Guardar cambios");
     Button eliminarFacturaBtn = new Button("Eliminar factura");
 
@@ -85,29 +87,29 @@ public class FacturasView extends VerticalLayout {
 
              populateTable(gridFacturas);
 
-            dniClienteCombo.setItems(applicationUserService.getAllUsernames());
-            dniClienteCombo.addThemeVariants(
+            contratoCombo.setItems(contractService.getAllContracts());
+            contratoCombo.addThemeVariants(
                     ComboBoxVariant.LUMO_ALIGN_RIGHT,
                     ComboBoxVariant.LUMO_HELPER_ABOVE_FIELD
             );
 
-            dniClienteCombo.setMinWidth("300px");
-            dniClienteCombo.setMaxWidth("300px");
+            contratoCombo.setMinWidth("300px");
+            contratoCombo.setMaxWidth("300px");
+            idContrato.setMinWidth("600px");
+            idContrato.setMinHeight("200px");
             detallesContractuales.setMinWidth("600px");
             detallesContractuales.setMinHeight("200px");
-
+            fechaEmitida.setMinWidth("300px");
+            fechaEmitida.setMaxWidth("300px");
+             
             HorizontalLayout generalLayout = new HorizontalLayout();
-            generalLayout.add(dniClienteCombo);
+            generalLayout.add(contratoCombo);
 
             //Settings layout
 
-            validarFacturaBtn.addClickListener(e -> {
-                validateFactura();
-            });
-
             eliminarFacturaBtn.addClickListener(e-> {
                 if(selectedFactura != null) {
-                    if(validarFacturasService.disableFactura(dniClienteCombo.getValue())) {
+                    if(validarFacturasService.disableFactura(contratoCombo.getValue())) {
                         Notification notification = new Notification("Factura eliminada correctamente", 3000);
                         notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                         notification.setDuration(3000);
@@ -138,9 +140,10 @@ public class FacturasView extends VerticalLayout {
     }
 
     void populateTable(Grid<Factura> grid) {
-        grid.addColumn(Factura::).setHeader("DNI Cliente");
+        grid.addColumn(factura -> factura.getContract().getClient()).setHeader("DNI del Cliente");
         grid.addColumn(Factura::get_fecha).setHeader("Fecha factura");
-        grid.addColumn(Factura::get_contrato).setHeader("Contrato asociado");
+        grid.addColumn(Factura::get_detalles).setHeader("Detalles");
+        grid.addColumn(Factura::get_iva).setHeader("IVA");
         grid.setItems(validarFacturasService.getAll());
 
         grid.addSelectionListener(event -> {
@@ -148,11 +151,10 @@ public class FacturasView extends VerticalLayout {
                 selectedFactura = event.getFirstSelectedItem().get();
 
                 //falta get contrato y get fecha por definir
-                dniClienteCombo.setValue(selectedFactura.getClient());
+                //contratoCombo.setValue(selectedFactura.get_contrato());
                 detallesContractuales.setValue(selectedFactura.get_detalles());
                 perIva.setValue(selectedFactura.get_iva());
-
             }
-        })
+        });
     }
 }

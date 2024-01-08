@@ -8,7 +8,9 @@ import com.IWPhone.Services.ApplicationUserService;
 import org.springframework.stereotype.Service;
 
 import java.net.http.HttpClient;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ValidarFacturasService {
@@ -27,5 +29,29 @@ public class ValidarFacturasService {
         this.applicationUserService = applicationUserService;
     }
 
-    public List<Factura> getAll{ return facturaRepository.findAll(); }
+    public List<Factura> getAll() { return facturaRepository.findAll(); }
+
+    public boolean disableFactura(UUID contrato) {
+        try{
+            Factura factura = facturaRepository.findById(contrato);
+            factura.set_fecha(new Date());
+            facturaRepository.save(factura);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public boolean enableFactura(UUID contrato) {
+        try{
+            Factura factura = facturaRepository.findById(contrato);
+            factura.set_fecha(null);
+            facturaRepository.save(factura);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
 }
