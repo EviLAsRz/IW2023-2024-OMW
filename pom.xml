@@ -130,7 +130,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
-                            <mainClass>com.yourpackage.YourMainClass</mainClass>
+                            <mainClass>com.IWPhone.IwBankApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
