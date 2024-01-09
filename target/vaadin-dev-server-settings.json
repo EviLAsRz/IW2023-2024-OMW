@@ -1,0 +1,17 @@
+{
+  "frontendFolder": "/Users/antonioroldanandrade/Documents/IW2023-2024-OMW/frontend",
+  "themeFolder": "themes",
+  "themeResourceFolder": "/Users/antonioroldanandrade/Documents/IW2023-2024-OMW/frontend/generated/jar-resources",
+  "staticOutput": "/Users/antonioroldanandrade/Documents/IW2023-2024-OMW/target/classes/META-INF/VAADIN/webapp/VAADIN/static",
+  "generatedFolder": "generated",
+  "statsOutput": "/Users/antonioroldanandrade/Documents/IW2023-2024-OMW/target/classes/META-INF/VAADIN/config",
+  "frontendBundleOutput": "/Users/antonioroldanandrade/Documents/IW2023-2024-OMW/target/classes/META-INF/VAADIN/webapp",
+  "devBundleOutput": "/Users/antonioroldanandrade/Documents/IW2023-2024-OMW/src/main/dev-bundle/webapp",
+  "devBundleStatsOutput": "/Users/antonioroldanandrade/Documents/IW2023-2024-OMW/src/main/dev-bundle/config",
+  "jarResourcesFolder": "/Users/antonioroldanandrade/Documents/IW2023-2024-OMW/frontend/generated/jar-resources",
+  "themeName": "iphone",
+  "clientServiceWorkerSource": "/Users/antonioroldanandrade/Documents/IW2023-2024-OMW/target/sw.ts",
+  "pwaEnabled": false,
+  "offlineEnabled": false,
+  "offlinePath": "'offline.html'"
+}
