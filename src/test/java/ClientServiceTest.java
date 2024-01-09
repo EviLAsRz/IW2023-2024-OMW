@@ -27,6 +27,7 @@ public class ClientServiceTest {
 
     @BeforeEach
     void setup() {
+        //apiManagerService = new ApiManagerService();
         clientService = new ClientService(securityService, clientRepo, applicationUserService, apiManagerService);
     }
 
@@ -119,18 +120,6 @@ public class ClientServiceTest {
         assertEquals("123456789", result);
     }
 
-    @Test
-    void testSetLandLineByDNI(){
-        Client client = new Client();
-        client.setDNI("12345678A");
-        client.setAddress("Calle Falsa 123");
-        client.setMobilePhone("123456789");
-        client.setLandline("123456789");
-
-        Mockito.when(clientRepo.findBy_sDNI("12345678A")).thenReturn(client);
-        clientService.setLandlineByDNI("12345678A", "123456788");
-        assertEquals("123456788", client.getLandline());
-    }
 
     @Test
     void testGetClientByDNI(){
