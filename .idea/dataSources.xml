@@ -13,5 +13,12 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="liwphone-database.cf060ecagvmo.us-east-1.rds.amazonaws.com:5432" uuid="19c6ca7e-e8e2-4198-99d0-675ec7735f6d">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql:///liwphone-database.cf060ecagvmo.us-east-1.rds.amazonaws.com:5432</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

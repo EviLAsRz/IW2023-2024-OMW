@@ -61,7 +61,6 @@ public class ConsumoView extends VerticalLayout {
                 gridLlamadas,
                 new H2("Desglose de datos"),
                 gridConsumo,
-                new HorizontalLayout(totalLlamadas, totalDatos),
                 new HorizontalLayout(),
                 new HorizontalLayout()
         );
