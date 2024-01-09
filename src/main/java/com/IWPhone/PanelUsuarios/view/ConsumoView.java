@@ -51,13 +51,10 @@ public class ConsumoView extends VerticalLayout {
         this.apiManagerService = apiManagerService;
         populateGridLlamadas();
         populateGridConsumo();
-        fetchData();
+
         Notification n = new Notification("El consumo se actualiza cada 24 horas, si tienes alguna duda/reclamacion dirigete a tu seccion de consultas donde nuestros agentes te pueden atender.", 5000);
         n.open();
-        NumberField gastoTotal = new NumberField("Gasto total");
-        gastoTotal.setValue(totalLlamadas.getValue() + totalDatos.getValue());
-        gastoTotal.setSuffixComponent(new Span("EUR"));
-        gastoTotal.setReadOnly(true);
+
         add(
                 new H1("Desglose del Consumo Actual"),
                 new H2("Desglose de llamadas"),
@@ -66,71 +63,11 @@ public class ConsumoView extends VerticalLayout {
                 gridConsumo,
                 new HorizontalLayout(totalLlamadas, totalDatos),
                 new HorizontalLayout(),
-                gastoTotal,
                 new HorizontalLayout()
         );
     }
 
-    public void fetchData(){
 
-        //Obtenemos los telefonos vinculados al cliente
-        String mobilePhone = clientService.getMobilePhoneByDNI(securityService.getAuthenticatedUser().getUsername());
-        String landlinePhone = clientService.getLandlineByDNI(securityService.getAuthenticatedUser().getUsername());
-
-        //Obtenemos los datos del consumo de la api
-        //Obtenemos el mes actual usando Localdate
-        String month = LocalDate.now().getMonth().toString();
-        String year = LocalDate.now().getYear() + "";
-
-        //Creamnos las fehcas de inicio y fin del mes actual, en formato YYYY-MM-dd
-        String startDate = year + "-" + month + "-01";
-        String endDate ;
-        if(month.equals("FEBRUARY")){
-            endDate = year + "-" + month + "-28";
-        }
-        else if(month.equals("APRIL") || month.equals("JUNE") || month.equals("SEPTEMBER") || month.equals("NOVEMBER")){
-            endDate = year + "-" + month + "-30";
-        }else {
-            endDate = year + "-" + month + "-31";
-        }
-
-        //Obtenemos el consumo de llamadas, datos y sms por cada linea telefonica
-        Integer iNumeroLlamadasMovil = apiManagerService.getCallsConsumption(mobilePhone, startDate, endDate);
-        Integer iNumeroLlamadasFijo = apiManagerService.getCallsConsumption(landlinePhone, startDate, endDate);
-
-        Double dConsumoDatosMovil = apiManagerService.getDataConsumption(mobilePhone, startDate, endDate);
-        Double dConsumoDatosFijo = apiManagerService.getDataConsumption(landlinePhone, startDate, endDate);
-
-        //Obtenemos el coste de cada llamada, sms y gb de datos
-        Double dCosteLlamada = contractService.getPricePerCall(securityService.getAuthenticatedUser().getUsername());
-        Double dCosteDatos = contractService.getPricePerGb(securityService.getAuthenticatedUser().getUsername());
-
-
-        //Obtenemos las opciones vinculadas al contrato del cliente
-        Opciones opciones = contractService.getLinkedOptionsToContract(securityService.getAuthenticatedUser().getUsername());
-
-
-        //Calculamos el consumo total de llamadas, datos y sms usando el descuento por gb de datos y llamadas
-        double dTotalLlamadas = (iNumeroLlamadasMovil + iNumeroLlamadasFijo) * dCosteLlamada * (1 - opciones.get_descuentoLlamada());
-        double dTotalDatos = (dConsumoDatosMovil + dConsumoDatosFijo) * dCosteDatos * (1 - opciones.get_descuentoGB());
-        if(dTotalLlamadas < 0){
-            dTotalLlamadas = 0.0;
-        }
-        if(dTotalDatos < 0){
-            dTotalDatos = 0.0;
-        }
-        //Mostramos los datos en los campos de texto
-        totalLlamadas.setValue(dTotalLlamadas);
-        totalLlamadas.setReadOnly(true);
-        //totalLlamadas.setWidth("400px");
-        totalLlamadas.setSuffixComponent(new Span("EUR"));
-
-        totalDatos.setValue(dTotalDatos);
-        totalDatos.setReadOnly(true);
-        //totalDatos.setWidth("400px");
-        totalDatos.setSuffixComponent(new Span("EUR"));
-
-    }
 
     public void populateGridLlamadas(){
         String mobilePhone = clientService.getMobilePhoneByDNI(securityService.getAuthenticatedUser().getUsername());
