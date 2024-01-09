@@ -5,7 +5,6 @@ import com.IWPhone.Models.Factura;
 import com.IWPhone.Models.ConsumoAuxiliar;
 import com.IWPhone.Models.LlamadaAuxiliar;
 import com.IWPhone.Models.Contract;
-import com.IWPhone.Repositories.OpcionesRepo;
 import com.IWPhone.Services.ApplicationUserService;
 import com.IWPhone.PanelEmpleados.services.ValidarFacturasService;
 import com.IWPhone.Services.ClientService;
@@ -14,10 +13,10 @@ import com.IWPhone.Services.EmpleadoService;
 import com.IWPhone.registration.services.ContractService;
 import com.IWPhone.security.SecurityService;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.combobox.ComboBoxVariant;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
@@ -31,24 +30,19 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.UUID;
-
-
 @RolesAllowed({"EMPLOYEE", "ADMIN"})
 @PageTitle("Facturas")
 @Route(value = "Facturas", layout = AppLayout.class)
 public class FacturasView extends VerticalLayout {
 
     private final EmpleadoService empleadoService;
-    private SecurityService securityService;
-    private EmailService emailService;
-    private ApplicationUserService applicationUserService;
+    private final SecurityService securityService;
+    private final EmailService emailService;
+    private final ApplicationUserService applicationUserService;
     private final ClientService clientService;
     private final ContractService contractService;
     private final ValidarFacturasService validarFacturasService;
-    private Grid<Factura> gridFacturas = new Grid<>();
+    private final Grid<Factura> gridFacturas = new Grid<>();
 
     private Factura selectedFactura = null;
 
@@ -65,9 +59,8 @@ public class FacturasView extends VerticalLayout {
     NumberField totalDatos = new NumberField();
     NumberField totalLLamadas = new NumberField();
     DatePicker fechaEmitida = new DatePicker();
-    ComboBox<UUID> contratoCombo = new ComboBox<>();
-    Button validarFacturaBtn = new Button("Guardar cambios");
-    Button eliminarFacturaBtn = new Button("Eliminar factura");
+    ComboBox<Contract> contratoCombo = new ComboBox<>();
+    Button editarFacturaBtn = new Button("Guardar cambios");
 
     FacturasView( EmpleadoService empleadoService, SecurityService securityService, EmailService emailService,
                   ApplicationUserService applicationUserService, ClientService clientService,
@@ -81,7 +74,7 @@ public class FacturasView extends VerticalLayout {
         this.validarFacturasService = validarFacturasService;
         this.contractService = contractService;
 
-        if (!empleadoService.getNombreDepartamento(securityService.getAuthenticatedUser().getUsername().toString()).equals("Finanzas")) {
+        if (!empleadoService.getNombreDepartamento(securityService.getAuthenticatedUser().getUsername()).equals("Finanzas")) {
             add("No tienes permisos para acceder a esta vista, vuelve a tu panel de empleado");
         } else {
 
@@ -103,38 +96,23 @@ public class FacturasView extends VerticalLayout {
             fechaEmitida.setMaxWidth("300px");
              
             HorizontalLayout generalLayout = new HorizontalLayout();
-            generalLayout.add(contratoCombo);
+            generalLayout.add(contratoCombo, fechaEmitida);
 
+            FormLayout genLayout = new FormLayout();
+            genLayout.setResponsiveSteps(
+                    new FormLayout.ResponsiveStep("1000px", 2)
+            );
+
+            genLayout.addFormItem(contratoCombo, "DNI Cliente");
+            genLayout.addFormItem(landline, "Numero de teléfono fijo");
+            genLayout.addFormItem(mobile, "Numero de teléfono móvil");
+            genLayout.addFormItem(fechaEmitida, "Fecha de emisión");
+            genLayout.addFormItem(detallesContractuales, "Detalles contractuales");
             //Settings layout
-
-            eliminarFacturaBtn.addClickListener(e-> {
-                if(selectedFactura != null) {
-                    if(validarFacturasService.disableFactura(contratoCombo.getValue())) {
-                        Notification notification = new Notification("Factura eliminada correctamente", 3000);
-                        notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                        notification.setDuration(3000);
-                        notification.open();
-                        gridFacturas.setItems(validarFacturasService.getAll());
-                    }
-                    else {
-                        Notification notification = new Notification("Error al eliminar la factura",3000);
-                        notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
-                        notification.setDuration(3000);
-                        notification.open();
-                    }
-                }
-                else {
-                    Notification notification = new Notification("No hay ninguna factura seleccionado", 3000);
-                    notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
-                    notification.setDuration(3000);
-                    notification.open();
-                }
-            });
 
             add(new H1("Visualizar/editar Facturas"),
                     gridFacturas,
-                    new HorizontalLayout(eliminarFacturaBtn),
-                    validarFacturaBtn
+                    editarFacturaBtn
             );
         }
     }
@@ -151,9 +129,10 @@ public class FacturasView extends VerticalLayout {
                 selectedFactura = event.getFirstSelectedItem().get();
 
                 //falta get contrato y get fecha por definir
-                //contratoCombo.setValue(selectedFactura.get_contrato());
+                contratoCombo.setValue(selectedFactura.getContract());
                 detallesContractuales.setValue(selectedFactura.get_detalles());
                 perIva.setValue(selectedFactura.get_iva());
+                fechaEmitida.setValue(selectedFactura.get_fecha());
             }
         });
     }

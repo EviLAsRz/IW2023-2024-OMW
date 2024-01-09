@@ -25,7 +25,7 @@ public class FacturaService {
         Factura factura = new Factura();
 
         factura.set_detalles(detalles);
-        factura.set_fecha(new Date());
+        factura.set_fecha(LocalDate.now());
         factura.set_iva(iva);
         facturaRepository.save(factura);
     }
@@ -34,8 +34,8 @@ public class FacturaService {
     //public UUID getContract(UUID contrato) { return facturaRepository.findBy_contrato(contrato).get_contrato(); }
     public String getDetails(UUID contrato) { return facturaRepository.findById(contrato).get_detalles(); }
     public Double getIva(UUID contrato) { return facturaRepository.findById(contrato).get_iva(); }
-    public Date getDate(UUID contrato) { return facturaRepository.findById(contrato).get_fecha(); }
-    public Date getEndDate(UUID contrato) { return facturaRepository.findById(contrato).get_fechaEnd(); }
+    public LocalDate getDate(UUID contrato) { return facturaRepository.findById(contrato).get_fecha(); }
+    public LocalDate getEndDate(UUID contrato) { return facturaRepository.findById(contrato).get_fechaEnd(); }
 
     //Getters
 
@@ -59,7 +59,7 @@ public class FacturaService {
         }
     }
 
-    public void setDate (UUID contrato, Date date) {
+    public void setDate (UUID contrato, LocalDate date) {
         try{
             Factura factura = facturaRepository.findById(contrato);
             factura.set_fecha(date);
@@ -69,7 +69,7 @@ public class FacturaService {
         }
     }
 
-    public void setEndDate (UUID contrato, Date endDate) {
+    public void setEndDate (UUID contrato, LocalDate endDate) {
         try{
             Factura factura = facturaRepository.findById(contrato);
             factura.set_fecha(endDate);

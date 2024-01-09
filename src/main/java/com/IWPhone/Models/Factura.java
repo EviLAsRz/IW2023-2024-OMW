@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -19,8 +18,9 @@ public class Factura {
     private Contract contract;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date _fecha;
-    private Date _fechaEnd;
+    private LocalDate _fecha;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDate _fechaEnd;
     private String _detalles;
 
     public UUID getId() {
@@ -34,17 +34,17 @@ public class Factura {
     public Contract getContract() {
         return contract;
     }
-    public Date get_fecha() {
+    public LocalDate get_fecha() {
         return _fecha;
     }
 
-    public void set_fecha(Date _fecha) {
+    public void set_fecha(LocalDate _fecha) {
         this._fecha = _fecha;
     }
 
-    public Date get_fechaEnd() { return _fechaEnd; }
+    public LocalDate get_fechaEnd() { return _fechaEnd; }
 
-    public void set_fechaEnd(Date _fechaEnd) { this._fechaEnd = _fechaEnd; }
+    public void set_fechaEnd(LocalDate _fechaEnd) { this._fechaEnd = _fechaEnd; }
 
     public String get_detalles() {
         return _detalles;
