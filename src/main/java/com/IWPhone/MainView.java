@@ -36,7 +36,6 @@ public class MainView extends VerticalLayout {
         else if(securityService.getAuthenticatedUser().getAuthorities().toString().equals("[ROLE_USER]")) add(new PanelUsuariosView(securityService,userProfileService, applicationUserService,clientService));
         else if (securityService.getAuthenticatedUser().getAuthorities().toString().equals("[ROLE_DISABLED]")){
             add("Tu cuenta ha sido desactivada, ponga una reclamacion en: ");//TODO: Poner un link a la pagina de reclamaciones
-        } else
-            add("No tienes permisos para acceder a esta vista, tu rol es: " + securityService.getAuthenticatedUser().getAuthorities().toString() + " vuelve a la pagina de inicio");
+        }
     }
 }

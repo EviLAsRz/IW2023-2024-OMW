@@ -2,6 +2,7 @@ package com.IWPhone.PanelUsuarios.view;
 import com.IWPhone.Layouts.AppLayout;
 import com.IWPhone.Models.*;
 import com.IWPhone.Services.*;
+import com.IWPhone.registration.services.ContractService;
 import com.IWPhone.security.SecurityService;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
@@ -36,35 +37,42 @@ public class CreacionConsultasView extends VerticalLayout {
     private final TextArea detallesConsulta = new TextArea("Detalles de la consulta");
     private final Grid<Consult> grid = new Grid<Consult>(Consult.class, false);
     private final Button eliminarConsulta = new Button("Eliminar consulta");
+    private final ContractService contractService;
     private Consult selectedConsult;
     CreacionConsultasView(SecurityService securityService, ClienteConsultaService clienteConsultaService, EmpleadoService empleadoService,
-                          ClientService clienteService, EmailService emailService, ApplicationUserService applicationUserService){
+                          ClientService clienteService, EmailService emailService, ApplicationUserService applicationUserService, ContractService contractService){
         this.securityService = securityService;
         this.applicationUserService = applicationUserService;
         this.clienteConsultaService = clienteConsultaService;
         this.empleadoService = empleadoService;
         this.clienteService = clienteService;
+        this.contractService = contractService;
         this.emailService = emailService;
-        configLayout();
-        configComponentClickEvents();
-        //Acordeon
-        Accordion accordion = new Accordion();
+        //Comprobamos que el usuario logeado este validado con el contrato
+        if(this.contractService.getStartDate(securityService.getAuthenticatedUser().getUsername()) == null){
+            add(new Span("No tienes un contrato activo, no puedes acceder a esta seccion, espera a que un empleado te valide el contrato"));
+        }else{
+            configLayout();
+            configComponentClickEvents();
+            //Acordeon
+            Accordion accordion = new Accordion();
 
-        H1 name = new H1("Creacion de consultas");
+            H1 name = new H1("Creacion de consultas");
 
 
-        VerticalLayout personalInformationLayout = new VerticalLayout(name, detallesConsulta, crearConsulta);
-        personalInformationLayout.setSpacing(false);
-        personalInformationLayout.setPadding(false);
+            VerticalLayout personalInformationLayout = new VerticalLayout(name, detallesConsulta, crearConsulta);
+            personalInformationLayout.setSpacing(false);
+            personalInformationLayout.setPadding(false);
 
-        accordion.add("Creacion de consultas y Peticiones", personalInformationLayout);
-        populateGrid();
-        add(
-                new H1("Mis consultas pendientes"),
-                grid,
-                new HorizontalLayout(solicitarRevision,eliminarConsulta ),
-                accordion
-        );
+            accordion.add("Creacion de consultas y Peticiones", personalInformationLayout);
+            populateGrid();
+            add(
+                    new H1("Mis consultas pendientes"),
+                    grid,
+                    new HorizontalLayout(solicitarRevision,eliminarConsulta ),
+                    accordion
+            );
+        }
     }
 
     private void configLayout(){

@@ -56,45 +56,50 @@ public class FacturaUsuarioView extends VerticalLayout {
         this.contractService = contractService;
         this.securityService = securityService;
         this.apiManagerService = apiManagerService;
-        populateGridLlamadas();
-        populateGridConsumo();
-        fetchData();
 
-        //Ajustamos el grid para que la altura sea siempre la maxima en funcion a sus elementos
-        gridLlamadas.setAllRowsVisible(true);
-        gridConsumo.setAllRowsVisible(true);
+        if(this.contractService.getStartDate(securityService.getAuthenticatedUser().getUsername()) == null) {
+            add(new Span("No tienes un contrato activo, no puedes acceder a esta seccion, espera a que un empleado te valide el contrato"));
+        }else {
 
-        Notification n = new Notification("Se muestra la factura de este mes, si lo prefiere seleccione un rango distinto.", 5000);
-        n.open();
-        NumberField gastoTotal = new NumberField("Gasto total");
-        gastoTotal.setValue(totalLlamadas.getValue() + totalDatos.getValue());
-        gastoTotal.setSuffixComponent(new Span("EUR"));
-        gastoTotal.setReadOnly(true);
-        NumberField gastoTotalConIVA = new NumberField("Gasto total con IVA");
-        gastoTotalConIVA.setValue(gastoTotal.getValue() * 1.21);
-        BigDecimal bd = BigDecimal.valueOf(gastoTotalConIVA.getValue()).setScale(4, BigDecimal.ROUND_HALF_UP);
-        gastoTotalConIVA.setValue(bd.doubleValue());
-        gastoTotalConIVA.setSuffixComponent(new Span("EUR"));
-        gastoTotalConIVA.setReadOnly(true);
-        imprimirFactura.addClickListener(e -> {
-            UI.getCurrent().getPage().executeJs("window.print();");
-            Notification n2 = new Notification("Se ha enviado la factura a su impresora", 5000);
-            n2.open();
-        });
+            populateGridLlamadas();
+            populateGridConsumo();
+            fetchData();
+
+            //Ajustamos el grid para que la altura sea siempre la maxima en funcion a sus elementos
+            gridLlamadas.setAllRowsVisible(true);
+            gridConsumo.setAllRowsVisible(true);
+
+            Notification n = new Notification("Se muestra la factura de este mes, si lo prefiere seleccione un rango distinto.", 5000);
+            n.open();
+            NumberField gastoTotal = new NumberField("Gasto total");
+            gastoTotal.setValue(totalLlamadas.getValue() + totalDatos.getValue());
+            gastoTotal.setSuffixComponent(new Span("EUR"));
+            gastoTotal.setReadOnly(true);
+            NumberField gastoTotalConIVA = new NumberField("Gasto total con IVA");
+            gastoTotalConIVA.setValue(gastoTotal.getValue() * 1.21);
+            BigDecimal bd = BigDecimal.valueOf(gastoTotalConIVA.getValue()).setScale(4, BigDecimal.ROUND_HALF_UP);
+            gastoTotalConIVA.setValue(bd.doubleValue());
+            gastoTotalConIVA.setSuffixComponent(new Span("EUR"));
+            gastoTotalConIVA.setReadOnly(true);
+            imprimirFactura.addClickListener(e -> {
+                UI.getCurrent().getPage().executeJs("window.print();");
+                Notification n2 = new Notification("Se ha enviado la factura a su impresora", 5000);
+                n2.open();
+            });
 
 
+            add(
+                    new H1("Factura del mes actual"),
 
-        add(
-                new H1("Factura del mes actual"),
+                    new H2("Desglose de llamadas"),
+                    gridLlamadas,
+                    new H2("Desglose de datos"),
+                    gridConsumo,
+                    new HorizontalLayout(totalLlamadas, totalDatos, gastoTotal, gastoTotalConIVA),
+                    imprimirFactura
 
-                new H2("Desglose de llamadas"),
-                gridLlamadas,
-                new H2("Desglose de datos"),
-                gridConsumo,
-                new HorizontalLayout(totalLlamadas, totalDatos,gastoTotal, gastoTotalConIVA),
-                imprimirFactura
-
-        );
+            );
+        }
     }
 
     public void fetchData(){

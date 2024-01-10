@@ -49,21 +49,27 @@ public class ConsumoView extends VerticalLayout {
         this.contractService = contractService;
         this.securityService = securityService;
         this.apiManagerService = apiManagerService;
-        populateGridLlamadas();
-        populateGridConsumo();
 
-        Notification n = new Notification("El consumo se actualiza cada 24 horas, si tienes alguna duda/reclamacion dirigete a tu seccion de consultas donde nuestros agentes te pueden atender.", 5000);
-        n.open();
+        if(this.contractService.getStartDate(securityService.getAuthenticatedUser().getUsername()) == null) {
+            add(new Span("No tienes un contrato activo, no puedes acceder a esta seccion, espera a que un empleado te valide el contrato"));
+        }else{
+            populateGridLlamadas();
+            populateGridConsumo();
 
-        add(
-                new H1("Desglose del Consumo Actual"),
-                new H2("Desglose de llamadas"),
-                gridLlamadas,
-                new H2("Desglose de datos"),
-                gridConsumo,
-                new HorizontalLayout(),
-                new HorizontalLayout()
-        );
+            Notification n = new Notification("El consumo se actualiza cada 24 horas, si tienes alguna duda/reclamacion dirigete a tu seccion de consultas donde nuestros agentes te pueden atender.", 5000);
+            n.open();
+
+            add(
+                    new H1("Desglose del Consumo Actual"),
+                    new H2("Desglose de llamadas"),
+                    gridLlamadas,
+                    new H2("Desglose de datos"),
+                    gridConsumo,
+                    new HorizontalLayout(),
+                    new HorizontalLayout()
+            );
+        }
+
     }
 
 
