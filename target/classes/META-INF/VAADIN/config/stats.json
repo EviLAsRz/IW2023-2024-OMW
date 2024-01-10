@@ -195,13 +195,13 @@
   "iphone": "{\n  \"lumoImports\" : [ \"typography\", \"color\", \"spacing\", \"badge\", \"utility\" ]\n}"
  },
  "entryScripts": [
-  "VAADIN/build/indexhtml-20f00f35.js"
+  "VAADIN/build/indexhtml-73f4168d.js"
  ],
  "webComponents": [],
  "cvdlModules": {},
  "packageJsonHash": "e6fba98a5235019b3b30b84b3373a1fee2018d9f0677cb81e12f94dcc067adeb",
  "indexHtmlGenerated": [
-  "  <script type=\"module\" crossorigin src=\"./VAADIN/build/indexhtml-20f00f35.js\"></script>",
+  "  <script type=\"module\" crossorigin src=\"./VAADIN/build/indexhtml-73f4168d.js\"></script>",
   "  <link rel=\"stylesheet\" href=\"./VAADIN/build/index-3b391f13.css\">"
  ]
 }
