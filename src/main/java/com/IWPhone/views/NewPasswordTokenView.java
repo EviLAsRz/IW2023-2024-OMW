@@ -57,12 +57,8 @@ public class NewPasswordTokenView extends FlexLayout implements HasUrlParameter<
             mail = mailOptional.get();
 
             isValidToken = passwordService.verifyToken(token);
-
-            Notification.show("Email del destinatario: " + mail);
             //Desactivamos el valor del token
             passwordResetService.changeisValidValuetoFalse(token);
-            Notification.show("Se llama a isValidValuetoFalse");
-
             //si no es valido se reenvia al login
         }else UI.getCurrent().access(() -> UI.getCurrent().navigate(LoginView.class));
 
@@ -70,7 +66,6 @@ public class NewPasswordTokenView extends FlexLayout implements HasUrlParameter<
         Optional<ApplicationUser> optionalUser = applicationUserService.getApplicationUserMail(mail);
         if (optionalUser.isPresent()) {
             target = optionalUser.get();
-            Notification.show("Usuario valido: " + target);
 
         } else {
             if (!isValidToken)
@@ -120,9 +115,6 @@ public class NewPasswordTokenView extends FlexLayout implements HasUrlParameter<
 
         // Agregar los componentes a la interfaz de usuario
 
-        Notification.show("Usuario actual: "+ target.getUsername());
-        Notification.show("Mail actual: "+ target.getEmail());
-
     }
     public NewPasswordTokenView(){
         //vacia ya que queremos que toda la lógica de la vista esté en setParameter
@@ -133,7 +125,6 @@ public class NewPasswordTokenView extends FlexLayout implements HasUrlParameter<
         Button submitButton = new Button("Continue");
         submitButton.setThemeName("primary");
         submitButton.setSizeFull();
-        Notification.show("Contraseña actual: "+ applicationUserServiceInt.getPassword(mail));
         submitButton.addClickListener(event-> {
 
             if (!isValidCurrentPassword(currentPassword.getValue(), target.getPassword())) {
@@ -154,12 +145,6 @@ public class NewPasswordTokenView extends FlexLayout implements HasUrlParameter<
                 newPassword.setErrorMessage("La contraseña debe tener de 8 a 50 caracteres y debe contener al menos una mayúscula y un número");
                 newPassword.setInvalid(true);
             } else{
-
-                Notification.show("Usuario actual post Parameter: "+ target.getUsername());
-                Notification.show("Contraseña antigua: " + currentPassword.getValue());
-                Notification.show("Contraseña antigua hashed: " + target.getPassword());
-                Notification.show("Contraseña nueva: " + newPassword.getValue());
-                Notification.show("Verificación de la constraseña: " + applicationUserService.verifyPassword(currentPassword.getValue(), target.getPassword()));
                 //modificacion de la contraseña
                 applicationUserService.setPassword(target.getUsername(), newPassword.getValue());
                 //desactivamos el formulario

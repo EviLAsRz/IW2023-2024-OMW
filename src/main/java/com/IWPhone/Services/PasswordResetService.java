@@ -39,7 +39,6 @@ public class PasswordResetService {
     public void changeisValidValuetoFalse(String token) {
         Optional<PasswordResetToken> optionalToken = tokenRepository.findByToken(token);
         if(optionalToken.isPresent()) {
-            Notification.show("Token cambia valor a false");
             optionalToken.get().setValid(false);
             tokenRepository.save(optionalToken.get());
         }
@@ -48,12 +47,10 @@ public class PasswordResetService {
         Optional<PasswordResetToken> optionalToken = tokenRepository.findByToken(token);
 
         if(optionalToken.isEmpty()) {
-            Notification.show("Token no encontrado");
             return false;
         }
 
         if (!optionalToken.get().isValid()) {
-            Notification.show("Token no valido");
             return false;
         }
         /*

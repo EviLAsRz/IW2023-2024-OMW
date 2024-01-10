@@ -82,8 +82,6 @@ public class RequestResetPasswordView extends FlexLayout {
                 //creamos el token del usuario y lo enlazamos al email
                 PasswordResetToken tokenClass = passwordService.createTokenForUser(email);
                 passwordService.saveTokenForUser(tokenClass);
-                Notification.show("Is token valid: " + passwordService.verifyToken(tokenClass.getToken()));
-                Notification.show("Token: " + tokenClass.getToken());
                 //envío del token + informacion del mail
                 smtpService.sendEmail(tokenClass, email, "Password reset", "You requested a password reset. Please follow the instructions in the email.");
                 FirstSection.getStyle().set("display","none");
