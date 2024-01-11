@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: ApplicationUserServiceTest
 -------------------------------------------------------------------------------
-Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.075 s - in ApplicationUserServiceTest
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.762 s - in ApplicationUserServiceTest

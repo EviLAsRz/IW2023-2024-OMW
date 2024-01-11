@@ -1,0 +1,1 @@
+import"./generated-flow-imports-a1009f7d.js";import"./vaadin-notification-ad30415c.js";import"./templates-5ab672be.js";import"./indexhtml-6512e171.js";window.delayRedirect=function(i){setTimeout(function(){window.location.href=i},5e3)};
