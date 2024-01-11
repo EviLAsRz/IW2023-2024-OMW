@@ -47,7 +47,7 @@ public class EmailService {
 
                     //modificamos en enlace para que el usuario no vea una ruta "extraña"
                     String title = "Click here to reset your password";
-                    String link = "http://54.156.206.120/:8080/new-password?token=" + tokenClass.getToken() + "&mail=" + URLEncoder.encode(to, StandardCharsets.UTF_8.toString());
+                    String link = "http://54.156.206.120:8080/new-password?token=" + tokenClass.getToken() + "&mail=" + URLEncoder.encode(to, StandardCharsets.UTF_8.toString());
                     String htmlLink = "<a href=\"" + link + "\" title=\"" + title + "\">" + title + "</a>";
                     mimeMessage.setContent(htmlLink, "text/html");
                 }
